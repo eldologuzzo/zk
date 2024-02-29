@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>-->
+<?page title="Aurora" ?>
+<!--<?init class="org.zkoss.zkplus.databind.AnnotateDataBinderInit"?>-->
+<?init class="org.zkoss.zkplus.databind.AnnotateDataBinderInit" arg0="./winPopUp55"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <window id="winPopUp55" title="${c:l('BttnVarsTmpltTerminal')}" style="overflow:auto" border="normal" width="65%" height="98%%" closable="true"
+    contentStyle="overflow:auto" apply="com.tpvs.tpvsadmin.zkutils.varsTmpltTerminalsControllerIxe">
+        <hbox width="100%">
+            <groupbox id="gb111" mold="3d" width="100%">
+                <caption label="${c:l('IngreseDatos')}:"/>
+               <grid>
+                   <columns>
+                       <column width="20%" label="Variable"/>
+                       <column width="30%" label="Valor"/>
+                       <column width="20%" label="Variable"/>
+                       <column width="30%" label="Valor"/>
+                   </columns>
+                    <rows>
+                        <row>
+                            <label value="Número de Serie:"/>
+                            <label id="numSerieVarsTmplt" value="123-321-123"/>
+                            <label value="Activar QPS:"/>
+                            <checkbox id="chckQPS" checked="false"/>
+                        </row>
+                        <row>
+                            <label value="Limite para QPS:"/>
+                            <intbox id="varIntLimiteQPS" width="100%" value="25000" maxlength="5" format="####0"
+                            constraint="no empty, no negative: ${c:l('err.num.negative')}"/>
+                            <label value="Leyenda para QPS:"/>
+                            <textbox id="varTxtLeyendaQPS" width="100%" value="Autorizado sin firma" constraint="no empty" maxlength="40"/>
+                        </row>
+                        <row>
+                            <label value="Referencia 1:"/>
+                            <checkbox id="chckRef1" checked="false"/>
+                            <label value="Referencia 2:"/>
+                            <checkbox id="chckRef2" checked="false"/>
+                        </row>
+                        <row>
+                            <label value="Referencia 3:"/>
+                            <checkbox id="chckRef3" checked="false"/>
+                            <label value="Validación Referencia 1:"/>
+                            <checkbox id="chckValidaRef1" checked="false"/>
+                        </row>
+                        <row>
+                            <label value="Validación Referencia 2:"/>
+                            <checkbox id="chckValidaRef2" checked="false"/>
+                            <label value="Validación Referencia 3:"/>
+                            <checkbox id="chckValidaRef3" checked="false"/>
+                        </row>
+                        <row>
+                            <label value="Combo Referencia 1:"/>
+                            <checkbox id="chckComboRef1" checked="false"/>
+                            <label value="Combo Referencia 2:"/>
+                            <checkbox id="chckComboRef2" checked="false"/>
+                        </row>
+                        <row>
+                            <label value="Limite Advertencia Batch Llenando:"/>
+                            <intbox id="varIntLimitAdvBatch" width="100%" value="180" maxlength="4" format="###0"
+                            constraint="no empty, no negative: ${c:l('err.num.negative')}"/>
+                            <label value="Limite Txs previo Cierre Batch:"/>
+                            <intbox id="varIntLimitTxsCierreBatch" width="100%" value="200" maxlength="4" format="###0"
+                            constraint="no empty, no negative: ${c:l('err.num.negative')}"/>
+                        </row>
+                        <row>
+                            <label value="Solicitar Num Vendedor:"/>
+                            <checkbox id="chckSolNumVend" checked="false"/>
+                            <label value="% Autorizar Preventa:"/>
+                            <intbox id="varIntPorAutPrev" width="100%" value="20" maxlength="3" format="#0"
+                            constraint="no empty, no negative: ${c:l('err.num.negative')}"/>
+                        </row>
+                        <row>
+                            <label value="% Max de Ajuste Propina Antes de Clave:"/>
+                            <intbox id="varIntPorMaxAjusPropClave" width="100%" value="20" maxlength="3" format="#0"
+                            constraint="no empty, no negative: ${c:l('err.num.negative')}"/>
+                            <label value="Check-out offline:"/>
+                            <checkbox id="chckOffLine" checked="false"/>
+                        </row>
+                        <row>
+                            <label value="Check PayWorks2:"/> 
+                            <checkbox id="chckPWorks2" checked="false"/> 
+                            <label value="Check Ask CVV2:"/> 
+                            <checkbox id="chckAskCVV" checked="false"/> 
+                        </row>
+                        <row> 
+                            <label value="CashBack:"/> 
+                            <checkbox id="chckCashBack" checked="false" disabled="true"/>
+                            <label value="Enmascara Número de Tarjeta:"/> 
+                            <checkbox id="chckMaskCard" checked="false"/>
+                        </row>
+                        <row> 
+                            <label value="Solicitud de Rollos:"/> 
+                            <checkbox id="chckSolRollos" checked="false"/>
+                            <label />
+                            <label />
+                        </row>
+                    </rows>
+                </grid>
+                <space/>
+                <space/>
+                <hbox width="100%">
+                    <button id="bttnSaveVarsPopUp" label="${c:l('BttnSalvar')}" image="/images/save.png"/>
+                    <button id="CerrarPopUp11" label="${c:l('BttnCerrar')}" image="/images/cross-circle.png" onClick="winPopUp55.detach();"/>
+                </hbox>
+            </groupbox>
+        </hbox>
+    </window>
+</zk>

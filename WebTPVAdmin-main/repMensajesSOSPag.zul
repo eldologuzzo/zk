@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?page title="Aurora" ?>
+<?init class="org.zkoss.zkplus.databind.AnnotateDataBinderInit"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <html><![CDATA[ <link rel="shortcut icon" href="images/logos/favicon_evo.ico"/> ]]></html>
+    <html><![CDATA[ <link rel="stylesheet" href="othercss/tpvsadmin.css" type="text/css" /> ]]></html>
+    <window id="myWindow1" mode="highlighted" width="1400px" height="710px" contentStyle="" apply="">
+        <style src="/othercss/tpvsadmin.css"/>
+        <borderlayout>
+            <north size="100px">
+                <borderlayout>
+                    <west size="15%" border="none" collapsible="false">
+                        <div style="background:#FFFFFF" vflex="1">
+                            <image src="images/logos/evo.jpg"/>
+                        </div>
+                    </west>
+                    <center border="none">
+                        <div style="background:#045FB4" vflex="1">
+                            <zscript>
+                                String stImgHeader = (String)Sessions.getCurrent().getAttribute("imgHeader");
+                                String stFrmImgHeader = (String)Sessions.getCurrent().getAttribute("imgFrmHeader");
+                            </zscript>
+                            <image src="images/imgheaders/${stImgHeader}-imgheader-applications.${stFrmImgHeader}"/>
+                        </div>
+                    </center>
+                </borderlayout>
+            </north>
+            <west id="menuOpciones" title=" " size="11%" flex="true" maxsize="140" splittable="false" collapsible="true" open="false">
+                <include src="/menugral.zul" progressing="true"/>
+            </west>
+            <center>
+                <window id="win" style="overflow:auto;" border="normal" apply="com.tpvs.tpvsadmin.zkutils.RepMensajesSOSControllerPag" height="100%">
+                    <!-- multiple="true" mold="paging" pageSize="5" rows="7" -->
+                    <groupbox contentStyle="border:0">
+                        <label value="${c:l('Grupo')}:" style="font-size:100%;"/>
+                        <space/>
+                        <combobox id="comboboxGroups" readonly="true" selectedItem="@{win$composer.currentGroup}"
+                                              model="@{win$composer.allGroups}">
+                            <comboitem self="@{each=GroupsChains}" label="@{GroupsChains.groupName}"
+                                                   value="@{GroupsChains.idGroup}" description="@{GroupsChains.contact}"/>
+                        </combobox>
+                        <space/>
+                        <label value="Serie:" style="font-size:100%"/>
+                        <space/>
+                        <textbox id="txtBoxSerie" value="" maxlength="15"/>
+                        <space/>
+                        <label value="Fecha inicial:" style="font-size:100%"/>
+                        <space/>
+                        <datebox id="fechaInicial" lenient="false" compact="false" buttonVisible="true" format="dd/MMM/yyyy" readonly="true" constraint="no future"/>
+                        <space/>
+                        <label value="Fecha final:" style="font-size:100%"/>
+                        <space/>
+                        <datebox id="fechaFinal" lenient="false" compact="false" buttonVisible="true" format="dd/MMM/yyyy" readonly="true" constraint="no future"/>
+                        <space/>
+                        <listbox id="listboxstatus" mold="select" style="font-size:100%">
+                            <listitem value="-1" label="Todos" selected="true"/>
+                            <listitem value="1" label="Abierto"/>
+                            <listitem value="0" label="Cerrado"/>
+                            <listitem value="2" label="Asignado"/>
+                            <listitem value="3" label="NA"/>
+                        </listbox>
+                        <space/>
+                        <button id="bttnBuscar" label="${c:l('BttnBuscar')}" image="images/imgicons/icons/application-search-result.png"/>
+                    </groupbox>
+                    <grid style="border:0" height="100%">
+                        <columns height="50%">
+                            <column width="65%"/>
+                            <column width="35%"/>
+                        </columns>
+                        <rows>
+                            <row valign="top">
+                                <groupbox contentStyle="border:0" height="100%">
+                                    <listbox id="box" style="overflow:auto; white-space: nowrap;" fixedLayout="true" rows="14" 
+                                             selectedItem="@{win$composer.currentMensajeSOS}" height="95%">
+                                        <listhead sizable="false">
+                                            <listheader label="Serie:"/>
+                                            <listheader label="Folio:"/>
+                                            <listheader label="Código Mensaje:"/>
+                                            <listheader label="Fecha / Hora:"/>
+                                        </listhead>
+                                    </listbox>
+                                    <paging id="pagBoxData" pageSize="14"/>
+                                </groupbox>
+                                <groupbox id="gb1" mold="3d" height="100%" contentStyle="overflow:auto;" closable="false">
+                                    <caption label="${c:l('IngreseDatos')}:"/>
+                                    <grid height="100%">
+                                        <columns height="100%">
+                                            <column width="30%"/>
+                                            <column width="70%"/>
+                                        </columns>
+                                        <rows height="100%">
+                                            <row>
+                                                <label style="font-weight: bold;font-size:100%" value="Ult. Modif.:"/>
+                                                <textbox id="txtboxusername" value="@{win$composer.currentMensajeSOS.username}" width="100%" readonly="true"/>
+                                            </row>
+                                            <row>
+                                                <label value="Fecha:" style="font-size:100%"/>
+                                                <textbox id="txtboxactualizacionfechahora" value="@{win$composer.currentMensajeSOS.actualizacionfechahora}" width="100%" readonly="true"/>
+                                            </row>
+                                            <row>
+                                                <label value="Ticket Referencia:" style="font-size:100%"/>
+                                                <textbox id="txtboxticketreferencia" value="@{win$composer.currentMensajeSOS.ticketreferencia}" maxlength="40" width="100%"/>
+                                            </row>
+                                            <row>
+                                                <label value="Status:" style="font-size:100%"/>
+                                                <combobox id="comboboxStatus" selectedItem="@{win$composer.currentMensajeSOS.bostatusstring}" readonly="true" width="100%">
+                                                    <comboitem value="1" label="Abierto" description="Servicio abierto"/>
+                                                    <comboitem value="0" label="Cerrado" description="Servicio cerrado"/>
+                                                    <comboitem value="2" label="Asignado" description="Servicio Asignado"/>
+                                                    <comboitem value="3" label="NA" description="N/A"/>
+                                                </combobox>
+                                            </row>
+                                            <row>
+                                                <label value="Observaciones:" style="font-size:100%"/>
+                                                <textbox id="txtboxobservaciones" value="@{win$composer.currentMensajeSOS.observaciones}" rows="5" multiline="true" maxlength="150" width="100%" style="resize:none;"/>
+                                            </row>
+                                            <row spans="2">
+                                                <div align="center">
+                                                    <button id="bttnUpdate" label="${c:l('BttnModificar')}" image="/images/imgicons/icons/pencil.png" disabled="true"/>
+                                                    <!--style="height: 8px; width: 30px; font-size:10px"-->
+                                                </div>
+                                            </row>
+                                        </rows>
+                                    </grid>
+                                </groupbox>
+                            </row>
+                        </rows>
+                    </grid>
+                </window>
+            </center>
+            <south size="30px">
+                <window id="windowWorkArea" onCreate="setLblVApp()">
+                    <hlayout valign="middle">
+                        <div hflex="1">
+                            <label id="appverlbl" style="font-size:65%; color:#888; font-style:normal;background-color:#efefef;"/>
+                        </div>
+                        <label id="lblLeyenda" value=" " style="font-size:65%; color:#888; font-style:normal;background-color:#efefef;"/>
+                    </hlayout>
+                    <zscript>
+                        public setLblVApp() {
+                        appverlbl.setValue(com.tpvs.util.MyProperties.getPropiedad("vapp"));
+                        }
+                    </zscript>
+                </window>
+            </south>
+        </borderlayout>
+    </window>
+</zk>

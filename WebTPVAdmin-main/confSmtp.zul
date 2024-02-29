@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?page title="Aurora" ?>
+<?init class="org.zkoss.zkplus.databind.AnnotateDataBinderInit"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <html><![CDATA[ <link rel="shortcut icon" href="images/logos/favicon_evo.ico"/> ]]></html>
+    <html><![CDATA[ <link rel="stylesheet" href="othercss/tpvsadmin.css" type="text/css" /> ]]></html>
+    <window id="myWindow1" mode="highlighted" width="1400px" height="710px" contentStyle="" apply="">
+        <style src="/othercss/tpvsadmin.css"/>
+        <borderlayout>
+            <north size="100px">
+                <borderlayout>
+                    <west size="15%" border="none" collapsible="false">
+                        <div style="background:#FFFFFF" vflex="1">
+                            <image src="images/logos/evo.jpg"/>
+                        </div>
+                    </west>
+                    <center border="none">
+                        <div style="background:#045FB4" vflex="1">
+                            <zscript>
+                                String stImgHeader = (String)Sessions.getCurrent().getAttribute("imgHeader");
+                                String stFrmImgHeader = (String)Sessions.getCurrent().getAttribute("imgFrmHeader");
+                            </zscript>
+                            <image src="images/imgheaders/${stImgHeader}-imgheader-applications.${stFrmImgHeader}"/>
+                        </div>
+                    </center>
+                </borderlayout>
+            </north>
+            <west id="menuOpciones" title=" " size="11%" flex="true" maxsize="140" splittable="false" collapsible="true" open="false">
+                <include src="/menugral.zul" progressing="true"/>
+            </west>
+            <center>
+                <window id="win" style="overflow:auto" border="normal" apply="com.tpvs.tpvsadmin.zkutils.ConfSmtpController" height="100%">
+                    <div align="center">
+                        <groupbox id="gb1" mold="3d" width="75%" contentStyle="border:0" closable="false">
+                            <caption label="Configura SMTP"/>
+                            <grid style="border:0">
+                                <columns>
+                                    <column width="30%" align="left" valign="top"/>
+                                    <column width="70%" align="center" valign="top"/>
+                                </columns>
+                                <rows>
+                                    <row>
+                                        <grid style="border:0">
+                                            <columns>
+                                                <column width="30%"/>
+                                                <column width="70%"/>
+                                            </columns>
+                                            <rows>
+                                                <row>
+                                                    <label value="${c:l('Grupo')}:" style="font-size:100%"/>
+                                                    <combobox id="comboboxGroups" width="100%" readonly="true" 
+                                                              model="@{win$composer.allGroups}" 
+                                                              selectedItem="@{win$composer.currentGroup}">
+                                                        <comboitem self="@{each=Groups}" label="@{Groups.groupName}"
+                                                                   value="@{Groups.idGroup}" description="@{Groups.contact}"/>
+                                                    </combobox>
+                                                </row>
+                                                <row>
+                                                    <label value="${c:l('Cadena')}:" style="font-size:100%"/>
+                                                    <combobox id="comboboxChains" width="100%" readonly="true"
+                                                              model="@{win$composer.allChains, load-after='comboboxGroups.onSelect'}"
+                                                              selectedItem="@{win$composer.currentChain}">
+                                                        <comboitem self="@{each=GroupsChains}" label="@{GroupsChains.chain}"
+                                                                   value="@{GroupsChains.idChain}" description="@{GroupsChains.contact}"/>
+                                                    </combobox>
+                                                </row>
+                                                <row spans="2" style="align:center">
+                                                    <div align="center">
+                                                        <button id="bttnConfigurar" label="Configurar" image="/images/imgicons/16x16/categories/applications-system-2.ico"/>
+                                                    </div>
+                                                </row>
+                                            </rows>
+                                        </grid>
+                                        <groupbox contentStyle="border:0">
+                                            <grid style="border:0">
+                                                <columns>
+                                                    <column width="35%"/>
+                                                    <column width="65%"/>
+                                                </columns>
+                                                <rows style="border:0">
+                                                    <row>
+                                                        <label value="Nombre:" style="font-size:100%"/>
+                                                        <textbox id="nombreOrigen" value="@{win$composer.current.nombreOrigen}" width="98%" maxlength="70" readonly="true"/>
+                                                    </row>
+                                                    <row>
+                                                        <label value="Cuenta de correo:" style="font-size:100%"/>
+                                                        <textbox id="cuentaOrigen" value="@{win$composer.current.cuentaOrigen}" width="98%" maxlength="70" readonly="true"/>
+                                                    </row>
+                                                    <row>
+                                                        <label value="Usuario:" style="font-size:100%"/>
+                                                        <textbox id="usrCuenta" value="@{win$composer.current.usrCuenta}" width="98%" maxlength="70" readonly="true"/>
+                                                    </row>
+                                                    <row style="border:0">
+                                                        <label value="Contraseña:" style="font-size:100%"/>
+                                                        <textbox id="pwdCuenta1" width="98%" maxlength="70" readonly="true" type="password"/>
+                                                    </row>
+                                                    <row>
+                                                        <label value="Confirma contraseña:" style="font-size:100%"/>
+                                                        <textbox id="pwdCuenta2" value="" width="98%" maxlength="70" readonly="true" type="password"/>
+                                                    </row>
+                                                    <row>
+                                                        <label value="Servidor de correo:" style="font-size:100%"/>
+                                                        <textbox id="hostCuenta" value="@{win$composer.current.hostCuenta}" width="98%" maxlength="70" readonly="true"/>
+                                                    </row>
+                                                    <row>
+                                                        <label value="Puerto:" style="font-size:100%"/>
+                                                        <intbox id="portCuenta" value="@{win$composer.current.portCuenta}" width="98%" maxlength="5" readonly="true"/>
+                                                    </row>
+                                                    <row spans="2" style="align:center">
+                                                        <checkbox id="authCuenta" label="Requiere Autenticación" style="font-size:100%" checked="@{win$composer.current.authCuenta}" disabled="true"/>
+                                                    </row>
+                                                    <row spans="2" style="align:center">
+                                                        <checkbox id="tlsCuenta" label="Utiliza TLS" style="font-size:100%" checked="@{win$composer.current.tlsCuenta}" disabled="true"/>
+                                                    </row>
+                                                    <row spans="2" style="align:center">
+                                                        <groupbox contentStyle="border:0">
+                                                            <button id="bttnSalvar" label="${c:l('BttnSalvar')}" disabled="true" image="/images/imgicons/icons/plus-circle.png"/>
+                                                            <space/>
+                                                            <button id="bttnTest" label="Probar..." disabled="true" image="/images/imgicons/16x16/categories/preferences-desktop-2.ico"/>
+                                                            <space/>
+                                                            <button id="bttnClose" label="${c:l('BttnCerrar')}" disabled="true" image="/images/imgicons/icons/switch.png"/>
+                                                        </groupbox>
+                                                    </row>
+                                                </rows>
+                                            </grid>
+                                        </groupbox>
+                                    </row>
+                                </rows>
+                            </grid>
+                            <html><![CDATA[ <p></p> ]]></html>
+                            <div id="midiv" align="left">
+                                <label id="milabel" value="" style="font-size:65%;color:navy; font-style:normal;"/>
+                            </div>
+                        </groupbox>
+                    </div>
+                </window>
+            </center>
+            <south size="30px">
+                <window id="windowWorkArea" onCreate="setLblVApp()">
+                    <hlayout valign="middle">
+                        <div hflex="1">
+                            <label id="appverlbl" style="font-size:65%; color:#888; font-style:normal;background-color:#efefef;"/>
+                        </div>
+                        <label id="lblLeyenda" value=" " style="font-size:65%; color:#888; font-style:normal;background-color:#efefef;"/>
+                    </hlayout>
+                    <zscript>
+                        public setLblVApp() {
+                        appverlbl.setValue(com.tpvs.util.MyProperties.getPropiedad("vapp"));
+                        }
+                    </zscript>
+                </window>
+            </south>
+        </borderlayout>
+    </window>
+</zk>

@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?page title="Aurora" ?>
+<?init class="org.zkoss.zkplus.databind.AnnotateDataBinderInit"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <html><![CDATA[ <link rel="shortcut icon" href="images/logos/favicon_evo.ico"/> ]]></html>
+    <html><![CDATA[ <link rel="stylesheet" href="othercss/tpvsadmin.css" type="text/css" /> ]]></html>
+    <window id="myWindow1" mode="highlighted" width="1400px" height="710px" contentStyle="" apply="">
+        <style src="/othercss/tpvsadmin.css"/>
+        <borderlayout>
+            <north size="100px">
+                <borderlayout>
+                    <west size="15%" border="none" collapsible="false">
+                        <div style="background:#FFFFFF" vflex="1">
+                            <image src="images/logos/evo.jpg"/>
+                        </div>
+                    </west>
+                    <center border="none">
+                        <div style="background:#045FB4" vflex="1">
+                            <zscript>
+                                String stImgHeader = (String)Sessions.getCurrent().getAttribute("imgHeader");
+                                String stFrmImgHeader = (String)Sessions.getCurrent().getAttribute("imgFrmHeader");
+                            </zscript>
+                            <image src="images/imgheaders/${stImgHeader}-imgheader-applications.${stFrmImgHeader}"/>
+                        </div>
+                    </center>
+                </borderlayout>
+            </north>
+            <west id="menuOpciones" title=" " size="11%" flex="true" maxsize="140" splittable="false" collapsible="true" open="false">
+                <include src="/menugral.zul" progressing="true"/>
+            </west>
+            <center>
+                <window id="win" style="overflow:auto" border="normal" apply="com.tpvs.tpvsadmin.zkutils.TerritoriosController" height="100%">
+                    <grid style="border:0" width="100%">
+                        <columns>
+                            <column width="60%" style="border:0" valign="top"/>
+                            <column width="40%" style="border:0" valign="top"/>
+                        </columns>
+                        <rows>
+                            <row>
+                                <groupbox contentStyle="border:0">
+                                    <listbox id="box" style="overflow:auto white-space: nowrap;" fixedLayout="true" 
+                                        model="@{win$composer.allTerritorios, load-after='bttnAdd.onClick, bttnDelete.onClick, bttnUpdate.onClick'}"
+                                        mold="paging" pageSize="15" rows="15" selectedItem="@{win$composer.current}" height="100%">
+                                        <listhead sizable="true">
+                                            <listheader label="${c:l('Grupo')}" width="10%" sort="auto(idGroup)" align="center"/>
+                                            <listheader label="${c:l('Nombre')}" width="15%" sort="auto(nombre)" align="center"/>
+                                            <listheader label="Descripción" width="75%" align="center"/>
+                                        </listhead>
+                                        <listitem self="@{each='Territorio'}" value="@{Territorio}">
+                                            <listcell label="@{Territorio.idGroup.groupName}"/>
+                                            <listcell label="@{Territorio.nombre}"/>
+                                            <listcell label="@{Territorio.descripcion}"/>
+                                        </listitem>
+                                    </listbox>
+                                    <html><![CDATA[ <p></p> ]]></html>
+                                    <div id="midiv">
+                                        <label id="milabel" value="" style="font-size:65%;color:navy; font-style:normal;"/>
+                                    </div>
+                                </groupbox>
+                                <groupbox contentStyle="border:0">
+                                    <groupbox id="gb1" mold="3d" contentStyle="border:0" width="100%" closable="false">
+                                        <caption label="${c:l('IngreseDatos')}:"/>
+                                        <grid style="border:0" width="100%">
+                                            <columns>
+                                                <column width="25%" style="border:0" valign="top"/>
+                                                <column width="75%" style="border:0" valign="top"/>
+                                            </columns>
+                                            <rows>
+                                                <row>
+                                                    <label value="${c:l('Grupo')}:" style="font-size:100%"/>
+                                                    <combobox id="comboboxGroups" width="100%" readonly="true" selectedItem="@{win$composer.currentGroup}"
+                                                    model="@{win$composer.allGroups}">
+                                                       <comboitem self="@{each=GroupsChains}" 
+                                                       label="@{GroupsChains.groupName}"
+                                                       value="@{GroupsChains.idGroup}"
+                                                       description="@{GroupsChains.contact}"/>
+                                                    </combobox>
+                                                </row>
+                                                <row>
+                                                    <label value="${c:l('Nombre')}:" style="font-size:100%"/>
+                                                    <textbox id="nombre" width="100%" value="@{win$composer.current.nombre}" />
+                                                </row>
+                                                <row>
+                                                    <label value="Descripción:" style="font-size:100%"/>
+                                                    <textbox id="descripcion" width="100%" multiline="true" rows="4" value="@{win$composer.current.descripcion}"/>
+                                                </row>
+                                            </rows>
+                                        </grid>
+                                        <hbox>
+                                            <space/>
+                                        </hbox>
+                                        <div align="center">
+                                            <button id="bttnAdd" label="${c:l('BttnAgregar')}" image="/images/imgicons/icons/plus-circle.png"/>
+                                            <space/>
+                                            <button id="bttnUpdate" label="${c:l('BttnModificar')}" image="/images/imgicons/icons/pencil.png"/>
+                                            <space/>
+                                            <button id="bttnDelete" label="${c:l('BttnEliminar')}" image="/images/imgicons/icons/minus-circle.png"/>
+                                        </div>
+                                    </groupbox>
+                                    <hbox>
+                                        <space/>
+                                    </hbox>
+                                    <groupbox contentStyle="border:0">
+                                        <label value="Estado:" style="font-size:100%"/>
+                                        <space/>
+                                        <combobox id="comboboxEstados" width="88%" readonly="true" selectedItem="@{win$composer.currentEstado}"
+                                        model="@{win$composer.allEstados}">
+                                           <comboitem self="@{each=myEstado}" 
+                                           label="@{myEstado.entidadFederativa}"
+                                           value="@{myEstado}"
+                                           description="@{myEstado.capital}"/>
+                                        </combobox>
+                                    </groupbox>
+                                    <hbox>
+                                        <space/>
+                                    </hbox>
+                                    <grid style="border:0" width="100%">
+                                        <columns>
+                                            <column width="45%" style="border:0" valign="top"/>
+                                            <column width="10%" style="border:0" valign="top" align="center"/>
+                                            <column width="45%" style="border:0" valign="top"/>
+                                        </columns>
+                                        <rows>
+                                            <row style="border:0">
+                                                <listbox id="lstMposLeft" mold="select" rows="15" width="100%" multiple="true" style="white-space: nowrap;"/>
+                                                <div align="center">
+                                                    <vbox>
+                                                        <image id="leftRigthAll" src="/images/imgicons/icons/control-double.png"/>
+                                                        <image id="leftRigth" src="/images/imgicons/icons/control.png"/>
+                                                        <image id="rightLeft" src="/images/imgicons/icons/control-180.png"/>
+                                                        <image id="rightLeftAll" src="/images/imgicons/icons/control-double-180.png"/>
+                                                    </vbox>
+                                                </div>
+                                                <listbox id="lstMposRight" mold="select" rows="15" width="100%" multiple="true" style="white-space: nowrap;"/>
+                                            </row>
+                                        </rows>
+                                    </grid>
+                                </groupbox>
+                            </row>
+                        </rows>
+                    </grid>
+                </window>
+            </center>
+            <south size="30px">
+                <window id="windowWorkArea" onCreate="setLblVApp()">
+                    <hlayout valign="middle">
+                        <div hflex="1">
+                            <label id="appverlbl" style="font-size:65%; color:#888; font-style:normal;background-color:#efefef;"/>
+                        </div>
+                        <label id="lblLeyenda" value=" " style="font-size:65%; color:#888; font-style:normal;background-color:#efefef;"/>
+                    </hlayout>
+                    <zscript>
+                        public setLblVApp() {
+                            appverlbl.setValue(com.tpvs.util.MyProperties.getPropiedad("vapp"));
+                        }
+                    </zscript>
+                </window>
+            </south>
+        </borderlayout>
+    </window>
+</zk>

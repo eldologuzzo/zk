@@ -1,0 +1,486 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.tpvs.tpvsadmin.db;
+
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
+/**
+ *
+ * @author jstevetz
+ */
+@Entity
+@Table(name = "groups")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "Groups.findAll", query = "SELECT g FROM Groups g"),
+    @NamedQuery(name = "Groups.findByIdGroup", query = "SELECT g FROM Groups g WHERE g.idGroup = :idGroup"),
+    @NamedQuery(name = "Groups.findByGroupName", query = "SELECT g FROM Groups g WHERE g.groupName = :groupName"),
+    @NamedQuery(name = "Groups.findByContact", query = "SELECT g FROM Groups g WHERE g.contact = :contact"),
+    @NamedQuery(name = "Groups.findByPhone", query = "SELECT g FROM Groups g WHERE g.phone = :phone"),
+    @NamedQuery(name = "Groups.findByEmail", query = "SELECT g FROM Groups g WHERE g.email = :email"),
+    @NamedQuery(name = "Groups.findByGroupImage", query = "SELECT g FROM Groups g WHERE g.groupImage = :groupImage"),
+    @NamedQuery(name = "Groups.findByUtilizaFolios", query = "SELECT g FROM Groups g WHERE g.utilizaFolios = :utilizaFolios"),
+    @NamedQuery(name = "Groups.findByPrefijoFolios", query = "SELECT g FROM Groups g WHERE g.prefijoFolios = :prefijoFolios"),
+    @NamedQuery(name = "Groups.findByFechaRegistro", query = "SELECT g FROM Groups g WHERE g.fechaRegistro = :fechaRegistro"),
+    @NamedQuery(name = "Groups.findByUsuarioRegistro", query = "SELECT g FROM Groups g WHERE g.usuarioRegistro = :usuarioRegistro")})
+public class Groups implements Serializable {
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "idGroup")
+    private Long idGroup;
+    @Basic(optional = false)
+    @Column(name = "GroupName")
+    private String groupName;
+    @Column(name = "Contact")
+    private String contact;
+    @Column(name = "Phone")
+    private String phone;
+    @Column(name = "Email")
+    private String email;
+    @Column(name = "GroupImage")
+    private String groupImage;
+    @Column(name = "utilizaFolios")
+    private Boolean utilizaFolios;
+    @Column(name = "prefijoFolios")
+    private String prefijoFolios;
+    @Column(name = "fechaRegistro")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaRegistro;
+    @Column(name = "usuarioRegistro")
+    private String usuarioRegistro;
+    @Basic(optional = false)
+    @Column(name = "generarpwdconfigtpv")
+    private boolean generarpwdconfigtpv;
+    @Column (name = "diasgeneracionpwdconfigtpv")
+    private int diasgeneracionpwdconfigtpv;
+    @Column (name = "keytpvb")
+    private String keytpvb;
+    @OneToMany(mappedBy = "idGroup")
+    private List<Chains> chainsList;
+    @OneToMany(mappedBy = "groups")
+    private List<Groupsvariables> groupsvariablesList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idGroup")
+    private List<Territorios> territoriosList;
+    @OneToMany(mappedBy = "idGroup")
+    private List<Icsemv> icsemvList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idGroup")
+    private List<Operadorestelefonicos> operadorestelefonicosList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idGroup")
+    private List<AsesorComercial> asesorComercialList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idGroup")
+    private List<CatalogoModulos> catalogoModulosList;
+    @OneToMany(mappedBy = "idGroup")
+    private List<ParametrosGenerales> parametrosGeneralesList;
+    @OneToMany(mappedBy = "idGroup")
+    private List<KeyDataEmv> keyDataEmvList;
+    @OneToMany(mappedBy = "idGroup")
+    private List<CatalogoBines> catalogoBinesList;
+    @ManyToMany(mappedBy = "groupsList")
+    private List<Users> usersList;
+    @OneToMany(mappedBy = "idGroup")
+    private List<CatalogoComunicaciones> catalogoComunicacionesList;
+    @OneToMany(mappedBy = "idGroup")
+    private List<CatalogoBinesReducido> catalogoBinesReducidoList;
+    @OneToMany(mappedBy = "idGroup")
+    private List<CatalogoTairs> catalogoTairsList;
+    @OneToMany(mappedBy = "idGroup")
+    private List<CatalogoXicc> catalogoXiccList;
+    @OneToMany(mappedBy = "idGroup")
+    private List<CatalogoXbines> catalogoXbinesList;
+    @OneToMany(mappedBy = "idGroup")
+    private List<CatalogoXissuers> catalogoXissuersList;
+    @OneToMany(mappedBy = "idGroup")
+    private List<CatalogoXchipData> catalogoXchipDataList;
+    @OneToMany(mappedBy = "idGroup")
+    private List<CatalogoXdescriptores> catalogoXdescriptoresList;
+    @OneToMany(mappedBy = "idGroup")
+    private List<CatalogoXrevKey> catalogoXrevKeyList;
+    @OneToMany(mappedBy = "idGroup")
+    private List<CatalogoXbanco> catalogoXbancoList;
+    @OneToMany(mappedBy = "idGroup")
+    private List<Catalogoaerolineas> catalogoaerolineasList;
+    @OneToMany(mappedBy = "idGroup")
+    private List<Catalogocorresponsales> catalogocorresponsalesList;
+    @OneToMany(mappedBy = "idGroup")
+    private List<Versionesparametros> versionesparametrosList;
+
+    public Groups() {
+    }
+
+    public Groups(Long idGroup) {
+        this.idGroup = idGroup;
+    }
+
+    public Groups(Long idGroup, String groupName) {
+        this.idGroup = idGroup;
+        this.groupName = groupName;
+    }
+
+    public Long getIdGroup() {
+        return idGroup;
+    }
+
+    public void setIdGroup(Long idGroup) {
+        this.idGroup = idGroup;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
+    public String getContact() {
+        return contact;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getGroupImage() {
+        return groupImage;
+    }
+
+    public void setGroupImage(String groupImage) {
+        this.groupImage = groupImage;
+    }
+
+    public Boolean getUtilizaFolios() {
+        return utilizaFolios;
+    }
+
+    public void setUtilizaFolios(Boolean utilizaFolios) {
+        this.utilizaFolios = utilizaFolios;
+    }
+
+    public String getPrefijoFolios() {
+        return prefijoFolios;
+    }
+
+    public void setPrefijoFolios(String prefijoFolios) {
+        this.prefijoFolios = prefijoFolios;
+    }
+
+    public Date getFechaRegistro() {
+        return fechaRegistro;
+    }
+
+    public void setFechaRegistro(Date fechaRegistro) {
+        this.fechaRegistro = fechaRegistro;
+    }
+
+    public String getUsuarioRegistro() {
+        return usuarioRegistro;
+    }
+
+    public void setUsuarioRegistro(String usuarioRegistro) {
+        this.usuarioRegistro = usuarioRegistro;
+    }
+    
+    public boolean getGenerarpwdconfigtpv() {
+        return generarpwdconfigtpv;
+    }
+
+    public void setGenerarpwdconfigtpv(boolean generarpwdconfigtpv) {
+        this.generarpwdconfigtpv = generarpwdconfigtpv;
+    }
+    
+    public int getDiasgeneracionpwdconfigtpv() {
+        return diasgeneracionpwdconfigtpv;
+    }
+    
+    public void setDiasgeneracionpwdconfigtpv(int diasgeneracionpwdconfigtpv) {
+        this.diasgeneracionpwdconfigtpv = diasgeneracionpwdconfigtpv;
+    }
+    
+    public String getKeytpvb() {
+        return keytpvb;
+    }
+    
+    public void setKeytpvb(String keytpvb) {
+        this.keytpvb = keytpvb;
+    }
+
+    @XmlTransient
+    public List<Chains> getChainsList() {
+        return chainsList;
+    }
+
+    public void setChainsList(List<Chains> chainsList) {
+        this.chainsList = chainsList;
+    }
+
+    @XmlTransient
+    public List<Groupsvariables> getGroupsvariablesList() {
+        return groupsvariablesList;
+    }
+    
+    public void setGroupsvariablesList(List<Groupsvariables> groupsvariablesList) {
+        this.groupsvariablesList = groupsvariablesList;
+    }
+
+    @XmlTransient
+    public List<Territorios> getTerritoriosList() {
+        return territoriosList;
+    }
+
+    public void setTerritoriosList(List<Territorios> territoriosList) {
+        this.territoriosList = territoriosList;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (idGroup != null ? idGroup.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Groups)) {
+            return false;
+        }
+        Groups other = (Groups) object;
+        if ((this.idGroup == null && other.idGroup != null) || (this.idGroup != null && !this.idGroup.equals(other.idGroup))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        //return "com.tpvs.tpvsadmin.db.Groups[ idGroup=" + idGroup + " ] ";
+        return idGroup.toString();
+    }
+    
+    @XmlTransient
+    public List<Icsemv> getIcsemvList() {
+        return icsemvList;
+}
+
+    public void setIcsemvList(List<Icsemv> icsemvList) {
+        this.icsemvList = icsemvList;
+    }
+
+    @XmlTransient
+    public List<Operadorestelefonicos> getOperadorestelefonicosList() {
+        return operadorestelefonicosList;
+    }
+
+    public void setOperadorestelefonicosList(List<Operadorestelefonicos> operadorestelefonicosList) {
+        this.operadorestelefonicosList = operadorestelefonicosList;
+    }
+    
+    @XmlTransient
+    public List<AsesorComercial> getAsesorComercialList() {
+        return asesorComercialList;
+    }
+
+    public void setAsesorComercialList(List<AsesorComercial> asesorComercialList) {
+        this.asesorComercialList = asesorComercialList;
+    }
+
+    @XmlTransient
+    public List<CatalogoModulos> getCatalogoModulosList() {
+        return catalogoModulosList;
+    }
+
+    public void setCatalogoModulosList(List<CatalogoModulos> catalogoModulosList) {
+        this.catalogoModulosList = catalogoModulosList;
+    }
+
+    @XmlTransient
+    public List<ParametrosGenerales> getParametrosGeneralesList() {
+        return parametrosGeneralesList;
+    }
+
+    public void setParametrosGeneralesList(List<ParametrosGenerales> parametrosGeneralesList) {
+        this.parametrosGeneralesList = parametrosGeneralesList;
+    }
+
+    @XmlTransient
+    public List<KeyDataEmv> getKeyDataEmvList() {
+        return keyDataEmvList;
+    }
+
+    public void setKeyDataEmvList(List<KeyDataEmv> keyDataEmvList) {
+        this.keyDataEmvList = keyDataEmvList;
+    }
+
+    @XmlTransient
+    public List<Users> getUsersList() {
+        return usersList;
+    }
+
+    public void setUsersList(List<Users> usersList) {
+        this.usersList = usersList;
+    }
+
+    @XmlTransient
+    public List<CatalogoBines> getCatalogoBinesList() {
+        return catalogoBinesList;
+    }
+
+    public void setCatalogoBinesList(List<CatalogoBines> catalogoBinesList) {
+        this.catalogoBinesList = catalogoBinesList;
+    }
+
+    @XmlTransient
+    public List<CatalogoComunicaciones> getCatalogoComunicacionesList() {
+        return catalogoComunicacionesList;
+    }
+
+    public void setCatalogoComunicacionesList(List<CatalogoComunicaciones> catalogoComunicacionesList) {
+        this.catalogoComunicacionesList = catalogoComunicacionesList;
+    }
+
+    @XmlTransient
+    public List<CatalogoBinesReducido> getCatalogoBinesReducidoList() {
+        return catalogoBinesReducidoList;
+    }
+
+    public void setCatalogoBinesReducidoList(List<CatalogoBinesReducido> catalogoBinesReducidoList) {
+        this.catalogoBinesReducidoList = catalogoBinesReducidoList;
+    }
+
+    @XmlTransient
+    public List<CatalogoTairs> getCatalogoTairsList() {
+        return catalogoTairsList;
+    }
+
+    public void setCatalogoTairsList(List<CatalogoTairs> catalogoTairsList) {
+        this.catalogoTairsList = catalogoTairsList;
+    }
+
+    @XmlTransient
+    public List<CatalogoXicc> getCatalogoXiccList() {
+        return catalogoXiccList;
+    }
+
+    public void setCatalogoXiccList(List<CatalogoXicc> catalogoXiccList) {
+        this.catalogoXiccList = catalogoXiccList;
+    }
+
+    @XmlTransient
+    public List<CatalogoXbines> getCatalogoXbinesList() {
+        return catalogoXbinesList;
+    }
+
+    public void setCatalogoXbinesList(List<CatalogoXbines> catalogoXbinesList) {
+        this.catalogoXbinesList = catalogoXbinesList;
+    }
+
+    @XmlTransient
+    public List<CatalogoXissuers> getCatalogoXissuersList() {
+        return catalogoXissuersList;
+    }
+
+    public void setCatalogoXissuersList(List<CatalogoXissuers> catalogoXissuersList) {
+        this.catalogoXissuersList = catalogoXissuersList;
+    }
+
+    @XmlTransient
+    public List<CatalogoXchipData> getCatalogoXchipDataList() {
+        return catalogoXchipDataList;
+    }
+
+    public void setCatalogoXchipDataList(List<CatalogoXchipData> catalogoXchipDataList) {
+        this.catalogoXchipDataList = catalogoXchipDataList;
+    }
+
+    @XmlTransient
+    public List<CatalogoXdescriptores> getCatalogoXdescriptoresList() {
+        return catalogoXdescriptoresList;
+    }
+
+    public void setCatalogoXdescriptoresList(List<CatalogoXdescriptores> catalogoXdescriptoresList) {
+        this.catalogoXdescriptoresList = catalogoXdescriptoresList;
+    }
+
+    @XmlTransient
+    public List<CatalogoXrevKey> getCatalogoXrevKeyList() {
+        return catalogoXrevKeyList;
+    }
+
+    public void setCatalogoXrevKeyList(List<CatalogoXrevKey> catalogoXrevKeyList) {
+        this.catalogoXrevKeyList = catalogoXrevKeyList;
+    }
+
+    @XmlTransient
+    public List<CatalogoXbanco> getCatalogoXbancoList() {
+        return catalogoXbancoList;
+    }
+
+    public void setCatalogoXbancoList(List<CatalogoXbanco> catalogoXbancoList) {
+        this.catalogoXbancoList = catalogoXbancoList;
+    }
+
+    @XmlTransient
+    public List<Catalogoaerolineas> getCatalogoaerolineasList() {
+        return catalogoaerolineasList;
+    }
+
+    public void setCatalogoaerolineasList(List<Catalogoaerolineas> catalogoaerolineasList) {
+        this.catalogoaerolineasList = catalogoaerolineasList;
+    }
+    
+    @XmlTransient
+    public List<Catalogocorresponsales> getCatalogocorresponsalesList() {
+        return catalogocorresponsalesList;
+    }
+
+    public void setCatalogocorresponsalesList(List<Catalogocorresponsales> catalogocorresponsalesList) {
+        this.catalogocorresponsalesList = catalogocorresponsalesList;
+    }
+
+    @XmlTransient
+    public List<Versionesparametros> getVersionesparametrosList() {
+        return versionesparametrosList;
+    }
+
+    public void setVersionesparametrosList(List<Versionesparametros> versionesparametrosList) {
+        this.versionesparametrosList = versionesparametrosList;
+    }
+}

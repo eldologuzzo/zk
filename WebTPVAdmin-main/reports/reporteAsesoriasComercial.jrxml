@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reporteAsesoriasComercial" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="dfe4fb8a-4fb4-4d04-8f7c-d8c5624d5bfb">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="idGroup" class="java.lang.Long"/>
+	<parameter name="fechaInicial" class="java.util.Date"/>
+	<parameter name="fechaFinal" class="java.util.Date"/>
+	<parameter name="pathToImage" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select date(a.inicioAsesoria) fecha, a.noafiliacion afiliación, b.department Comercio,
+d.idterminal numeroTerminal, a.noTarjetaAsesorComercial numeroTarjeta, time(inicioAsesoria) horaInicio,
+time(finalAsesoria) horaFin, a.tipoCierre tipoSesion
+from asesoriascomercial a, departments b, terminals d
+where b.idgroup=$P{idGroup} and a.noafiliacion=b.noafiliacion and b.iddepartment=d.iddepartment
+and date(a.inicioAsesoria) between $P{fechaInicial} and $P{fechaFinal}
+order by a.inicioAsesoria;]]>
+	</queryString>
+	<field name="fecha" class="java.sql.Date"/>
+	<field name="afiliación" class="java.lang.String"/>
+	<field name="Comercio" class="java.lang.String"/>
+	<field name="numeroTerminal" class="java.lang.String"/>
+	<field name="numeroTarjeta" class="java.lang.String"/>
+	<field name="horaInicio" class="java.sql.Time"/>
+	<field name="horaFin" class="java.sql.Time"/>
+	<field name="tipoSesion" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="32" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch">
+			<image>
+				<reportElement uuid="c09d8633-cc4f-45bb-8862-948e4f827366" x="2" y="0" width="98" height="33"/>
+				<imageExpression><![CDATA[$P{pathToImage}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement uuid="0b41d783-a693-487d-986b-e244a01d73ac" x="142" y="6" width="293" height="26"/>
+				<textElement textAlignment="Center" markup="none">
+					<font fontName="SansSerif" size="18"/>
+				</textElement>
+				<text><![CDATA[Reporte Asesorias Comercial]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="8cbadbc8-29cb-4bcf-a706-94cbac53cb30" x="2" y="21" width="62" height="20"/>
+				<textElement/>
+				<text><![CDATA[fecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e484b99c-6a47-4d76-9c6e-d14da6a6b65b" x="64" y="21" width="53" height="20"/>
+				<textElement/>
+				<text><![CDATA[afiliación]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="9857f832-1c0b-4d62-aac6-3398dde746df" x="117" y="21" width="102" height="20"/>
+				<textElement/>
+				<text><![CDATA[Comercio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1ab10a55-9416-40fa-9aa8-548c7ef47461" x="219" y="21" width="86" height="20"/>
+				<textElement/>
+				<text><![CDATA[numeroTerminal]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="4b32aa47-0265-4b6e-9242-dfb24a81fdc1" x="305" y="21" width="78" height="20"/>
+				<textElement/>
+				<text><![CDATA[numeroTarjeta]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f7fabfa7-70a5-47f9-82b4-6b2bdab0c899" x="383" y="21" width="85" height="20"/>
+				<textElement/>
+				<text><![CDATA[horaInicio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="92ea87e7-7dfb-4cd3-8e09-2e862789e8b0" x="447" y="21" width="57" height="20"/>
+				<textElement/>
+				<text><![CDATA[horaFin]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="6b192484-4bc6-4cc2-8eda-7af9b5055de2" x="504" y="21" width="51" height="20"/>
+				<textElement/>
+				<text><![CDATA[tipoSesion]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField pattern="dd MMMMM yyyy">
+				<reportElement uuid="1e5b5802-844d-45d5-99b3-8043713ef3b6" x="2" y="0" width="62" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="b25c0c85-5823-4aa5-b6ed-7260fa3b73ee" x="64" y="0" width="53" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{afiliación}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="22661b28-2ef7-4f3b-803f-c9de679832cb" x="117" y="0" width="102" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Comercio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="7062d3c4-296b-4548-b2c4-5a3b66404cad" x="219" y="0" width="86" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numeroTerminal}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="e6d66975-0995-40fa-83e1-4b0e6280ada0" x="305" y="0" width="78" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numeroTarjeta}]]></textFieldExpression>
+			</textField>
+			<textField pattern="h.mm a">
+				<reportElement uuid="ad2e60b2-b3c5-427d-9ce1-7ed7a49ab87d" x="383" y="0" width="64" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{horaInicio}]]></textFieldExpression>
+			</textField>
+			<textField pattern="h.mm a">
+				<reportElement uuid="50f6e90f-2a32-4a31-87b8-2cee5b8a56dc" x="447" y="0" width="57" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{horaFin}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement uuid="6e3ccae2-e24d-495e-b95b-1b5cc94486b4" x="504" y="0" width="51" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tipoSesion}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<textField>
+				<reportElement uuid="bc4dd57d-4670-49cb-9283-07c56ff5bc39" x="435" y="0" width="80" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="3cd18add-6a34-4a61-abb2-a43e221eb352" x="515" y="0" width="40" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement uuid="df5af640-f879-445d-af2c-846d66371c0e" x="2" y="0" width="140" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

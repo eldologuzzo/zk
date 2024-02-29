@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?page title="Aurora" ?>
+<?init class="org.zkoss.zkplus.databind.AnnotateDataBinderInit"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <html><![CDATA[ <link rel="shortcut icon" href="images/logos/favicon_evo.ico"/> ]]></html>
+    <html><![CDATA[ <link rel="stylesheet" href="othercss/tpvsadmin.css" type="text/css" /> ]]></html>
+    <window id="myWindow1" mode="highlighted" width="1400px" height="710px" contentStyle="" apply="">
+        <style src="/othercss/tpvsadmin.css"/>
+        <borderlayout>
+            <north size="100px">
+                <borderlayout>
+                    <west size="15%" border="none" collapsible="false">
+                        <div style="background:#FFFFFF" vflex="1">
+                            <image src="images/logos/evo.jpg"/>
+                        </div>
+                    </west>
+                    <center border="none">
+                        <div style="background:#045FB4" vflex="1">
+                            <zscript>
+                                String stImgHeader = (String)Sessions.getCurrent().getAttribute("imgHeader");
+                                String stFrmImgHeader = (String)Sessions.getCurrent().getAttribute("imgFrmHeader");
+                            </zscript>
+                            <image src="images/imgheaders/${stImgHeader}-imgheader-applications.${stFrmImgHeader}"/>
+                        </div>
+                    </center>
+                </borderlayout>
+            </north>
+            <west id="menuOpciones" title=" " size="11%" flex="true" maxsize="140" splittable="false" collapsible="true" open="false">
+                <include src="/menugral.zul" progressing="true"/>
+            </west>
+            <center>
+                <window id="win" style="overflow:auto" border="normal" apply="com.tpvs.tpvsadmin.zkutils.ProveedoresControllerPag" height="100%">
+                    <hbox>
+                        <label value="Proveedor:" style="font-size:100%"/>
+                        <space/>
+                        <textbox id="textBoxBuscar" cols="15" value=""/>
+                        <space/>
+                        <button id="bttnBuscar" label="${c:l('BttnBuscar')}" image="/images/imgicons/icons/application-search-result.png"/>
+                    </hbox>
+                    <hbox>
+                        <vbox width="960px">
+                            <groupbox contentStyle="border:0">
+                                <listbox id="box" style="overflow:auto" fixedLayout="true" rows="14" selectedItem="@{win$composer.current}"
+                                        height="100%">
+                                    <listhead sizable="true">
+                                        <listheader label="${c:l('Nombre')}" width="25%" />
+                                        <listheader label="${c:l('Direccion')}" width="25%" />
+                                        <listheader label="${c:l('Contacto')}" width="25%" />
+                                        <listheader label="${c:l('Email')}" width="25%" />
+                                    </listhead>
+    <!--                                <listitem self="@{each='Groups'}" value="@{Groups}">
+                                        <listcell label="@{Groups.idGroup}"/>
+                                    </listitem>-->
+                                </listbox>
+                                <paging id="pagBoxData" pageSize="14"/>
+                            </groupbox>
+                        </vbox>
+                        
+                        <groupbox id="gb1" mold="3d" contentStyle="border:0">
+                            <caption label="${c:l('IngreseDatos')}:"/>
+                            <grid>
+                                <columns>
+                                    <column width="30%"/>
+                                    <column width="70%"/>
+                                </columns>
+                                <rows>
+                                    <row>
+                                        <label value="${c:l('Nombre')}:" style="font-size:100%"/>
+                                        <textbox id="nombre" width="100%" value="@{win$composer.current.nombre}" />
+                                    </row>
+                                    <row>
+                                        <label value="${c:l('Direccion')}:" style="font-size:100%"/>
+                                        <textbox id="direccion" width="100%" value="@{win$composer.current.direccion}" />
+                                    </row>
+                                    <row>
+                                        <label value="${c:l('Contacto')}:" style="font-size:100%"/>
+                                        <textbox id="contacto" width="100%" value="@{win$composer.current.contacto}" />
+                                    </row>
+                                    <row>
+                                        <label value="${c:l('Telefono')}:" style="font-size:100%"/>
+                                        <textbox id="telefono" width="100%" value="@{win$composer.current.telefono}" />
+                                    </row>
+                                    <row>
+                                        <label value="${c:l('Email')}:" style="font-size:100%"/>
+                                        <textbox id="email" width="100%" value="@{win$composer.current.email}" />
+                                    </row>
+                                    <row>
+                                        <label value="${c:l('CodigoPostal')}:" style="font-size:100%"/>
+                                        <groupbox contentStyle="border:0">
+                                            <textbox id="codigoPostal" width="70%" value="@{win$composer.current.cpasentamientos.CpasentamientosPK.codigoPostal}" readonly="true" />
+                                            <space/>
+                                            <button id="bttnCodigoPostal" image="/images/imgicons/icons/application-detail.png"/>
+                                        </groupbox>
+                                    </row>
+                                    <row>
+                                        <label value="${c:l('Estado')}:" style="font-size:100%"/>
+                                        <textbox id="estado" width="100%" value="@{win$composer.current.cpasentamientos.cpmunicipios.cpestados.entidadFederativa}" readonly="true"/>
+                                    </row>
+                                    <row>
+                                        <label value="${c:l('Ciudad')}:" style="font-size:100%"/>
+                                        <textbox id="ciudad" width="100%" value="@{win$composer.current.cpasentamientos.cpmunicipios.nombreMunicipio}" readonly="true"/>
+                                    </row>
+                                    <row>
+                                        <label value="Colonia:" style="font-size:100%"/>
+                                        <textbox id="colonia" width="100%" value="@{win$composer.current.cpasentamientos.nombreAsentamiento}" readonly="true"/>
+                                    </row>
+                                </rows>
+                            </grid>
+                            <div align="center">
+                            <hbox>
+                                <space/>
+                            </hbox>
+                            <button id="add" label="${c:l('BttnAgregar')}" image="/images/imgicons/icons/plus-circle.png"/>
+                            <space/>
+                            <button id="update" label="${c:l('BttnModificar')}" image="/images/imgicons/icons/pencil.png"/>
+                            <space/>
+                            <button id="delete" label="${c:l('BttnEliminar')}" image="/images/imgicons/icons/minus-circle.png"/>
+                            <hbox>
+                                <space/>
+                            </hbox>
+                            <button id="btnLimpiarCampos" label="LimpiarCampos" image="/images/imgicons/icons/application-detail.png"/>
+                            </div>
+                        </groupbox>
+<!--                            <html><![CDATA[ <p></p> ]]></html>-->
+                        <div id="midiv">
+                            <label id="milabel" value="" style="font-size:65%;color:navy; font-style:normal;"/>
+                        </div>
+                    </hbox>
+                </window>
+            </center>
+            <south size="30px">
+                <window id="windowWorkArea" onCreate="setLblVApp()">
+                    <hlayout valign="middle">
+                        <div hflex="1">
+                            <label id="appverlbl" style="font-size:65%; color:#888; font-style:normal;background-color:#efefef;"/>
+                        </div>
+                        <label id="lblLeyenda" value=" " style="font-size:65%; color:#888; font-style:normal;background-color:#efefef;"/>
+                    </hlayout>
+                    <zscript>
+                        public setLblVApp() {
+                            appverlbl.setValue(com.tpvs.util.MyProperties.getPropiedad("vapp"));
+                        }
+                    </zscript>
+                </window>
+            </south>
+        </borderlayout>
+    </window>
+</zk>

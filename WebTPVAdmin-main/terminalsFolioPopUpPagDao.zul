@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?page title="Aurora" ?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <window id="windowpopup1" style="overflow:auto" border="normal" width="250px" closable="true"
+    apply="com.tpvs.tpvsadmin.zkutils.TerminalsFolioPopUpControllerPagDao">
+        <hbox>
+            <groupbox id="gb10" mold="3d" width="440px">
+                <caption label="${c:l('IngreseDatos')}:"/>
+                <space/>
+                <hbox>
+                    <vbox>${c:l('folio')}:</vbox>
+                    <intbox id="folio" constraint="no negative,no zero" format="########" maxlength="8"/>
+                </hbox>
+                <space/>
+                <space/>
+                <hbox>
+                    <button id="bttnTermPopUp"
+                    label="Agregar"
+                    image="http://${pageContext.request.serverName}:${pageContext.request.localPort}${pageContext.request.contextPath}/images/plus-circle.png"/>
+                    <button id="CancelTermPopUp"
+                        label="${c:l('BttnCerrar')}"
+                        image="http://${pageContext.request.serverName}:${pageContext.request.localPort}${pageContext.request.contextPath}/images/cross-circle.png"
+                        onClick="windowpopup1.detach();"/>
+                </hbox>
+            </groupbox>
+        </hbox>
+    </window>
+</zk>

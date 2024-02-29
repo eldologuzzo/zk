@@ -1,0 +1,425 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?page title="Aurora" ?>
+<?init class="org.zkoss.zkplus.databind.AnnotateDataBinderInit"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <html><![CDATA[ <link rel="shortcut icon" href="images/logos/favicon_evo.ico"/> ]]></html>
+    <html><![CDATA[ <link rel="stylesheet" href="othercss/tpvsadmin.css" type="text/css" /> ]]></html>
+    <window id="myWindow1" mode="highlighted" width="1400px" height="710px" contentStyle="" apply="">
+        <style src="/othercss/tpvsadmin.css"/>
+        <borderlayout>
+            <north size="100px">
+                <borderlayout>
+                    <west size="15%" border="none" collapsible="false">
+                        <div style="background:#FFFFFF" vflex="1">
+                            <image src="images/logos/evo.jpg"/>
+                        </div>
+                    </west>
+                    <center border="none">
+                        <div style="background:#045FB4" vflex="1">
+                            <zscript>
+                                String stImgHeader = (String)Sessions.getCurrent().getAttribute("imgHeader");
+                                String stFrmImgHeader = (String)Sessions.getCurrent().getAttribute("imgFrmHeader");
+                            </zscript>
+                            <image src="images/imgheaders/${stImgHeader}-imgheader-applications.${stFrmImgHeader}"/>
+                        </div>
+                    </center>
+                </borderlayout>
+            </north>
+            <west id="menuOpciones" title=" " size="11%" flex="true" maxsize="140" splittable="false" collapsible="true" open="false">
+                <include src="/menugral.zul" progressing="true"/>
+            </west>
+            <center>
+                <window id="win" style="overflow:auto" border="normal" apply="com.tpvs.tpvsadmin.zkutils.CatalogoModulosControllerPag" height="100%">
+                    <!-- multiple="true" mold="paging" pageSize="5" rows="7" -->
+                    <vbox style="border:0" width="100%">
+                        <groupbox style="border:0">
+                            <label value="${c:l('Grupo')}:" style="font-size:100%;"/>
+                            <space/>
+                            <combobox id="comboboxGroups" cols="22" readonly="true" selectedItem="@{win$composer.currentGroup}"
+                                      model="@{win$composer.allGroups}">
+                                <comboitem self="@{each=GroupsChains}" label="@{GroupsChains.groupName}"
+                                           value="@{GroupsChains.idGroup}" description="@{GroupsChains.contact}"/>
+                            </combobox>
+                            <space/>
+                            <button id="bttnBuscar" label="${c:l('BttnBuscar')}" image="/images/imgicons/icons/application-search-result.png"/>
+                        </groupbox>
+                        <groupbox id="gb10" mold="3d" width="100%" style="border:0" visible="false" height="100%">
+                            <tabbox width="100%" height="55%">
+                                <tabs>
+                                    <tab label="Venta" closable="false" selected="true"/>
+                                    <tab label="Recaudo" closable="false"/>
+                                    <tab label="Financieros" closable="false"/>
+                                    <tab label="Fidelidad" closable="false"/>
+                                    <tab label="Mi Punto de Venta" closable="false"/>
+                                    <tab label="Lealtad" closable="false"/>
+                                    <tab label="Campañas" closable="false"/>
+                                    <tab label="Bono Virtual" closable="false"/>
+                                </tabs>
+                                <tabpanels>
+                                    <tabpanel>
+                                        <grid style="border:0">
+                                            <columns>
+                                                <column width="20%" valign="top" label="Módulos"/>
+                                                <column width="40%" valign="top" label="Etiquetas"/>
+                                                <column width="40%" valign="top" label="Parámetros"/>
+                                            </columns>
+                                            <rows>
+                                                <row>
+                                                    <label id="lblModVen" value="@{win$composer.currentCatalogoModulos.modVen}"/>
+                                                    <textbox id="txtBoxModVenEtiqueta" value="@{win$composer.currentCatalogoModulos.modVenEtiqueta}"
+                                                    constraint="no empty" maxlength="19" width="100%"/>
+                                                    <textbox id="txtBoxModVenParametros" value="@{win$composer.currentCatalogoModulos.modVenParametros}" maxlength="70" width="100%"/>
+                                                </row>
+                                                <row>
+                                                    <label id="lblModVenPgm" value="@{win$composer.currentCatalogoModulos.modVenPgm}"/>
+                                                    <textbox id="txtBoxModVenPgmEtiqueta" value="@{win$composer.currentCatalogoModulos.modVenPgmEtiqueta}"
+                                                    constraint="no empty" maxlength="19" width="100%"/>
+                                                    <label/>
+                                                </row>
+                                                <row>
+                                                    <label id="lblModVenChe" value="@{win$composer.currentCatalogoModulos.modVenChe}"/>
+                                                    <textbox id="txtBoxModVenCheEtiqueta" value="@{win$composer.currentCatalogoModulos.modVenCheEtiqueta}"
+                                                    constraint="no empty" maxlength="19" width="100%"/>
+                                                    <label/>
+                                                </row>
+                                                <row>
+                                                    <label id="lblModVenDiv" value="@{win$composer.currentCatalogoModulos.modVenDiv}"/>
+                                                    <textbox id="txtBoxModVenDivEtiqueta" value="@{win$composer.currentCatalogoModulos.modVenDivEtiqueta}"
+                                                    constraint="no empty" maxlength="19" width="100%"/>
+                                                    <label/>
+                                                </row>
+                                                <row>
+                                                    <label id="lblModVenSup" value="@{win$composer.currentCatalogoModulos.modVenSup}"/>
+                                                    <textbox id="txtBoxModVenSupEtiqueta" value="@{win$composer.currentCatalogoModulos.modVenSupEtiqueta}"
+                                                    constraint="no empty" maxlength="19" width="100%"/>
+                                                    <label/>
+                                                </row>
+                                                <row>
+                                                    <label id="lblModVenBonoRegalo" value="@{win$composer.currentCatalogoModulos.modVenBonoRegalo}"/>
+                                                    <textbox id="txtBoxModVenBonoRegaloEtiqueta" value="@{win$composer.currentCatalogoModulos.modVenBonoRegaloEtiqueta}"
+                                                    constraint="no empty" maxlength="19" width="100%"/>
+                                                    <label/>
+                                                </row>
+                                                <row>
+                                                    <label id="lblModVenCdt" value="@{win$composer.currentCatalogoModulos.modVenCdt}"/>
+                                                    <textbox id="txtBoxModVenCdtEtiqueta" value="@{win$composer.currentCatalogoModulos.modVenCdtEtiqueta}"
+                                                    constraint="no empty" maxlength="19" width="100%"/>
+                                                    <label/>
+                                                </row>
+                                            </rows>
+                                        </grid>
+                                    </tabpanel>
+                                    <tabpanel>
+                                        <grid style="border:0">
+                                            <columns>
+                                                <column width="20%" valign="top" label="Módulos"/>
+                                                <column width="40%" valign="top" label="Etiquetas"/>
+                                                <column width="40%" valign="top" label="Parámetros"/>
+                                            </columns>
+                                            <rows style="border:0">
+                                                <row>
+                                                    <label id="lblModRec" value="@{win$composer.currentCatalogoModulos.modRec}"/>
+                                                    <textbox id="txtBoxModRecEtiqueta" value="@{win$composer.currentCatalogoModulos.modRecEtiqueta}"
+                                                    constraint="no empty" maxlength="19" width="100%"/>
+                                                    <textbox id="txtBoxModRecParametros" value="@{win$composer.currentCatalogoModulos.modRecParametros}" maxlength="70" width="100%"/>
+                                                </row>
+                                                <row>
+                                                    <label id="lblModRecPsp" value="@{win$composer.currentCatalogoModulos.modRecPsp}"/>
+                                                    <textbox id="txtBoxModRecPspEtiqueta" value="@{win$composer.currentCatalogoModulos.modRecPspEtiqueta}"
+                                                    constraint="no empty" maxlength="19" width="100%"/>
+                                                    <label/>
+                                                </row>
+                                                <row>
+                                                    <label id="lblModRecCel" value="@{win$composer.currentCatalogoModulos.modRecCel}"/>
+                                                    <textbox id="txtBoxModRecCelEtiqueta" value="@{win$composer.currentCatalogoModulos.modRecCelEtiqueta}"
+                                                    constraint="no empty" maxlength="19" width="100%"/>
+                                                    <label/>
+                                                </row>
+                                                <row>
+                                                    <label id="lblModRecTra" value="@{win$composer.currentCatalogoModulos.modRecTra}"/>
+                                                    <textbox id="txtBoxModRecTraEtiqueta" value="@{win$composer.currentCatalogoModulos.modRecTraEtiqueta}"
+                                                    constraint="no empty" maxlength="19" width="100%"/>
+                                                    <label/>
+                                                </row>
+                                                <row>
+                                                    <label id="lblModRecRee" value="@{win$composer.currentCatalogoModulos.modRecRee}"/>
+                                                    <textbox id="txtBoxModRecReeEtiqueta" value="@{win$composer.currentCatalogoModulos.modRecReeEtiqueta}"
+                                                    constraint="no empty" maxlength="19" width="100%"/>
+                                                    <label/>
+                                                </row>
+                                            </rows>
+                                        </grid>
+                                    </tabpanel>
+                                    <tabpanel>
+                                        <grid style="border:0">
+                                            <columns>
+                                                <column width="20%" valign="top" label="Módulos"/>
+                                                <column width="40%" valign="top" label="Etiquetas"/>
+                                                <column width="40%" valign="top" label="Parámetros"/>
+                                            </columns>
+                                            <rows style="border:0">
+                                                <row>
+                                                    <label id="lblModFin" value="@{win$composer.currentCatalogoModulos.modFin}"/>
+                                                    <textbox id="txtBoxModFinEtiqueta" value="@{win$composer.currentCatalogoModulos.modFinEtiqueta}"
+                                                            constraint="no empty" maxlength="19" width="100%"/>
+                                                    <textbox id="txtBoxModFinParametros" value="@{win$composer.currentCatalogoModulos.modFinParametros}" 
+                                                             maxlength="70" width="100%"/>
+                                                </row>
+                                                <row>
+                                                    <label id="lblModFinSal" value="@{win$composer.currentCatalogoModulos.modFinSal}"/>
+                                                    <textbox id="txtBoxModFinSalEtiqueta" value="@{win$composer.currentCatalogoModulos.modFinSalEtiqueta}"
+                                                            constraint="no empty" maxlength="19" width="100%"/>
+                                                    <label/>
+                                                </row>
+                                                <row>
+                                                    <label id="lblModFinAva" value="@{win$composer.currentCatalogoModulos.modFinAva}"/>
+                                                    <textbox id="txtBoxModFinAvaEtiqueta" value="@{win$composer.currentCatalogoModulos.modFinAvaEtiqueta}"
+                                                            constraint="no empty" maxlength="19" width="100%"/>
+                                                    <label/>
+                                                </row>
+                                                <row>
+                                                    <label id="lblModFinRet" value="@{win$composer.currentCatalogoModulos.modFinRet}"/>
+                                                    <textbox id="txtBoxModFinRetEtiqueta" value="@{win$composer.currentCatalogoModulos.modFinRetEtiqueta}"
+                                                            constraint="no empty" maxlength="19" width="100%"/>
+                                                    <label/>
+                                                </row>
+                                                <row>
+                                                    <label id="lblModFinImp" value="@{win$composer.currentCatalogoModulos.modFinImp}"/>
+                                                    <textbox id="txtBoxModFinImpEtiqueta" value="@{win$composer.currentCatalogoModulos.modFinImpEtiqueta}"
+                                                            constraint="no empty" maxlength="19" width="100%"/>
+                                                    <label/>
+                                                </row>
+                                                <row>
+                                                    <label id="lblModFinGir" value="@{win$composer.currentCatalogoModulos.modFinGir}"/>
+                                                    <textbox id="txtBoxModFinGirEtiqueta" value="@{win$composer.currentCatalogoModulos.modFinGirEtiqueta}"
+                                                            constraint="no empty" maxlength="19" width="100%"/>
+                                                    <label/>
+                                                </row>
+                                            </rows>
+                                        </grid>
+                                    </tabpanel>
+                                    <tabpanel>
+                                        <grid style="border:0">
+                                            <columns>
+                                                <column width="20%" valign="top" label="Módulos"/>
+                                                <column width="40%" valign="top" label="Etiquetas"/>
+                                                <column width="40%" valign="top" label="Parámetros"/>
+                                            </columns>
+                                            <rows style="border:0">
+                                                <row>
+                                                    <label id="lblModFil" value="@{win$composer.currentCatalogoModulos.modFil}"/>
+                                                    <textbox id="txtBoxModFilEtiqueta" value="@{win$composer.currentCatalogoModulos.modFilEtiqueta}"
+                                                            constraint="no empty" maxlength="19" width="100%"/>
+                                                    <textbox id="txtBoxModFilParametros" value="@{win$composer.currentCatalogoModulos.modFilParametros}" 
+                                                             maxlength="70" width="100%"/>
+                                                </row>
+                                                <row>
+                                                    <label id="lblModFilAcu" value="@{win$composer.currentCatalogoModulos.modFilAcu}"/>
+                                                    <textbox id="txtBoxModFilAcuEtiqueta" value="@{win$composer.currentCatalogoModulos.modFilAcuEtiqueta}"
+                                                            constraint="no empty" maxlength="19" width="100%"/>
+                                                    <label/>
+                                                </row>
+                                                <row>
+                                                    <label id="lblModFilRed" value="@{win$composer.currentCatalogoModulos.modFilRed}"/>
+                                                    <textbox id="txtBoxModFilRedEtiqueta" value="@{win$composer.currentCatalogoModulos.modFilRedEtiqueta}"
+                                                            constraint="no empty" maxlength="19" width="100%"/>
+                                                    <label/>
+                                                </row>
+                                                <row>
+                                                    <label id="lblModFilCpt" value="@{win$composer.currentCatalogoModulos.modFilCpt}"/>
+                                                    <textbox id="txtBoxModFilCptEtiqueta" value="@{win$composer.currentCatalogoModulos.modFilCptEtiqueta}"
+                                                            constraint="no empty" maxlength="19" width="100%"/>
+                                                    <label/>
+                                                </row>
+                                            </rows>
+                                        </grid>
+                                    </tabpanel>
+                                    <tabpanel>
+                                        <grid style="border:0">
+                                            <columns>
+                                                <column width="20%" valign="top" label="Módulos"/>
+                                                <column width="40%" valign="top" label="Etiquetas"/>
+                                                <column width="40%" valign="top" label="Parámetros"/>
+                                            </columns>
+                                            <rows style="border:0">
+                                                <row>
+                                                    <label id="lblModMpv" value="@{win$composer.currentCatalogoModulos.modMpv}"/>
+                                                    <textbox id="txtBoxModMpvEtiqueta" value="@{win$composer.currentCatalogoModulos.modMpvEtiqueta}"
+                                                    constraint="no empty" maxlength="19" width="100%"/>
+                                                    <textbox id="txtBoxModMpvParametros" value="@{win$composer.currentCatalogoModulos.modMpvParametros}" 
+                                                             maxlength="70" width="100%"/>
+                                                </row>
+                                                <row>
+                                                    <label id="lblModMpvDup" value="@{win$composer.currentCatalogoModulos.modMpvDup}"/>
+                                                    <textbox id="txtBoxModMpvDupEtiqueta" value="@{win$composer.currentCatalogoModulos.modMpvDupEtiqueta}"
+                                                             constraint="no empty" maxlength="19" width="100%"/>
+                                                    <label/>
+                                                </row>
+                                                <row>
+                                                    <label id="lblModMpvSet" value="@{win$composer.currentCatalogoModulos.modMpvSet}"/>
+                                                    <textbox id="txtBoxModMpvSetEtiqueta" value="@{win$composer.currentCatalogoModulos.modMpvSetEtiqueta}"
+                                                             constraint="no empty" maxlength="19" width="100%"/>
+                                                    <label/>
+                                                </row>
+                                                <row>
+                                                    <label id="lblModMpvAnl" value="@{win$composer.currentCatalogoModulos.modMpvAnl}"/>
+                                                    <textbox id="txtBoxModMpvAnlEtiqueta" value="@{win$composer.currentCatalogoModulos.modMpvAnlEtiqueta}"
+                                                            constraint="no empty" maxlength="19" width="100%"/>
+                                                    <label/>
+                                                </row>
+                                                <row>
+                                                    <label id="lblModMpvRep" value="@{win$composer.currentCatalogoModulos.modMpvRep}"/>
+                                                    <textbox id="txtBoxModMpvRepEtiqueta" value="@{win$composer.currentCatalogoModulos.modMpvRepEtiqueta}"
+                                                            constraint="no empty" maxlength="19" width="100%"/>
+                                                    <label/>
+                                                </row>
+                                            </rows>
+                                        </grid>
+                                    </tabpanel>
+                                    <tabpanel>
+                                        <grid style="border:0">
+                                            <columns>
+                                                <column width="20%" valign="top" label="Módulos"/>
+                                                <column width="40%" valign="top" label="Etiquetas"/>
+                                                <column width="40%" valign="top" label="Parámetros"/>
+                                            </columns>
+                                            <rows style="border:0">
+                                                <row>
+                                                    <label id="lblModLea" value="@{win$composer.currentCatalogoModulos.modLea}"/>
+                                                    <textbox id="txtBoxModLeaEtiqueta" value="@{win$composer.currentCatalogoModulos.modLeaEtiqueta}"
+                                                             constraint="no empty" maxlength="19" width="100%"/>
+                                                    <textbox id="txtBoxModLeaParametros" value="@{win$composer.currentCatalogoModulos.modLeaParametros}" 
+                                                             maxlength="70" width="100%"/>
+                                                </row>
+                                                <row>
+                                                    <label id="lblModLeaLcf" value="@{win$composer.currentCatalogoModulos.modLeaLcf}"/>
+                                                    <textbox id="txtBoxModLeaLcfEtiqueta" value="@{win$composer.currentCatalogoModulos.modLeaLcfEtiqueta}"
+                                                            constraint="no empty" maxlength="19" width="100%"/>
+                                                    <label/>
+                                                </row>
+                                                <row>
+                                                    <label id="lblModLeaLam" value="@{win$composer.currentCatalogoModulos.modLeaLam}"/>
+                                                    <textbox id="txtBoxModLeaLamEtiqueta" value="@{win$composer.currentCatalogoModulos.modLeaLamEtiqueta}"
+                                                            constraint="no empty" maxlength="19" width="100%"/>
+                                                    <label/>
+                                                </row>
+                                                <row>
+                                                    <label id="lblModLeaLcd" value="@{win$composer.currentCatalogoModulos.modLeaLcd}"/>
+                                                    <textbox id="txtBoxModLeaLcdEtiqueta" value="@{win$composer.currentCatalogoModulos.modLeaLcdEtiqueta}"
+                                                            constraint="no empty" maxlength="19" width="100%"/>
+                                                    <label/>
+                                                </row>
+                                                <row>
+                                                    <label id="lblModLeaLco" value="@{win$composer.currentCatalogoModulos.modLeaLco}"/>
+                                                    <textbox id="txtBoxModLeaLcoEtiqueta" value="@{win$composer.currentCatalogoModulos.modLeaLcoEtiqueta}"
+                                                            constraint="no empty" maxlength="19" width="100%"/>
+                                                    <label/>
+                                                </row>
+                                                <row>
+                                                    <label id="lblModLeaLrf" value="@{win$composer.currentCatalogoModulos.modLeaLrf}"/>
+                                                    <textbox id="txtBoxModLeaLrfEtiqueta" value="@{win$composer.currentCatalogoModulos.modLeaLrfEtiqueta}"
+                                                            constraint="no empty" maxlength="19" width="100%"/>
+                                                    <label/>
+                                                </row>
+                                            </rows>
+                                        </grid>
+                                    </tabpanel>
+                                    <tabpanel>
+                                        <grid style="border:0">
+                                            <columns>
+                                                <column width="20%" valign="top" label="Módulos"/>
+                                                <column width="40%" valign="top" label="Etiquetas"/>
+                                                <column width="40%" valign="top" label="Parámetros"/>
+                                            </columns>
+                                            <rows style="border:0">
+                                                <row>
+                                                    <label id="lblModCmp" value="@{win$composer.currentCatalogoModulos.modCmp}"/>
+                                                    <textbox id="txtBoxModCmpEtiqueta" value="@{win$composer.currentCatalogoModulos.modCmpEtiqueta}"
+                                                        constraint="no empty" maxlength="19" width="100%"/>
+                                                    <textbox id="txtBoxModCmpParametros" value="@{win$composer.currentCatalogoModulos.modCmpParametros}" 
+                                                             maxlength="70"  width="100%"/>
+                                                </row>
+                                                <row>
+                                                    <label id="lblModCmpCcm" value="@{win$composer.currentCatalogoModulos.modCmpCcm}"/>
+                                                    <textbox id="txtBoxModCmpCcmEtiqueta" value="@{win$composer.currentCatalogoModulos.modCmpCcmEtiqueta}"
+                                                            constraint="no empty" maxlength="19" width="100%"/>
+                                                    <label/>
+                                                </row>
+                                                <row>
+                                                    <label id="lblModCmpRcm" value="@{win$composer.currentCatalogoModulos.modCmpRcm}"/>
+                                                    <textbox id="txtBoxModCmpRcmEtiqueta" value="@{win$composer.currentCatalogoModulos.modCmpRcmEtiqueta}"
+                                                            constraint="no empty" maxlength="19" width="100%"/>
+                                                    <label/>
+                                                </row>
+                                                <row>
+                                                    <label id="lblModCmpAcm" value="@{win$composer.currentCatalogoModulos.modCmpAcm}"/>
+                                                    <textbox id="txtBoxModCmpAcmEtiqueta" value="@{win$composer.currentCatalogoModulos.modCmpAcmEtiqueta}"
+                                                            constraint="no empty" maxlength="19" width="100%"/>
+                                                    <label/>
+                                                </row>
+                                                <row>
+                                                    <label id="lblModCmpGrp" value="@{win$composer.currentCatalogoModulos.modCmpGrp}"/>
+                                                    <textbox id="txtBoxModCmpGrpEtiqueta" value="@{win$composer.currentCatalogoModulos.modCmpGrpEtiqueta}"
+                                                             constraint="no empty" maxlength="19" width="100%"/>
+                                                    <label/>
+                                                </row>
+                                            </rows>
+                                        </grid>
+                                    </tabpanel>
+                                    <tabpanel>
+                                        <grid style="border:0">
+                                            <columns>
+                                                <column width="20%" valign="top" label="Módulos"/>
+                                                <column width="40%" valign="top" label="Etiquetas"/>
+                                                <column width="40%" valign="top" label="Parámetros"/>
+                                            </columns>
+                                            <rows style="border:0">
+                                                <row>
+                                                    <label id="lblModMbv" value="@{win$composer.currentCatalogoModulos.modMbv}"/>
+                                                    <textbox id="txtBoxModMbvEtiqueta" value="@{win$composer.currentCatalogoModulos.modMbvEtiqueta}"
+                                                        constraint="no empty" maxlength="19" width="100%"/>
+                                                    <textbox id="txtBoxModMbvParametros" value="@{win$composer.currentCatalogoModulos.modMbvParametros}" 
+                                                             maxlength="70" width="100%"/>
+                                                </row>
+                                                <row>
+                                                    <label id="lblModMbvRbv" value="@{win$composer.currentCatalogoModulos.modMbvRbv}"/>
+                                                    <textbox id="txtBoxModMbvRbvEtiqueta" value="@{win$composer.currentCatalogoModulos.modMbvRbvEtiqueta}"
+                                                             constraint="no empty" maxlength="19" width="100%"/>
+                                                    <label/>
+                                                </row>
+                                            </rows>
+                                        </grid>
+                                    </tabpanel>
+                                </tabpanels>
+                            </tabbox>
+                            <vbox>
+                                <button id="bttnUpdate" label="${c:l('BttnSalvar')}" image="/images/imgicons/icons/pencil.png"/>
+                            </vbox>
+                        </groupbox>
+                    <hbox></hbox>
+                    <!-- html><![CDATA[ <p></p> ]]></html -->
+                    <div id="midiv">
+                        <label id="milabel" value="" style="font-size:65%;color:navy; font-style:normal;"/>
+                    </div>
+                    </vbox>
+                </window>
+            </center>
+            <south size="30px">
+                <window id="windowWorkArea" onCreate="setLblVApp()">
+                    <hlayout valign="middle">
+                        <div hflex="1">
+                            <label id="appverlbl" style="font-size:65%; color:#888; font-style:normal;background-color:#efefef;"/>
+                        </div>
+                        <label id="lblLeyenda" value=" " style="font-size:65%; color:#888; font-style:normal;background-color:#efefef;"/>
+                    </hlayout>
+                    <zscript>
+                        public setLblVApp() {
+                            appverlbl.setValue(com.tpvs.util.MyProperties.getPropiedad("vapp"));
+                        }
+                    </zscript>
+                </window>
+            </south>
+        </borderlayout>
+    </window>
+</zk>

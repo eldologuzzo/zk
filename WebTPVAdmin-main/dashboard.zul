@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?page title="Aurora" ?>
+<?init class="org.zkoss.zkplus.databind.AnnotateDataBinderInit"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <html><![CDATA[ <link rel="shortcut icon" href="images/logos/favicon_evo.ico"/> ]]></html>
+    <html><![CDATA[ <link rel="stylesheet" href="othercss/tpvsadmin.css" type="text/css" /> ]]></html>
+    <!--<?script src="/jquery/scripts/jquery.blockUI.js" ?>-->
+    <script src="/jquery/scripts/jquery.blockUI.js" />
+    <window id="myWindow1" mode="embedded" width="1400px" height="710px" contentStyle="" apply="">
+        <style src="/othercss/tpvsadmin.css"/>
+        <borderlayout>
+            <north size="100px">
+                <borderlayout>
+                    <west size="15%" border="none" collapsible="false">
+                        <div style="background:#FFFFFF" vflex="1">
+                            <image src="images/logos/evo.jpg"/>
+                        </div>
+                    </west>
+                    <center border="none">
+                        <div style="background:#045FB4" vflex="1">
+                            <zscript>
+                                String stImgHeader = (String)Sessions.getCurrent().getAttribute("imgHeader");
+                                String stFrmImgHeader = (String)Sessions.getCurrent().getAttribute("imgFrmHeader");
+                            </zscript>
+                            <image src="images/imgheaders/${stImgHeader}-imgheader-users.${stFrmImgHeader}"/>
+                        </div>
+                    </center>
+                </borderlayout>
+            </north>
+            <west id="menuOpciones" title=" " size="11%" flex="true" maxsize="140" splittable="false" collapsible="true" open="false">
+                <include src="/menugral.zul" progressing="true"/>
+            </west>
+            <center>
+                <window id="win" style="overflow:auto" border="normal" apply="com.tpvs.tpvsadmin.zkutils.Dashboard" height="100%">
+                    <div align="center">
+                        <hbox>
+                            <space/>
+                        </hbox>
+                        <groupbox id="gb1" mold="3d" width="90%" contentStyle="border:0" closable="false">
+                            <caption label="Dashboard"/>
+                            <grid style="border:0" vflex="1">
+                                <columns>
+                                    <column width="48%" align="center"/>
+                                    <column width="48%" align="center"/>
+                                </columns>
+                                <rows>
+                                    <row>
+                                        <charts id="chart1" type="line" title="Estatus de Terminales" subtitle="Últimos 15 días"/>
+                                        <charts id="chart2" type="column" title="Actualización PWD Configuración" subtitle="Credenciales"/>
+                                    </row>
+                                    <!--
+                                    <row>
+                                        <charts id="chart3" type="line" title="Estatus Requerimiento 3" subtitle="Últimos Meses 3"/>
+                                        <charts id="chart4" type="line" title="Estatus Requerimiento 4" subtitle="Últimos Meses 4"/>
+                                    </row>
+                                    -->
+                                </rows>
+                            </grid>
+                            <html><![CDATA[ <p></p> ]]></html>
+                            <div id="midiv" align="left">
+                                <label id="milabel" value="" style="font-size:65%;color:navy; font-style:normal;"/>
+                            </div>
+                            
+                            <button id="testButton" label="boton prueba"/>
+                            <!--</button>-->
+<!--                            <html>
+                                <![CDATA[
+                                <input id="test" type="submit" value="Show Dialog" />
+                                <div id="question" style="display:none; cursor: default"> 
+                                    <h1>Would you like to contine?.</h1> 
+                                    <input type="button" id="yes" value="Yes" /> 
+                                    <input type="button" id="no" value="No" /> 
+                                </div> 
+                                ]]>
+                            </html>-->
+                        </groupbox>
+                    </div>
+                    <script>
+                        function block() {
+                            jq.blockUI({message:'<h3><img src="images/logos/logo-tpv-m.jpg" /> Espere un momento por favor...</h3>'});
+                            setTimeout(jq.unblockUI, 2000); 
+                        }
+                    </script>
+                    <script type="text/javascript">
+                        $.ready(function() {
+                            $('#test').click(function() { 
+                                $.blockUI({ message: $('#question'), css: { width: '275px' } }); 
+                            });
+
+                            $('#yes').click(function() { 
+                                // update the block message 
+                                $.blockUI({ message: "<h1>Remote call in progress...</h1>" }); 
+
+                                $.ajax({ 
+                                    url: 'wait.php', 
+                                    cache: false, 
+                                    complete: function() { 
+                                        // unblock when remote call returns 
+                                        $.unblockUI(); 
+                                    }
+                                }); 
+                            }); 
+
+                            $('#no').click(function() { 
+                                $.unblockUI(); 
+                                return false; 
+                            });
+                        });
+                    </script>
+                </window>
+            </center>
+            <south size="30px">
+                <window id="windowWorkArea" onCreate="setLblVApp()">
+                    <hlayout valign="middle">
+                        <div hflex="1">
+                            <label id="appverlbl" style="font-size:65%; color:#888; font-style:normal;background-color:#efefef;"/>
+                        </div>
+                        <label id="lblLeyenda" value=" " style="font-size:65%; color:#888; font-style:normal;background-color:#efefef;"/>
+                    </hlayout>
+                    <zscript>
+                        public setLblVApp() {
+                        appverlbl.setValue(com.tpvs.util.MyProperties.getPropiedad("vapp"));
+                        }
+                    </zscript>
+                </window>
+            </south>
+        </borderlayout>
+    </window>
+</zk>

@@ -1,0 +1,25 @@
+/* 
+    Document   : tpvsadmin
+    Created on : 24/08/2010, 02:00:30 PM
+    Author     : jstevetz
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+div.z-listbox-footer, div.z-paging {
+/*    background: #0090D8; #0F2484; #DAE7F6;
+    border-top: 1px solid #9EB6CE;*/
+}
+
+div.z-list-cell-cnt{
+    font-size: 10px;
+    font-family: arial;
+    /*
+    scroll: auto;
+    */
+}

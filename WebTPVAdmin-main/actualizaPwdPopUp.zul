@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?page title="Aurora" ?>
+<?init class="org.zkoss.zkplus.databind.AnnotateDataBinderInit"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <window id="windowpopup1" style="overflow:auto" border="normal" width="400px" height="250px" closable="false" 
+            title="Actualiza Credenciales" position="left,top" apply="com.tpvs.tpvsadmin.zkutils.actualizaPwdPopUpController">
+        <tabbox width="100%">
+            <tabs>
+                <tab id="myTab1" label="Credenciales" closable="false"/>
+            </tabs>
+            <tabpanels>
+                <tabpanel>
+                    <hbox width="100%">
+                        <groupbox id="gb11" mold="3d" width="100%" contentStyle="backgroup-color:white;border:0" closable="false" >
+                            <caption label="${c:l('IngreseDatos')}:"/>
+                            <grid style="border:0">
+                               <columns>
+                                   <column width="25%"/>
+                                   <column width="75%" align="center"/>
+                               </columns>
+                               <rows>
+                                   <row>
+                                       <vbox width="100px">${c:l('Clave')}:</vbox>
+                                       <textbox id="password" type="password" cols="22" maxlength="25"/>
+                                   </row>
+                                   <row>
+                                       <vbox width="100px">${c:l('ClaveConf')}:</vbox>
+                                       <textbox id="passwordconf" type="password" cols="22" maxlength="25"/>
+                                   </row>
+                                   <row align="center">
+                                       <button id="bttnClosePopUp" label="${c:l('BttnCerrar')}" image="/images/cross-circle.png" onClick="session.invalidate(); windowpopup1.detach();"/>
+                                       <button id="bttnUpdate" label="${c:l('BttnSalvar')}" image="images/imgicons/icons/pencil.png"/>
+                                   </row>
+                               </rows>
+                            </grid>
+                        </groupbox>
+                    </hbox>
+                </tabpanel>
+            </tabpanels>
+        </tabbox>
+        <space/>
+        <div id="midiv">
+            <label id="milabel" value="" style="font-size:90%;color:blue; font-style:normal;"/>
+        </div>
+        <space/>
+    </window>
+</zk>

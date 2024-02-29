@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?page title="Aurora" ?>
+<?init class="org.zkoss.zkplus.databind.AnnotateDataBinderInit"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <html><![CDATA[ <link rel="shortcut icon" href="images/logos/favicon_evo.ico"/> ]]></html>
+    <html><![CDATA[ <link rel="stylesheet" href="othercss/tpvsadmin.css" type="text/css" /> ]]></html>
+    <window id="myWindow1" mode="highlighted" width="1400px" height="710px" contentStyle="" apply="">
+        <style src="/othercss/tpvsadmin.css"/>
+        <borderlayout>
+            <north size="100px">
+                <borderlayout>
+                    <west size="15%" border="none" collapsible="false">
+                        <div style="background:#FFFFFF" vflex="1">
+                            <image src="images/logos/evo.jpg"/>
+                        </div>
+                    </west>
+                    <center border="none">
+                        <div style="background:#045FB4" vflex="1">
+                            <zscript>
+                                String stImgHeader = (String)Sessions.getCurrent().getAttribute("imgHeader");
+                                String stFrmImgHeader = (String)Sessions.getCurrent().getAttribute("imgFrmHeader");
+                            </zscript>
+                            <image src="images/imgheaders/${stImgHeader}-imgheader-applications.${stFrmImgHeader}"/>
+                        </div>
+                    </center>
+                </borderlayout>
+            </north>
+            <west id="menuOpciones" title=" " size="11%" flex="true" maxsize="140" splittable="false" collapsible="true" open="false">
+                <include src="/menugral.zul" progressing="true"/>
+            </west>
+            <center>
+                <window id="win" style="overflow:auto" border="normal" apply="com.tpvs.tpvsadmin.zkutils.StoresControllerPag" height="100%">
+                    <!-- multiple="true" mold="paging" pageSize="5" rows="7" -->
+                    <label value="${c:l('Grupo')}:" style="font-size:100%"/>
+                    <space/>
+                    <combobox id="comboboxGroups" cols="22" readonly="true" selectedItem="@{win$composer.current2}"
+                              model="@{win$composer.allGroups}">
+                        <comboitem self="@{each=GroupsChains}" 
+                                   label="@{GroupsChains.groupName}"
+                                   value="@{GroupsChains.idGroup}"
+                                   description="@{GroupsChains.contact}"/>
+                    </combobox>
+                    <space/>
+                    <label value="${c:l('Cadena')}:" style="font-size:100%"/>
+                    <space/>
+                    <combobox id="comboboxChains" cols="22" readonly="true" selectedItem="@{win$composer.current3}"
+                              model="@{win$composer.allChains, load-after='comboboxGroups.onSelect'}">
+                        <comboitem self="@{each=GroupsChainsStore}"
+                                   label="@{GroupsChainsStore.chain}"
+                                   value="@{GroupsChainsStore.idChain}"
+                                   description="@{GroupsChainsStore.contact}"/>
+                    </combobox>
+                    <space/>
+                    <label value="${c:l('Tienda')}:" style="font-size:100%"/>
+                    <space/>
+                    <textbox id="textBoxBuscar" cols="15" value=""/>
+                    <space/>
+                    <label value="${c:l('regFedConStores')}:" style="font-size:100%"/>
+                    <space/>
+                    <textbox id="textBoxRegFedCon" cols="15" value="" maxlength="14"/>
+                    <space/>
+                    <button id="bttnBuscar" label="${c:l('BttnBuscar')}" image="/images/imgicons/icons/application-search-result.png"/>
+                    <grid style="border:0">
+                        <columns>
+                            <column width="70%" valign="top"/>
+                            <column width="30%" valign="top"/>
+                        </columns>
+                        <rows>
+                            <row>
+                                <groupbox contentStyle="border:0">
+                                    <listbox id="box" style="overflow:auto" fixedLayout="true" 
+                                             rows="14" selectedItem="@{win$composer.current}" height="100%">
+                                        <listhead sizable="true">
+                                            <listheader label="${c:l('Tienda')}:" width="25%"/>
+                                            <listheader label="${c:l('Contacto')}:" width="25%"/>
+                                            <listheader label="${c:l('Telefono')}:" width="10%" />
+                                            <listheader label="${c:l('Email')}:" width="25%" />
+                                            <listheader label="${c:l('regFedConStores')}:" width="15%" />
+                                        </listhead>
+                                        <!--                                    <listitem self="@{each='Stores'}" value="@{Stores}">
+                                            <listcell label="@{Stores.idStore}"/>
+                                            <listcell label="@{Stores.Store}"/>
+                                            <listcell label="@{Stores.contact}"/>
+                                            <listcell label="@{Stores.phone}"/>
+                                            <listcell label="@{Stores.email}"/>
+                                        </listitem>-->
+                                    </listbox>
+                                    <paging id="pagBoxData" pageSize="14"/>
+                                </groupbox>
+                                <groupbox id="gb1" mold="3d" contentStyle="border:0; white-space: nowrap;" closable="false">
+                                    <caption label="${c:l('IngreseDatos')}:"/>
+                                    <grid>
+                                        <columns>
+                                            <column width="25%"/>
+                                            <column width="75%"/>
+                                        </columns>
+                                        <rows>
+                                            <row>
+                                                <!--<hbox>
+                                                    <vbox width="100px">Id Chain:</vbox>
+                                                    <label id="idStore" value="@{win$composer.current.idStore}" />
+                                                </hbox>-->
+                                                <label value="${c:l('Tienda')}:" style="font-size:100%"/>
+                                                <textbox id="store" width="100%" value="@{win$composer.current.store}" constraint="no empty"/>
+                                            </row>
+                                            <row>
+                                                <label value="${c:l('Contacto')}:" style="font-size:100%"/>
+                                                <textbox id="contact" width="100%" value="@{win$composer.current.contact}" constraint="no empty"/>
+                                            </row>
+                                            <row>
+                                                <label value="${c:l('Telefono')}:" style="font-size:100%"/>
+                                                <textbox id="phone" width="100%" value="@{win$composer.current.phone}" />
+                                            </row>
+                                            <row>
+                                                <label value="${c:l('Calle')}:" style="font-size:100%"/>
+                                                <textbox id="calle" width="100%" value="@{win$composer.current.street}" />
+                                            </row>
+                                            <row>
+                                                <label value="${c:l('Colonia')}:" style="font-size:100%"/>
+                                                <textbox id="colonia" width="100%" value="@{win$composer.current.residentialZone}" />
+                                            </row>
+                                            <row>
+                                                <label value="${c:l('CodigoPostal')}:" style="font-size:100%"/>
+                                                <textbox id="codigopostal" width="100%" value="@{win$composer.current.zipcode}" />
+                                            </row>
+                                            <row>
+                                                <label value="${c:l('Email')}:" style="font-size:100%"/>
+                                                <textbox id="email" width="100%" value="@{win$composer.current.email}" />
+                                            </row>
+                                            <row>
+                                                <label value="${c:l('regFedConStores')}:" style="font-size:100%"/>
+                                                <textbox id="regFedCon" width="100%" value="@{win$composer.current.regFedCon}" />
+                                            </row>
+                                        </rows>
+                                    </grid>
+                                    <!-- <hbox>
+                                        <vbox width="100px">${c:l('Afiliacion')}:</vbox>
+                                        <textbox id="noAfiliacion" cols="22" value="@{win$composer.current.noAfiliacion}" />
+                                    </hbox>
+                                    <hbox>
+                                        <vbox width="100px">${c:l('folio')}:</vbox>
+                                        <textbox id="folio" cols="22" value="@{win$composer.current.folio}" />
+                                    </hbox> -->
+                                    <!--                                <hbox>
+                                        <vbox width="100px">${c:l('Ciudad')}:</vbox>
+                                        <combobox id="comboboxCities" cols="22" readonly="true"
+                                        model="@{win$composer.allCities}"
+                                        selectedItem="@{win$composer.current.cities}">
+                                           <comboitem self="@{each=Cities}"
+                                           label="@{Cities.city}"
+                                           value="@{Cities}"
+                                           description="@{Cities.states.state}"/>
+                                        </combobox>
+                                    </hbox>-->
+                                    <hbox>
+                                        <space/>
+                                    </hbox>
+                                    <div align="center">
+                                        <button id="bttnAdd" label="${c:l('BttnAgregar')}" image="/images/imgicons/icons/plus-circle.png"/>
+                                        <space/>
+                                        <button id="bttnUpdate" label="${c:l('BttnModificar')}" image="/images/imgicons/icons/pencil.png"/>
+                                        <space/>
+                                        <button id="bttnDelete" label="${c:l('BttnEliminar')}" image="/images/imgicons/icons/minus-circle.png"/>
+                                        <hbox>
+                                            <space/>
+                                        </hbox>
+                                        <button id="bttnLimpiarCampos" label="LimpiarCampos" image="/images/imgicons/icons/application-detail.png"/>
+                                        <space/>
+                                        <button id="bttnVariables" label="${c:l('BttnVariables')}" disabled="true" image="/images/imgicons/icons/application-detail.png"/>
+                                        <hbox>
+                                            <space/>
+                                        </hbox>
+                                        <button id="modVarsWithTemplate" disabled="true" label="${c:l('BttnVarsTmpltStore')}" image="/images/imgicons/icons/plus-circle.png"/>
+                                        <space/>
+                                        <button id="bttnCfgMiPagare" disabled="true" label="CfgMiVoucher" image="/images/imgicons/icons/plus-circle.png"/>
+                                    </div>
+                                    <!-- html><![CDATA[ <p></p> ]]></html -->
+                                    <hbox>
+                                        <space/>
+                                    </hbox>
+                                    <div id="midiv">
+                                        <label id="milabel" value="" style="font-size:65%;color:navy; font-style:normal;"/>
+                                    </div>
+                                </groupbox>
+                            </row>
+                        </rows>
+                    </grid>
+                    <hbox>
+                        <vbox width="960px">
+                            <hbox width="100%">
+                                
+                            </hbox>
+                        </vbox>
+                        <vbox>
+                            
+                        </vbox>
+                    </hbox>
+                </window>
+            </center>
+            <south size="30px">
+                <window id="windowWorkArea" onCreate="setLblVApp()">
+                    <hlayout valign="middle">
+                        <div hflex="1">
+                            <label id="appverlbl" style="font-size:65%; color:#888; font-style:normal;background-color:#efefef;"/>
+                        </div>
+                        <label id="lblLeyenda" value=" " style="font-size:65%; color:#888; font-style:normal;background-color:#efefef;"/>
+                    </hlayout>
+                    <zscript>
+                        public setLblVApp() {
+                        appverlbl.setValue(com.tpvs.util.MyProperties.getPropiedad("vapp"));
+                        }
+                    </zscript>
+                </window>
+            </south>
+        </borderlayout>
+    </window>
+</zk>

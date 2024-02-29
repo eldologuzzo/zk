@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?init class="org.zkoss.zkplus.databind.AnnotateDataBinderInit" arg0="./winCopyVar"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <window id="winCopyVar" style="overflow:auto" border="normal" width="70%" closable="true" apply="com.tpvs.tpvsadmin.zkutils.copyVariablesChainsPopUpController">
+        <hbox width="100%">
+            <groupbox id="gb1" mold="3d" width="100%" closable="false">
+                <caption label="${c:l('IngreseDatos')}:"/>
+                <grid style="border:0">                    
+                    <columns>
+                        <column width="100%" label=""/>
+                    </columns>
+                    <rows>
+                        <row style="border:0">
+                            <groupbox style="border:0" width="100%">
+                                <label value="Seleccione un Adquirente y una Cadena para copiar sus variables : "/>                                
+                                <space/>
+                                <label value="${c:l('Grupo')}" style="font-size:10px;"/>
+                                <space/>
+                                <combobox id="comboboxGroups" cols="8" readonly="true" 
+                                          selectedItem="@{winCopyVar$composer.current2}"
+                                          model="@{winCopyVar$composer.allGroups}">
+                                    <comboitem self="@{each=Groups}" label="@{Groups.groupName}" 
+                                               value="@{Groups.idGroup}" description="@{Groups.contact}"/>
+                                </combobox>  
+                                <space/>
+                                <label value="${c:l('Cadena')}" style="font-size:10px;"/>
+                                <space/>
+                                <combobox id="comboboxChains" cols="8" readonly="true" 
+                                          selectedItem="@{winCopyVar$composer.current3}"
+                                          model="@{winCopyVar$composer.allChains}">
+                                    <comboitem self="@{each=Chains}" label="@{Chains.chain}" 
+                                               value="@{Chains.idChain}" description="@{Chain.contact}"/>
+                                </combobox>                                                                    
+                                <space/>
+                            </groupbox>
+                        </row>
+                    </rows>
+                </grid>
+                <space/>
+                <space/>
+                <hbox>
+                    <button id="btnAcept" label="Aceptar" image="/images/plus-circle.png"/>   
+                    <button id="btnClose" label="Cerrar" image="/images/cross-circle.png" onClick="winCopyVar.detach();"/>                 
+                </hbox>
+            </groupbox>
+        </hbox>
+    </window>
+</zk>

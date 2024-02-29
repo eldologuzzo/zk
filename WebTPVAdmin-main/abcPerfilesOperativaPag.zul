@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?page title="Aurora" ?>
+<?init class="org.zkoss.zkplus.databind.AnnotateDataBinderInit"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <html><![CDATA[ <link rel="shortcut icon" href="images/logos/favicon_evo.ico"/> ]]></html>
+    <html><![CDATA[ <link rel="stylesheet" href="othercss/tpvsadmin.css" type="text/css" /> ]]></html>
+    <window id="myWindow1" mode="highlighted" width="1400px" height="710px" contentStyle="" apply="">
+        <style src="/othercss/tpvsadmin.css"/>
+        <borderlayout>
+            <north size="100px">
+                <borderlayout>
+                    <west size="15%" border="none" collapsible="false">
+                        <div style="background:#FFFFFF" vflex="1">
+                            <image src="images/logos/evo.jpg"/>
+                        </div>
+                    </west>
+                    <center border="none">
+                        <div style="background:#045FB4" vflex="1">
+                            <zscript>
+                                String stImgHeader = (String)Sessions.getCurrent().getAttribute("imgHeader");
+                                String stFrmImgHeader = (String)Sessions.getCurrent().getAttribute("imgFrmHeader");
+                            </zscript>
+                            <image src="images/imgheaders/${stImgHeader}-imgheader-applications.${stFrmImgHeader}"/>
+                        </div>
+                    </center>
+                </borderlayout>
+            </north>
+            <west id="menuOpciones" title=" " size="11%" flex="true" maxsize="140" splittable="false" collapsible="true" open="false">
+                <include src="/menugral.zul" progressing="true"/>
+            </west>
+            <center>
+                <window id="win" style="overflow:auto" border="normal" apply="com.tpvs.tpvsadmin.zkutils.PerfilesOperativaControllerPag" height="100%">
+                    <!-- multiple="true" mold="paging" pageSize="5" rows="7" -->
+                    <label value="${c:l('Grupo')}:" style="font-size:100%;"/>
+                    <space/>
+                    <combobox id="comboboxGroups" cols="22" readonly="true" selectedItem="@{win$composer.currentGroup}"
+                              model="@{win$composer.allGroups}">
+                        <comboitem self="@{each=GroupsChains}" label="@{GroupsChains.groupName}"
+                                   value="@{GroupsChains.idGroup}" description="@{GroupsChains.contact}"/>
+                    </combobox>
+                    <space/>
+                    <label value="${c:l('Cadena')}:" style="font-size:100%;"/>
+                    <space/>
+                    <combobox id="comboboxChains" cols="22" readonly="true" selectedItem="@{win$composer.currentChain}"
+                              model="@{win$composer.allChains, load-after='comboboxGroups.onSelect'}">
+                        <comboitem self="@{each=GroupsChainsStore}" label="@{GroupsChainsStore.chain}"
+                                   value="@{GroupsChainsStore.idChain}" description="@{GroupsChainsStore.contact}"/>
+                    </combobox>
+                    <space/>
+                    <button id="bttnBuscar" label="${c:l('BttnBuscar')}" image="/images/imgicons/icons/application-search-result.png"/>
+                    <vbox width="100%">
+                        <groupbox style="border:0">
+                            <listbox id="box" style="overflow:auto" fixedLayout="true" rows="8" 
+                                     selectedItem="@{win$composer.currentPerfilOper}" height="100%">
+                                <listhead sizable="true">
+                                    <listheader label="Perfil:" width="35%"/>
+                                    <listheader label="Operativa:" width="35%"/>
+                                    <listheader label="Grupo de Carga:" width="30%"/>
+                                </listhead>
+                            </listbox>
+                            <paging id="pagBoxData" pageSize="8"/>
+                        </groupbox>
+                        <groupbox id="gb1" mold="3d" contentStyle="overflow:auto;" style="border:0" closable="false">
+                            <caption label="${c:l('IngreseDatos')}:"/>
+                            <grid id="form">
+                                <columns>
+                                    <column width="9%"/>
+                                    <column width="9%"/>
+                                    <column width="9%"/>
+                                    <column width="9%"/>
+                                    <column width="9%"/>
+                                    <column width="9%"/>
+                                    <column width="9%"/>
+                                    <column width="9%"/>
+                                    <column width="9%"/>
+                                    <column width="9%"/>
+                                    <column width="9%"/>
+                                    <column width="9%"/>
+                                </columns>
+                                <rows>
+                                    <row>
+                                        <label value="Perfil:" style="font-size:100%"/>
+                                        <textbox id="nombrePerfil" value="@{win$composer.currentPerfilOper.nombrePerfil}" maxlength="4" width="100%"/>
+                                        <label value="Operativa:" style="font-size:100%"/>
+                                        <textbox id="operativa" value="@{win$composer.currentPerfilOper.operativa}" maxlength="15" width="100%" />
+                                        <label value="GrupoCarga:" style="font-size:100%"/>
+                                        <textbox id="grupoDeCarga" value="@{win$composer.currentPerfilOper.grupoDeCarga}" maxlength="5" width="100%" constraint="/^[0-9]+$/: Please enter a number"/>
+                                        <label value="% Lim. Propina:" style="font-size:100%"/>
+                                        <textbox id="limPropina" value="@{win$composer.currentPerfilOper.limPropina}" maxlength="5" width="100%"/>
+                                        <label value="% Lim. Ajuste:" style="font-size:100%"/>
+                                        <textbox id="limAjuste" value="@{win$composer.currentPerfilOper.limAjuste}" maxlength="5" width="100%"/>
+                                        <label value="Monto QPS:" style="font-size:100%"/>
+                                        <intbox id="montoQPS" value="@{win$composer.currentPerfilOper.montoQPS}" maxlength="5" width="100%"/>
+                                    </row>
+                                    <row>
+                                        <checkbox id="accesoManual" label="accesoManual:" style="font-size:100%" checked="@{win$composer.currentPerfilOper.accesoManual}"/>
+                                        <checkbox id="fueraDeLinea" label="Fuera de Linea:" style="font-size:100%" checked="@{win$composer.currentPerfilOper.fueraDeLinea}"/>
+                                        <checkbox id="propina" label="Propina:" style="font-size:100%" checked="@{win$composer.currentPerfilOper.propina}"/>
+                                        <checkbox id="ajuste" label="Ajuste:" style="font-size:100%" checked="@{win$composer.currentPerfilOper.ajuste}"/>
+                                        <checkbox id="devolucion" label="Devolución:" style="font-size:100%" checked="@{win$composer.currentPerfilOper.devolucion}"/>
+                                        <checkbox id="cancelacion" label="Cancelación:" style="font-size:100%" checked="@{win$composer.currentPerfilOper.cancelacion}"/>
+                                        <checkbox id="solicita4UltDigTar" label="Sol. 4 Ult. Dig. Tar.:" style="font-size:100%" checked="@{win$composer.currentPerfilOper.solicita4UltDigTar}"/>
+                                        <checkbox id="solicitaCodSegTxBanda" label="Sol. Cod. Seg. Tx Banda:" style="font-size:100%" checked="@{win$composer.currentPerfilOper.solicitaCodSegTxBanda}"/>
+                                        <checkbox id="solicitaCodSegTxManual" label="Sol. Cod. Seg. Tx Manual:" style="font-size:100%" checked="@{win$composer.currentPerfilOper.solicitaCodSegTxManual}"/>
+                                        <checkbox id="qps" label="QPS:" style="font-size:100%" checked="@{win$composer.currentPerfilOper.qps}"/>
+                                        <checkbox id="validaDigVerificador" label="Valida Dig. Verificador:" style="font-size:100%" checked="@{win$composer.currentPerfilOper.validaDigVerificador}"/>
+                                        <checkbox id="preImpresion" label="Pre Impresión:" style="font-size:100%" checked="@{win$composer.currentPerfilOper.preImpresion}"/>
+                                    </row>
+                                    <row>
+                                        <checkbox id="validaFechaExp" label="Valida Fecha Exp.:" style="font-size:100%" checked="@{win$composer.currentPerfilOper.validaFechaExp}"/>
+                                        <checkbox id="validaServCode" label="Valida Serv. Code:" style="font-size:100%" checked="@{win$composer.currentPerfilOper.validaServCode}"/>
+                                        <checkbox id="cargoPorServicio" label="Cargo Por Servicio:" style="font-size:100%" checked="@{win$composer.currentPerfilOper.cargoPorServicio}"/>
+                                        <checkbox id="montoMaximo" label="Monto Máximo:" style="font-size:100%" checked="@{win$composer.currentPerfilOper.montoMaximo}"/>
+                                        <checkbox id="puntosPremia" label="Puntos Premio:" style="font-size:100%" checked="@{win$composer.currentPerfilOper.puntosPremia}"/>
+                                        <checkbox id="ocultarFechaExp" label="Ocultar Fecha Exp.:" style="font-size:100%" checked="@{win$composer.currentPerfilOper.ocultarFechaExp}"/>
+                                        <checkbox id="ocultarNumCuenta" label="Ocultar Num. Cta.:" style="font-size:100%" checked="@{win$composer.currentPerfilOper.ocultarNumCuenta}"/>
+                                        <checkbox id="axvtafueralinea" label="AX Vta Fuera Línea:" style="font-size:100%" checked="@{win$composer.currentPerfilOper.axvtafueralinea}"/>
+                                        <checkbox id="axaccesomanual" label="AX Acceso Manual:" style="font-size:100%" checked="@{win$composer.currentPerfilOper.axaccesomanual}"/>
+                                        <checkbox id="axqps" label="AX QPS:" style="font-size:100%" checked="@{win$composer.currentPerfilOper.axqps}"/>
+                                    </row>
+                                </rows>
+                            </grid>
+                            <hbox>
+                                <space/>
+                            </hbox>
+                            <button id="bttnAdd" label="${c:l('BttnAgregar')}" image="images/imgicons/icons/plus-circle.png"/>
+                            <space/>
+                            <button id="bttnUpdate" label="${c:l('BttnModificar')}" image="images/imgicons/icons/pencil.png"/>
+                            <space/>
+                            <button id="bttnDelete" label="${c:l('BttnEliminar')}" image="images/imgicons/icons/minus-circle.png"/>
+                            <space/>
+                            <button id="bttnLimpiarCampos" label="LimpiarCampos" image="images/imgicons/icons/application-detail.png"/>
+                            <space/>
+                            <button id="bttnCheckPerfil" label="CheckPerfil" image="images/imgicons/icons/application-detail.png" disabled="true"/>
+                            <!-- html><![CDATA[ <p></p> ]]></html -->
+                            <div id="midiv">
+                                <label id="milabel" value="" style="font-size:65%;color:navy; font-style:normal;"/>
+                            </div>
+                        </groupbox>
+                    </vbox>
+                </window>
+            </center>
+            <south size="30px">
+                <window id="windowWorkArea" onCreate="setLblVApp()">
+                    <hlayout valign="middle">
+                        <div hflex="1">
+                            <label id="appverlbl" style="font-size:65%; color:#888; font-style:normal;background-color:#efefef;"/>
+                        </div>
+                        <label id="lblLeyenda" value=" " style="font-size:65%; color:#888; font-style:normal;background-color:#efefef;"/>
+                    </hlayout>
+                    <zscript>
+                        public setLblVApp() {
+                        appverlbl.setValue(com.tpvs.util.MyProperties.getPropiedad("vapp"));
+                        }
+                    </zscript>
+                </window>
+            </south>
+        </borderlayout>
+    </window>
+</zk>

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?page title="Aurora" ?>
+<?init class="org.zkoss.zkplus.databind.AnnotateDataBinderInit"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <html><![CDATA[ <link rel="stylesheet" href="othercss/tpvsadmin.css" type="text/css" /> ]]>
+    </html>
+    <window mode="highlighted" width="1265px" height="575px">
+        <borderlayout id="blayout1">
+            <north size="35%">
+                <window id="menuTopMenu">
+                    <include src="/menugral.zul" progressing="true"/>
+                    <zscript>
+                        String stImgHeader = (String)Sessions.getCurrent().getAttribute("imgHeader");
+                        String stFrmImgHeader = (String)Sessions.getCurrent().getAttribute("imgFrmHeader");
+                    </zscript>
+                    <image src="images/imgheaders/${stImgHeader}-imgheader-applications.${stFrmImgHeader}"/>
+                </window>
+            </north>
+            <south size="65%">
+                <window id="win" style="overflow:auto"
+                border="normal" apply="com.tpvs.tpvsadmin.zkutils.VersionsControllerPagDao">
+                    <!-- multiple="true" mold="paging" pageSize="5" rows="7" -->
+                    ${c:l('Grupo')}:
+                    <combobox id="comboboxGroups" cols="22" readonly="true"
+                    model="@{win$composer.allGroups}"
+                    selectedItem="@{win$composer.current2}">
+                       <comboitem self="@{each=Groups}" 
+                       label="@{Groups.groupName}"
+                       value="@{Groups.idGroup}"
+                       description="@{Groups.contact}"/>
+                   </combobox>
+                   ${c:l('Cadena')}:
+                    <combobox id="comboboxChains" cols="22" readonly="true"
+                    model="@{win$composer.allChains, load-after='comboboxGroups.onSelect'}"
+                    selectedItem="@{win$composer.current3}">
+                       <comboitem self="@{each=GroupsChains}"
+                       label="@{GroupsChains.chain}"
+                       value="@{GroupsChains.idChain}"
+                       description="@{GroupsChains.contact}"/>
+                   </combobox>
+                   ${c:l('Aplicacion')}:
+                    <combobox id="comboboxApplications" cols="22" readonly="true"
+                    model="@{win$composer.allApplications, load-after='comboboxGroups.onSelect, comboboxChains.onSelect'}"
+                    selectedItem="@{win$composer.current4}">
+                       <comboitem self="@{each=GroupsChainsApplications}"
+                       label="@{GroupsChainsApplications.application}"
+                       value="@{GroupsChainsApplications.idApplication}"
+                       description="@{GroupsChainsApplications.comments}"/>
+                   </combobox>
+                   <button id="bttnBuscar" label="${c:l('BttnBuscar')}"
+                    image="http://${pageContext.request.serverName}:${pageContext.request.localPort}${pageContext.request.contextPath}/images/application-search-result.png"/>
+                    <hbox>
+                        <vbox width="900px">
+                            <hbox width="100%">
+                                <groupbox>
+                                <listbox id="box" style="overflow:auto" fixedLayout="true" mold="paging" rows="16"
+                                selectedItem="@{win$composer.current}">
+                                    <listhead sizable="true">
+                                        <listheader label="${c:l('Version')}:" width="8%"/>
+                                        <listheader label="${c:l('Comentarios')}:" width="40%"/>
+                                        <listheader label="${c:l('FechaCargaServidor')}:" width="22%" align="center"/>
+                                        <listheader label="${c:l('HoraCargaServidor')}:" width="22%" align="center"/>
+                                        <listheader label="${c:l('AppVerAlDia')}:" width="8%" align="center"/>
+                                    </listhead>
+<!--                                    <listitem self="@{each='Version'}" value="@{Version}">
+                                        <listcell label="@{Version.versionsPK.idVersion}"/>
+                                        <listcell label="@{Version.comments}"/>
+                                        <listcell label="@{Version.date, converter='com.tpvs.tpvsadmin.zkutils.convert.fechahoraVersionsConverter'}"/>
+                                        <listcell label="@{Version.time, converter='com.tpvs.tpvsadmin.zkutils.convert.fechahoraVersionsConverter'}"/>
+                                    </listitem>-->
+                                </listbox>
+                                <paging id="pagBoxData" pageSize="16"/>
+                                </groupbox>
+                            </hbox>
+                        </vbox>
+                        <vbox>
+                            <groupbox id="gb1" mold="3d">
+                                <caption label="${c:l('IngreseDatos')}:"/>
+                                <hbox>
+                                    <vbox width="100px">${c:l('Version')}:</vbox>
+                                    <textbox id="idVersion" cols="22" maxlength="11" value="@{win$composer.current.versionsPK.idVersion}"/>
+                                </hbox>
+                                <space/>
+                                <hbox>
+                                    <vbox width="100px">${c:l('Comentarios')}:</vbox>
+                                    <textbox id="comments" rows="5" cols="30" value="@{win$composer.current.comments}" multiline="true"/>
+                                </hbox>
+                                <space/>
+                                <hbox>
+                                    <vbox width="100px">${c:l('needCloseBatch')}:</vbox>
+                                    <checkbox id="needCloseBatch" checked="@{win$composer.current.needCloseBatch}" />
+                                </hbox>
+                                <space/>
+                                <hbox>
+                                    <!--<fileupload id="algo" onUpload="img.setContent(event.media)"/>-->
+                                    <!--<space width="100px"/>-->
+                                    <vbox>
+                                        <hbox>
+                                            <textbox id="filespath" cols="50" value="@{win$composer.current.filespath}" disabled="true"/>
+                                        </hbox>
+                                        <hbox>
+                                            <vbox>
+                                                <button id="btnsubir" label="${c:l('AdjuntarVersion')}"
+                                                image="http://${pageContext.request.serverName}:${pageContext.request.localPort}${pageContext.request.contextPath}/images/attach.png"/>
+                                            </vbox>
+                                            <vbox>
+                                                <button id="delete" label="${c:l('BttnEliminar')}"
+                                                image="http://${pageContext.request.serverName}:${pageContext.request.localPort}${pageContext.request.contextPath}/images/minus-circle.png"/>
+                                            </vbox>
+                                            <vbox>
+                                                <button id="bttnUptodate" label="${c:l('AppVerAlDia')}"
+                                                image="http://${pageContext.request.serverName}:${pageContext.request.localPort}${pageContext.request.contextPath}/images/imgicons/tick-circle-frame.png"/>
+                                            </vbox>
+                                        </hbox>
+                                    </vbox>
+                                </hbox>
+                                <space/>
+                                <space/>
+                                <hbox></hbox>
+                                <!--<button id="add" label="Agregar"
+                                image="http://${pageContext.request.serverName}:${pageContext.request.localPort}${pageContext.request.contextPath}/images/plus-circle.png"/>
+                                <button id="update" label="Modificar"
+                                image="http://${pageContext.request.serverName}:${pageContext.request.localPort}${pageContext.request.contextPath}/images/save.png"/>-->
+                            </groupbox>
+                            <html><![CDATA[ <p></p> ]]>
+                            </html>
+                            <div id="midiv">
+                                <label id="milabel" value="" style="font-size:65%;color:navy; font-style:normal;"/>
+                            </div>
+                        </vbox>
+                    </hbox>
+                </window>
+            </south>
+        </borderlayout>
+    </window>
+</zk>

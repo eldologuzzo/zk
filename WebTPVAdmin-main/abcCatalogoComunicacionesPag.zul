@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?page title="Aurora" ?>
+<?init class="org.zkoss.zkplus.databind.AnnotateDataBinderInit"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <html><![CDATA[ <link rel="shortcut icon" href="images/logos/favicon_evo.ico"/> ]]></html>
+    <html><![CDATA[ <link rel="stylesheet" href="othercss/tpvsadmin.css" type="text/css" /> ]]></html>
+    <window id="myWindow1" mode="highlighted" width="1400px" height="710px" contentStyle="" apply="">
+        <style src="/othercss/tpvsadmin.css"/>
+        <borderlayout>
+            <north size="100px">
+                <borderlayout>
+                    <west size="15%" border="none" collapsible="false">
+                        <div style="background:#FFFFFF" vflex="1">
+                            <image src="images/logos/evo.jpg"/>
+                        </div>
+                    </west>
+                    <center border="none">
+                        <div style="background:#045FB4" vflex="1">
+                            <zscript>
+                                String stImgHeader = (String)Sessions.getCurrent().getAttribute("imgHeader");
+                                String stFrmImgHeader = (String)Sessions.getCurrent().getAttribute("imgFrmHeader");
+                            </zscript>
+                            <image src="images/imgheaders/${stImgHeader}-imgheader-applications.${stFrmImgHeader}"/>
+                        </div>
+                    </center>
+                </borderlayout>
+            </north>
+            <west id="menuOpciones" title=" " size="11%" flex="true" maxsize="140" splittable="false" collapsible="true" open="false">
+                <include src="/menugral.zul" progressing="true"/>
+            </west>
+            <center>
+                <window id="win" style="overflow:auto" border="normal" apply="com.tpvs.tpvsadmin.zkutils.CatalogoComunicacionesControllerPag" height="100%">
+                    <!-- multiple="true" mold="paging" pageSize="5" rows="7" -->
+                    <label value="${c:l('Grupo')}:" style="font-size:100%;"/>
+                    <space/>
+                    <combobox id="comboboxGroups" cols="22" readonly="true" selectedItem="@{win$composer.currentGroup}" model="@{win$composer.allGroups}">
+                       <comboitem self="@{each=GroupsChains}" label="@{GroupsChains.groupName}" 
+                                  value="@{GroupsChains.idGroup}" description="@{GroupsChains.contact}"/>
+                    </combobox>
+                    <space/>
+                    <button id="bttnBuscar" label="${c:l('BttnBuscar')}" image="images/imgicons/icons/application-search-result.png"/>
+                    <grid style="border:0">
+                        <columns>
+                            <column width="65%" valign="top"/>
+                            <column width="35%" valign="top"/>
+                        </columns>
+                        <rows>
+                            <row>
+                                <groupbox style="border:0">
+                                    <listbox id="box" style="overflow:auto" rows="14" selectedItem="@{win$composer.currentComunicacion}" height="100%">
+                                        <listhead sizable="true">
+                                            <listheader label="Ciudad:" width="16%"/>
+                                            <listheader label="Tel. 1 Txs.:" width="14%"/>
+                                            <listheader label="Tel. 2 Txs.:" width="14%"/>
+                                            <listheader label="Tel. 1 Cierre:" width="14%"/>
+                                            <listheader label="Tel. 2 Cierre:" width="14%"/>
+                                            <listheader label="IP:" width="10%"/>
+                                            <listheader label="Puerto:" width="8%"/>
+                                            <listheader label="Cód. Ciudad:" width="10%"/>
+                                        </listhead>
+    <!--                                    <listitem self="@{each='Stores'}" value="@{Stores}">
+                                            <listcell label="@{Stores.idStore}"/>
+                                            <listcell label="@{Stores.Store}"/>
+                                        </listitem>-->
+                                    </listbox>
+                                    <paging id="pagBoxData" pageSize="14"/>
+                                </groupbox>
+                                <groupbox id="gb1" mold="3d" height="340px" contentStyle="overflow:auto;" closable="false">
+                                <caption label="${c:l('IngreseDatos')}:"/>
+                                <grid>
+                                    <columns>
+                                        <column width="20%"/>
+                                        <column width="30%"/>
+                                        <column width="20%"/>
+                                        <column width="30%"/>
+                                    </columns>
+                                    <rows>
+                                        <row>
+                                            <label value="Ciudad:" style="font-size:100%"/>
+                                            <textbox id="ciudad" width="100%" value="@{win$composer.currentComunicacion.ciudad}" maxlength="20"/> 
+                                            <label value="Tel. Prim. Txs.:" style="font-size:100%"/>
+                                            <textbox id="telPrimTxs" width="100%" value="@{win$composer.currentComunicacion.telPrimTxs}" maxlength="15"/>
+                                        </row>
+                                        <row>
+                                            <label value="Tel. Sec. Txs.:" style="font-size:100%"/>
+                                            <textbox id="telSecTxs" width="100%" value="@{win$composer.currentComunicacion.telSecTxs}" maxlength="15"/>
+                                            <label value="Tel. Prim. Cierre.:" style="font-size:100%"/>
+                                            <textbox id="telPrimCierre" width="100%" value="@{win$composer.currentComunicacion.telPrimCierre}" maxlength="15"/>
+                                        </row>
+                                        <row>
+                                            <label value="Tel. Sec. Cierre:" style="font-size:100%"/>
+                                            <textbox id="telSecCierre" width="100%" value="@{win$composer.currentComunicacion.telSecCierre}" maxlength="15"/>
+                                            <label value="Tiempo Espera:" style="font-size:100%"/>
+                                            <intbox id="tiempoEspera" width="100%" value="@{win$composer.currentComunicacion.tiempoEspera}" maxlength="2"/>
+                                        </row>
+                                        <row>
+                                            <label value="Intentos Marcación:" style="font-size:100%"/>
+                                            <intbox id="intentosMarcacion" width="100%" value="@{win$composer.currentComunicacion.intentosMarcacion}" maxlength="2"/>
+                                            <label value="Dirección IP:" style="font-size:100%"/>
+                                            <textbox id="direccionIP" width="100%" value="@{win$composer.currentComunicacion.direccionIP}" maxlength="15"/>
+                                        </row>
+                                        <row>
+                                            <label value="Puerto:" style="font-size:100%"/>
+                                            <textbox id="puerto" width="100%" value="@{win$composer.currentComunicacion.puerto}" maxlength="5"/>
+                                            <label value="Certificado SSL:" style="font-size:100%"/>
+                                            <textbox id="certificadoSSL" width="100%" value="@{win$composer.currentComunicacion.certificadoSSL}" maxlength="25"/>
+                                        </row>
+                                        <row>
+                                            <label value="Código Ciudad:" style="font-size:100%"/>
+                                            <textbox id="codciudad" width="100%" value="@{win$composer.currentComunicacion.codciudad}" maxlength="6"/>
+                                        </row>
+                                    </rows>
+                                </grid>
+                                <hbox>
+                                    <space/>
+                                </hbox>
+                                <button id="bttnAdd" label="${c:l('BttnAgregar')}" image="images/imgicons/icons/plus-circle.png"/>
+                                <space/>
+                                <button id="bttnUpdate" label="${c:l('BttnModificar')}" image="images/imgicons/icons/pencil.png"/>
+                                <space/>
+                                <button id="bttnDelete" label="${c:l('BttnEliminar')}" image="images/imgicons/icons/minus-circle.png"/>
+                                <space/>
+                                <button id="bttnLimpiarCampos" label="LimpiarCampos" image="images/imgicons/icons/application-detail.png"/>
+                                <!-- html><![CDATA[ <p></p> ]]></html -->
+                                <div id="midiv">
+                                    <label id="milabel" value="" style="font-size:65%;color:navy; font-style:normal;"/>
+                                </div>
+                            </groupbox>
+                            </row>
+                        </rows>
+                    </grid>
+                </window>
+            </center>
+            <south size="30px">
+                <window id="windowWorkArea" onCreate="setLblVApp()">
+                    <hlayout valign="middle">
+                        <div hflex="1">
+                            <label id="appverlbl" style="font-size:65%; color:#888; font-style:normal;background-color:#efefef;"/>
+                        </div>
+                        <label id="lblLeyenda" value=" " style="font-size:65%; color:#888; font-style:normal;background-color:#efefef;"/>
+                    </hlayout>
+                    <zscript>
+                        public setLblVApp() {
+                            appverlbl.setValue(com.tpvs.util.MyProperties.getPropiedad("vapp"));
+                        }
+                    </zscript>
+                </window>
+            </south>
+        </borderlayout>
+    </window>
+</zk>

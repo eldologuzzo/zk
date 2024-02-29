@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?page title="Aurora" ?>
+<?init class="org.zkoss.zkplus.databind.AnnotateDataBinderInit"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <html><![CDATA[ <link rel="shortcut icon" href="images/logos/favicon_evo.ico"/> ]]></html>
+    <html><![CDATA[ <link rel="stylesheet" href="othercss/tpvsadmin.css" type="text/css" /> ]]></html>
+    <window id="myWindow1" mode="highlighted" width="1400px" height="710px" contentStyle="" apply="">
+        <style src="/othercss/tpvsadmin.css"/>
+        <borderlayout>
+            <north size="100px">
+                <borderlayout>
+                    <west size="15%" border="none" collapsible="false">
+                        <div style="background:#FFFFFF" vflex="1">
+                            <image src="images/logos/evo.jpg"/>
+                        </div>
+                    </west>
+                    <center border="none">
+                        <div style="background:#045FB4" vflex="1">
+                            <zscript>
+                                String stImgHeader = (String)Sessions.getCurrent().getAttribute("imgHeader");
+                                String stFrmImgHeader = (String)Sessions.getCurrent().getAttribute("imgFrmHeader");
+                            </zscript>
+                            <image src="images/imgheaders/${stImgHeader}-imgheader-users.${stFrmImgHeader}"/>
+                        </div>
+                    </center>
+                </borderlayout>
+            </north>
+            <west id="menuOpciones" title=" " size="11%" flex="true" maxsize="140" splittable="false" collapsible="true" open="false">
+                <include src="/menugral.zul" progressing="true"/>
+            </west>
+            <center>
+                <window id="win" style="overflow:auto" border="normal" apply="com.tpvs.tpvsadmin.zkutils.UsersController" height="100%">
+                    <!-- multiple="true" mold="paging" pageSize="5" rows="7" -->
+                    <grid style="border:0">
+                        <columns>
+                            <column width="55%"/>
+                            <column width="45%"/>
+                        </columns>
+                        <rows style="vertical-align: top">
+                            <row style="border:0">
+                                <!-- fixedLayout="true" -->
+                                <listbox id="box" style="overflow:auto" mold="paging" pageSize="15" rows="15"
+                                         model="@{win$composer.allUsers, load-after='bttnAdd.onClick, bttnUpdate.onClick'}"
+                                         selectedItem="@{win$composer.current}" height="100%">
+                                    <listhead sizable="true">
+                                        <listheader label="${c:l('Usuarios')}" width="20%" sort="auto(user)"/>
+                                        <listheader label="${c:l('Nombre')}" width="20%" sort="auto(name)"/>
+                                        <listheader label="${c:l('Apellidos')}" width="20%" sort="auto(lastNames)"/>
+                                        <listheader label="Status" width="20%"/>
+                                        <listheader label="Perfil" width="20%"/>
+                                    </listhead>
+                                    <listitem self="@{each='User'}" value="@{User}">
+                                        <listcell label="@{User.userName}"/>
+                                        <listcell label="@{User.name}"/>
+                                        <listcell label="@{User.lastNames}"/>
+                                        <listcell label="@{User.statusUser}"/>
+                                        <listcell label="@{User.perfilUsuario}"/>
+                                    </listitem>
+                                </listbox>
+                                <groupbox id="gb1" mold="3d" closable="false" contentStyle="border:0">
+                                    <caption label="${c:l('IngreseDatos')}:"/>
+                                    <grid style="border:0">
+                                        <columns>
+                                            <column width="25%"/>
+                                            <column width="25%"/>
+                                            <column width="25%"/>
+                                            <column width="25%"/>
+                                        </columns>
+                                        <rows style="vertical-align: top">
+                                            <row>
+                                                <label value="${c:l('Grupo')}:" style="font-size:100%"/>
+                                                <combobox id="comboboxGroups" width="100%" readonly="true" selectedItem="@{win$composer.current2}"
+                                                          model="@{win$composer.allGroups, load-after='bttnAdd.onClick'}">
+                                                    <comboitem self="@{each=Groups}" label="@{Groups.groupName}"
+                                                               value="@{Groups.idGroup}" description="@{Groups.contact}"/>
+                                                </combobox>
+                                                <label value="${c:l('Cadena')}:" style="font-size:100%"/>
+                                                <combobox id="comboboxChains" width="100%" readonly="true" selectedItem="@{win$composer.current3}"
+                                                          model="@{win$composer.allChains, load-after='comboboxGroups.onSelect, bttnAdd.onClick'}">
+                                                    <comboitem self="@{each=GroupsChains}" label="@{GroupsChains.chain}"
+                                                               value="@{GroupsChains.idChain}" description="@{GroupsChains.contact}"/>
+                                                </combobox>
+                                            </row>
+                                            <row>
+                                                <label value="${c:l('Tienda')}:" style="font-size:100%"/>
+                                                <combobox id="comboboxStores" width="100%" readonly="true" selectedItem="@{win$composer.current4}"
+                                                          model="@{win$composer.allStores, load-after='comboboxGroups.onSelect, comboboxChains.onSelect, bttnAdd.onClick'}">
+                                                    <comboitem self="@{each=GroupsChainsStore}" label="@{GroupsChainsStore.store}"
+                                                               value="@{GroupsChainsStore.idStore}" description="@{GroupsChainsStore.contact}"/>
+                                                </combobox>
+                                                <label value="${c:l('Departamento')}:" style="font-size:100%"/>
+                                                <combobox id="comboboxDepartments" width="100%" readonly="true" selectedItem="@{win$composer.current5}" 
+                                                          model="@{win$composer.allDepartments, load-after='comboboxGroups.onSelect, comboboxChains.onSelect, comboboxStores.onSelect, bttnAdd.onClick'}">
+                                                    <comboitem self="@{each=GroupsChainsStoreDepartments}" label="@{GroupsChainsStoreDepartments.department}"
+                                                               value="@{GroupsChainsStoreDepartments.idDepartment}" description="@{GroupsChainsStoreDepartments.contact}"/>
+                                                </combobox>
+                                            </row>
+                                            <row>
+                                                <label value="${c:l('Usuario')}:" style="font-size:100%"/>
+                                                <textbox id="userName" width="100%" value="@{win$composer.current.userName}" constraint="no empty" maxlength="25" placeholder="Nombre de Usuario"/>
+                                                <label/>
+                                                <label/>
+                                            </row>
+                                            <row>
+                                                <label value="${c:l('Clave')}:" style="font-size:100%"/>
+                                                <textbox id="password" type="password" width="100%" maxlength="25" placeholder="Credencial"/>
+                                                <label value="${c:l('ClaveConf')}:" style="font-size:90%"/>
+                                                <textbox id="passwordconf" type="password" width="100%" maxlength="25" placeholder="Confirma Credencial"/>
+                                            </row>
+                                            <row>
+                                                <label value="${c:l('Nombre')}:" style="font-size:100%"/>
+                                                <textbox id="name" width="100%" value="@{win$composer.current.name}" constraint="no empty" maxlength="45" placeholder="Nombre"/>
+                                                <label value="${c:l('Apellidos')}:" style="font-size:90%"/>
+                                                <textbox id="lastNames" width="100%" value="@{win$composer.current.lastNames}" constraint="no empty" maxlength="100" placeholder="Apellidos"/>
+                                            </row>
+                                            <!--<row spans="2">-->
+                                            <row>
+                                                <label value="Email:" style="font-size:100%"/>
+                                                <cell colspan="3">
+                                                    <textbox id="emailaccount" width="100%" value="@{win$composer.current.emailaccount}" maxlength="99" placeholder="Cuenta de correo"
+                                                        constraint="/.+@.+\.[a-z]+/: Please enter an e-mail address, no empty"/>
+                                                </cell>
+                                            </row>
+                                            <row>
+                                                <label value="PerfilUsuario:" style="font-size:100%"/>
+                                                <combobox id="comboboxPerfilUsuario" width="100%" readonly="true"/>
+                                                <label value="Proveedor:" style="font-size:90%"/>
+                                                <combobox id="comboboxProveedor" width="100%" readonly="true" model="@{win$composer.allProveedores}"
+                                                selectedItem="@{win$composer.currentProveedor}">
+                                                    <comboitem self="@{each=Proveedor}" label="@{Proveedor.nombre}" 
+                                                               value="@{Proveedor.idProveedor}" description="@{Proveedor.contacto}"/>
+                                                </combobox>
+                                            </row>
+                                            <row align="center">
+                                                <!--style="height: 8px; width: 30px; font-size:10px"-->
+                                                <button id="bttnAdd" label="${c:l('BttnAgregar')}" image="/images/imgicons/icons/plus-circle.png"/>
+                                                <button id="bttnUpdate" label="${c:l('BttnModificar')}" image="/images/imgicons/icons/pencil.png"/>
+                                                <vbox align="center">
+                                                    <button id="bttnChangeStatus" label="+/- Status" image="/images/imgicons/icons/minus-circle.png"/>
+                                                    <button id="bttnDesbloqueo" label="Liberar Sesión" image="/images/imgicons/icons/minus-circle.png" disabled="true"/>
+                                                </vbox>
+                                                <button id="bttnLimpiarCampos" label="LimpiarCampos" image="/images/imgicons/icons/application-detail.png"/>
+                                            </row>
+                                        </rows>
+                                    </grid>
+                                    <space/>
+                                    <label id="lblStatusUsuario" value="Status.- " style="font-size:85%;color:blue; font-style:normal;"/>
+                                    <div id="midiv">
+                                        <label id="milabel" value="" style="font-size:75%;color:navy; font-style:normal;"/>
+                                    </div>
+                                </groupbox>
+                            </row>
+                        </rows>
+                    </grid>
+                </window>
+            </center>
+            <south size="30px">
+                <window id="windowWorkArea" onCreate="setLblVApp()">
+                    <hlayout valign="middle">
+                        <div hflex="1">
+                            <label id="appverlbl" style="font-size:65%; color:#888; font-style:normal;background-color:#efefef;"/>
+                        </div>
+                        <label id="lblLeyenda" value=" " style="font-size:65%; color:#888; font-style:normal;background-color:#efefef;"/>
+                    </hlayout>
+                    <zscript>
+                        public setLblVApp() {
+                            appverlbl.setValue(com.tpvs.util.MyProperties.getPropiedad("vapp"));
+                        }
+                    </zscript>
+                </window>
+            </south>
+        </borderlayout>
+    </window>
+</zk>

@@ -1,0 +1,191 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.tpvs.tpvsadmin.db;
+
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
+/**
+ *
+ * @author jstevetz
+ */
+@Entity
+@Table(name = "chains")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "Chains.findAll", query = "SELECT c FROM Chains c"),
+    @NamedQuery(name = "Chains.findByIdChain", query = "SELECT c FROM Chains c WHERE c.idChain = :idChain"),
+    @NamedQuery(name = "Chains.findByChain", query = "SELECT c FROM Chains c WHERE c.chain = :chain"),
+    @NamedQuery(name = "Chains.findByContact", query = "SELECT c FROM Chains c WHERE c.contact = :contact"),
+    @NamedQuery(name = "Chains.findByPhone", query = "SELECT c FROM Chains c WHERE c.phone = :phone"),
+    @NamedQuery(name = "Chains.findByEmail", query = "SELECT c FROM Chains c WHERE c.email = :email")})
+public class Chains implements Serializable {
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "idChain")
+    private Long idChain;
+    @Basic(optional = false)
+    @Column(name = "Chain")
+    private String chain;
+    @Column(name = "Contact")
+    private String contact;
+    @Column(name = "Phone")
+    private String phone;
+    @Column(name = "Email")
+    private String email;
+    @Column(name = "fechaRegistro")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaRegistro;
+    @Column(name = "usuarioRegistro")
+    private String usuarioRegistro;
+    @JoinColumn(name = "idGroup", referencedColumnName = "idGroup")
+    @ManyToOne(optional = false)
+    private Groups idGroup;
+    @OneToMany(mappedBy = "chains")
+    private List<Chainsvariables> chainsvariablesList;
+    @OneToMany(mappedBy = "idChain")
+    private List<Stores> storesList;
+
+    public Chains() {
+    }
+
+    public Chains(Long idChain) {
+        this.idChain = idChain;
+    }
+
+    public Chains(Long idChain, String chain) {
+        this.idChain = idChain;
+        this.chain = chain;
+    }
+
+    public Long getIdChain() {
+        return idChain;
+    }
+
+    public void setIdChain(Long idChain) {
+        this.idChain = idChain;
+    }
+
+    public String getChain() {
+        return chain;
+    }
+
+    public void setChain(String chain) {
+        this.chain = chain;
+    }
+
+    public String getContact() {
+        return contact;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    
+    public Date getFechaRegistro() {
+        return fechaRegistro;
+    }
+
+    public void setFechaRegistro(Date fechaRegistro) {
+        this.fechaRegistro = fechaRegistro;
+    }
+    
+    public String getUsuarioRegistro() {
+        return usuarioRegistro;
+    }
+
+    public void setUsuarioRegistro(String usuarioRegistro) {
+        this.usuarioRegistro = usuarioRegistro;
+    }
+
+    public Groups getIdGroup() {
+        return idGroup;
+    }
+
+    public void setIdGroup(Groups idGroup) {
+        this.idGroup = idGroup;
+    }
+
+    @XmlTransient
+    public List<Chainsvariables> getChainsvariablesList() {
+        return chainsvariablesList;
+    }
+
+    public void setChainsvariablesList(List<Chainsvariables> chainsvariablesList) {
+        this.chainsvariablesList = chainsvariablesList;
+    }
+
+    @XmlTransient
+    public List<Stores> getStoresList() {
+        return storesList;
+    }
+
+    public void setStoresList(List<Stores> storesList) {
+        this.storesList = storesList;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (idChain != null ? idChain.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Chains)) {
+            return false;
+        }
+        Chains other = (Chains) object;
+        if ((this.idChain == null && other.idChain != null) || (this.idChain != null && !this.idChain.equals(other.idChain))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        //return "com.tpvs.tpvsadmin.db.Chains[ idChain=" + idChain + " ]";
+        return idChain.toString();
+    }
+    
+}

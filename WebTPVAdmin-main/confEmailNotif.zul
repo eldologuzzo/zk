@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?page title="Aurora" ?>
+<?init class="org.zkoss.zkplus.databind.AnnotateDataBinderInit"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <html><![CDATA[ <link rel="shortcut icon" href="images/logos/favicon_evo.ico"/> ]]></html>
+    <html><![CDATA[ <link rel="stylesheet" href="othercss/tpvsadmin.css" type="text/css" /> ]]></html>
+    <window id="myWindow1" mode="highlighted" width="1400px" height="710px" contentStyle="" apply="">
+        <style src="/othercss/tpvsadmin.css"/>
+        <borderlayout>
+            <north size="100px">
+                <borderlayout>
+                    <west size="15%" border="none" collapsible="false">
+                        <div style="background:#FFFFFF" vflex="1">
+                            <image src="images/logos/evo.jpg"/>
+                        </div>
+                    </west>
+                    <center border="none">
+                        <div style="background:#045FB4" vflex="1">
+                            <zscript>
+                                String stImgHeader = (String)Sessions.getCurrent().getAttribute("imgHeader");
+                                String stFrmImgHeader = (String)Sessions.getCurrent().getAttribute("imgFrmHeader");
+                            </zscript>
+                            <image src="images/imgheaders/${stImgHeader}-imgheader-applications.${stFrmImgHeader}"/>
+                        </div>
+                    </center>
+                </borderlayout>
+            </north>
+            <west id="menuOpciones" title=" " size="11%" flex="true" maxsize="140" splittable="false" collapsible="true" open="false">
+                <include src="/menugral.zul" progressing="true"/>
+            </west>
+            <center>
+                <window id="win" style="overflow:auto;" border="normal" apply="com.tpvs.tpvsadmin.zkutils.ConfEmailNotifControllerPag" height="100%">
+                    <!-- multiple="true" mold="paging" pageSize="5" rows="7" -->
+                    <groupbox contentStyle="border:0" closable="false">
+                        <label value="${c:l('Grupo')}:" style="font-size:100%;"/>
+                        <space/>
+                        <combobox id="comboboxGroups" cols="22" readonly="true" selectedItem="@{win$composer.currentGroup}"
+                                  model="@{win$composer.allGroups}">
+                            <comboitem self="@{each=Groups}"  label="@{Groups.groupName}"
+                                       value="@{Groups.idGroup}" description="@{Groups.contact}"/>
+                        </combobox>
+                        <space/>
+                        <label value="${c:l('Cadena')}:" style="font-size:100%;"/>
+                        <space/>
+                        <combobox id="comboboxChains" cols="22" readonly="true" model="@{win$composer.allChains, load-after='comboboxGroups.onSelect'}"
+                                  selectedItem="@{win$composer.currentChain}">
+                            <comboitem self="@{each=GroupsChains}" label="@{GroupsChains.chain}"
+                                       value="@{GroupsChains.idChain}" description="@{GroupsChains.contact}"/>
+                        </combobox>
+                        <space/>
+                        <button id="bttnBuscar" label="${c:l('BttnBuscar')}" image="images/imgicons/icons/application-search-result.png"/>
+                    </groupbox>
+                    <grid style="border:0">
+                        <columns>
+                            <column width="75%" valign="top"/>
+                            <column width="25%" valign="top"/>
+                        </columns>
+                        <rows>
+                            <row valign="top" style="border:0">
+                                <groupbox contentStyle="border:0">
+                                    <listbox id="box" style="overflow:auto; white-space: nowrap;" fixedLayout="true" rows="13" 
+                                             selectedItem="@{win$composer.currentCorreo}" height="95%">
+                                        <listhead sizable="false">
+                                            <listheader label="Nombre:" width="50%"/>
+                                            <listheader label="Cuenta Correo:" width="50%"/>
+                                        </listhead>
+                                        <!--                                    <listitem self="@{each='Stores'}" value="@{Stores}">
+                                            <listcell label="@{Stores.idStore}"/>
+                                            <listcell label="@{Stores.Store}"/>
+                                        </listitem>-->
+                                    </listbox>
+                                    <paging id="pagBoxData" pageSize="13"/>
+                                </groupbox>
+                                <groupbox id="gb1" mold="3d" closable="false" contentStyle="border:0">
+                                    <caption label="${c:l('IngreseDatos')}:"/>
+                                    <grid style="border:0">
+                                        <columns>
+                                            <column width="25%"/>
+                                            <column width="75%"/>
+                                        </columns>
+                                        <rows>
+                                            <row>
+                                                <label value="Nombre:" style="font-size:100%"/>
+                                                <textbox id="nombreDestinatario" value="@{win$composer.currentCorreo.nombreDestinatario}" maxlength="70" width="98%"/> 
+                                            </row>
+                                            <row>
+                                                <label value="Cuenta Correo:" style="font-size:100%"/>
+                                                <textbox id="cuentaDestinario" value="@{win$composer.currentCorreo.cuentaDestinario}" maxlength="70" width="98%"/>
+                                            </row>
+                                        </rows>
+                                    </grid>
+                                    <hbox>
+                                        <space/>
+                                    </hbox>
+                                    <button id="bttnAdd" label="${c:l('BttnAgregar')}" image="images/imgicons/icons/plus-circle.png"/>
+                                    <space/>
+                                    <button id="bttnUpdate" label="${c:l('BttnModificar')}" image="images/imgicons/icons/pencil.png"/>
+                                    <space/>
+                                    <button id="bttnDelete" label="${c:l('BttnEliminar')}" image="images/imgicons/icons/minus-circle.png"/>
+                                    <hbox>
+                                        <space/>
+                                    </hbox>
+                                    <button id="bttnLimpiarCampos" label="LimpiarCampos" image="images/imgicons/icons/application-detail.png"/>
+                                    <!-- html><![CDATA[ <p></p> ]]></html -->
+                                    <div id="midiv">
+                                        <label id="milabel" value="" style="font-size:65%;color:navy; font-style:normal;"/>
+                                    </div>
+                                </groupbox>
+                            </row>
+                        </rows>
+                    </grid>
+                </window>
+            </center>
+            <south size="30px">
+                <window id="windowWorkArea" onCreate="setLblVApp()">
+                    <hlayout valign="middle">
+                        <div hflex="1">
+                            <label id="appverlbl" style="font-size:65%; color:#888; font-style:normal;background-color:#efefef;"/>
+                        </div>
+                        <label id="lblLeyenda" value=" " style="font-size:65%; color:#888; font-style:normal;background-color:#efefef;"/>
+                    </hlayout>
+                    <zscript>
+                        public setLblVApp() {
+                        appverlbl.setValue(com.tpvs.util.MyProperties.getPropiedad("vapp"));
+                        }
+                    </zscript>
+                </window>
+            </south>
+        </borderlayout>
+    </window>
+</zk>

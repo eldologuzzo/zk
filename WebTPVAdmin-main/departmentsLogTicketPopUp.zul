@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?page title="Aurora" ?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <window id="windowpopup1" style="overflow:auto" border="normal" width="70%" closable="false"
+            apply="com.tpvs.tpvsadmin.zkutils.DepartmentsLogTicketPopUpController">
+        <hbox width="100%">
+            <groupbox id="gb10" mold="3d" width="100%" closable="false">
+                <caption label="Historial de Tickets"/>
+                <space/>
+                <groupbox style="border:0">
+                    <listbox id="boxPopUp" style="overflow:auto" fixedLayout="true" rows="9" 
+                             selectedItem="@{windowpopup1$composer.currentTicket}">
+                        <!--model="@{windowpopup1$composer.allTickets}" mold="paging" pageSize="18"--> 
+                        <listhead sizable="true">
+                            <listheader label="Fecha" width="25%" />
+                            <listheader label="Folio" width="25%" />
+                            <listheader label="Ticket" width="20%" />
+                            <listheader label="CveAutorización" width="20%" />
+                            <listheader label="Servicio" width="10%" />
+                        </listhead>
+<!--                        <listitem self="@{each='Ticket'}" value="@{Ticket}">
+                            <listcell label="@{Ticket.fechaHora}"/>
+                            <listcell label="@{Ticket.folio}"/>
+                            <listcell label="@{Ticket.ticket}"/>
+                            <listcell label="@{Ticket.cveAutorizacion}"/>
+                            <listcell label="@{Ticket.servicio}"/>
+                        </listitem>-->
+                    </listbox>
+                    <paging id="pagBoxData" pageSize="9"/>
+                </groupbox>
+                <space/>
+                <label id="lblXmlTicket" value="" />
+                <space/>
+                <grid style="border:0">
+                    <columns>
+                        <column width="50%" align="left"/>
+                        <column width="50%" align="right"/>
+                    </columns>
+                    <rows>
+                        <row style="border:0">
+                            <button id="bttnCerrar" label="${c:l('BttnCerrar')}" image="/images/cross-circle.png"/>
+                            <button id="bttnCancelar" label="Cancelar" image="/images/minus-circle.png" disabled="true"/>
+                        </row>
+                    </rows>
+                </grid>
+            </groupbox>
+        </hbox>
+    </window>
+</zk>

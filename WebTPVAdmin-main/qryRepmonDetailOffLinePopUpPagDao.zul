@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>-->
+<?page title="Aurora" ?>
+<!--<?init class="org.zkoss.zkplus.databind.AnnotateDataBinderInit"?>-->
+<?init class="org.zkoss.zkplus.databind.AnnotateDataBinderInit" arg0="./winPopUp"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <window id="winPopUp" title="${c:l('lblReportemonitor')}" style="overflow:auto" border="normal" width="85%" height="60%" closable="true"
+    apply="com.tpvs.tpvsadmin.zkutils.qryRepmonDetailOffLinePopUpControllerPagDao">
+        <hbox width="100%">
+            <groupbox id="gb10" mold="3d" width="100%">
+                <caption label="Tabla Resultados" />
+                <listbox id="boxPopUp" style="overflow:auto" fixedLayout="true" mold="paging" pageSize="9" rows="9"
+                model="@{winPopUp$composer.allRepmonOffLine}" selectedItem="@{winPopUp$composer.current}">
+                    <listhead sizable="true">
+                        <listheader label="${c:l('Industria')}:" width="10%" sort="auto(industria)"/>
+                        <listheader label="${c:l('TecnologiaTerminal')}:" width="10%" sort="auto(tecnologia)"/>
+                        <listheader label="${c:l('Modelo')}:" width="20%" sort="auto(modelTerminal)"/>
+                        <listheader label="${c:l('Terminal')}:" width="20%" sort="auto(idTerminal)"/>
+                        <listheader label="${c:l('LastReport')}:" width="20%" />
+                        <listheader label="${c:l('PastReport')}:" width="20%" />
+                    </listhead>
+                    <listitem self="@{each='Reportemonitor'}" value="@{Reportemonitor}">
+                        <listcell label="@{Reportemonitor.industria}"/>
+                        <listcell label="@{Reportemonitor.tecnologia}"/>
+                        <listcell label="@{Reportemonitor.modelTerminal}"/>
+                        <listcell label="@{Reportemonitor.idTerminal}"/>
+                        <listcell label="@{Reportemonitor.timestampreporte}"/>
+                        <listcell label="@{Reportemonitor.lasttimestampreporte}"/>
+                    </listitem>
+                </listbox>
+                <vbox width="100%">
+                    <hbox>
+                        <button id="bttnExportarCSVPopUp" label="Exportar" disabled="true"
+                        image="http://${pageContext.request.serverName}:${pageContext.request.localPort}${pageContext.request.contextPath}/images/application-detail.png"/>
+                    </hbox>
+                    <hbox>
+                        <div id="midiv">
+                            <label id="milabel" value="" style="font-size:65%;color:navy; font-style:normal;"/>
+                        </div>
+                    </hbox>
+                </vbox>
+                <hbox>
+                    <button id="bttnCerrarPopUp" label="${c:l('BttnCerrar')}"
+                    image="http://${pageContext.request.serverName}:${pageContext.request.localPort}${pageContext.request.contextPath}/images/cross-circle.png"
+                    onClick="winPopUp.detach();"/>
+                </hbox>
+            </groupbox>
+        </hbox>
+    </window>
+</zk>

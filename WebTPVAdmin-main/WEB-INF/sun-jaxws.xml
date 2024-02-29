@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<endpoints xmlns="http://java.sun.com/xml/ns/jax-ws/ri/runtime"
+                   version="2.0">
+    <endpoint name="Osbnmx" implementation="com.tpvs.ws.Osbnmx" url-pattern="/Osbnmx" />
+    <endpoint name="Wsevomch" implementation="com.tpvs.ws.Wsevomch" url-pattern="/Wsevomch" />
+</endpoints>

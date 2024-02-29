@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
+<!-- 2015-12-07T15:11:25 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reporteConfiguración" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="dfe4fb8a-4fb4-4d04-8f7c-d8c5624d5bfb">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="dataAdapterTPVSadmin.xml"/>
+	<parameter name="pathToImage" class="java.lang.String"/>
+	<parameter name="llave" class="java.lang.String">
+		<parameterDescription><![CDATA[Identificador]]></parameterDescription>
+	</parameter>
+	<parameter name="tituloLlave" class="java.lang.String">
+		<parameterDescription><![CDATA[Concepto de la llave]]></parameterDescription>
+	</parameter>
+	<parameter name="nombre" class="java.lang.String">
+		<parameterDescription><![CDATA[Descripción]]></parameterDescription>
+	</parameter>
+	<parameter name="tituloNombre" class="java.lang.String">
+		<parameterDescription><![CDATA[Concepto para la descripción]]></parameterDescription>
+	</parameter>
+	<parameter name="queryVarsToFind" class="java.lang.String">
+		<parameterDescription><![CDATA[Resto del query]]></parameterDescription>
+	</parameter>
+	<queryString>
+		<![CDATA[select $P!{llave} Llave, $P!{nombre} Descripcion, 
+group_concat(concat(a.name,'=',a.value) SEPARATOR ' | ') variablesConfiguracion 
+from $P!{queryVarsToFind}
+]]>
+	</queryString>
+	<field name="Llave" class="java.lang.String"/>
+	<field name="Descripcion" class="java.lang.String"/>
+	<field name="variablesConfiguracion" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="32" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch">
+			<image>
+				<reportElement x="2" y="0" width="98" height="33" uuid="c09d8633-cc4f-45bb-8862-948e4f827366"/>
+				<imageExpression><![CDATA[$P{pathToImage}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="184" y="4" width="408" height="26" uuid="0b41d783-a693-487d-986b-e244a01d73ac"/>
+				<textElement textAlignment="Center" markup="none">
+					<font fontName="SansSerif" size="18"/>
+				</textElement>
+				<text><![CDATA[Reporte de Variables de Configuración]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="27" splitType="Stretch">
+			<textField>
+				<reportElement x="90" y="6" width="130" height="21" uuid="202aa7b8-13af-4c72-9a8a-8da571109e8c"/>
+				<textFieldExpression><![CDATA[$P{tituloNombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="4" y="6" width="86" height="21" uuid="b73e0bd5-ed7f-413f-b567-2a9927a7e33b"/>
+				<textFieldExpression><![CDATA[$P{tituloLlave}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="220" y="6" width="572" height="21" uuid="ca82e0e2-1721-4c70-8884-bfb7e83c5132"/>
+				<text><![CDATA[variablesConfiguracion]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="43" splitType="Stretch">
+			<textField>
+				<reportElement x="4" y="3" width="86" height="35" uuid="6750fd15-3ee8-4f0b-88b7-c9a337814512"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Llave}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="90" y="3" width="130" height="35" uuid="0fe67a39-c23f-4243-adc0-54deb145c2a2"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Descripcion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="220" y="3" width="571" height="35" uuid="5288b5e5-eb24-43bb-9f97-8040be3afc2d"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{variablesConfiguracion}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="14" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="22" splitType="Stretch">
+			<textField>
+				<reportElement x="671" y="0" width="80" height="20" uuid="bc4dd57d-4670-49cb-9283-07c56ff5bc39"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="751" y="0" width="40" height="20" uuid="3cd18add-6a34-4a61-abb2-a43e221eb352"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="2" y="0" width="140" height="20" uuid="df5af640-f879-445d-af2c-846d66371c0e"/>
+				<textFieldExpression><![CDATA[" " + new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="9" splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>-->
+<?page title="Aurora" ?>
+<!--<?init class="org.zkoss.zkplus.databind.AnnotateDataBinderInit"?>-->
+<?init class="org.zkoss.zkplus.databind.AnnotateDataBinderInit" arg0="./winPopUp55"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <window id="winPopUp55" title="${c:l('Variables')}" style="overflow:auto" border="normal" width="65%" height="80%" closable="true"
+    contentStyle="overflow:auto" apply="com.tpvs.tpvsadmin.zkutils.varsTmpltStoresController">
+        <hbox width="100%">
+            <groupbox id="gb111" mold="3d" width="100%">
+                <caption label="${c:l('IngreseDatos')}:"/>
+               <grid>
+                   <columns>
+                       <column width="45%" label="Variable"/>
+                       <column width="55%" label="Valor"/>
+                   </columns>
+                    <rows>
+                        <row><label value="Parámetros Identificación Comercio" style="font-weight: bold;"/><label/></row>
+                        <row>
+                            <label value="Nombre del Comercio:"/>
+                            <textbox id="varNombreComercio" width="100%" value="Defina nombre" constraint="no empty" maxlength="40"/>
+                        </row>
+                        <row>
+                            <label value="Calle y Número del Comercio:"/>
+                            <textbox id="varCalleYNumeroComercio" width="100%" value="Defina calle y número" constraint="no empty" maxlength="40"/>
+                        </row>
+                        <row>
+                            <label value="Ciudad del Comercio:"/>
+                            <textbox id="varCiudadComercio" width="100%" value="Defina ciudad" constraint="no empty" maxlength="40"/>
+                        </row>
+                        <row>
+                            <label value="MerchantId:"/>
+                            <textbox id="varMerchantId" width="100%" value="0000000" constraint="no empty" maxlength="7"/>
+                        </row>
+                        <row>
+                            <label value="TerminalId:"/>
+                            <textbox id="varTerminalId" width="100%" value="0000000" constraint="no empty" maxlength="8"/>
+                        </row>
+                        <row>
+                            <label value="TerminalId para Transacciones AMEX:"/>
+                            <textbox id="varTerminaldIdTxsAmex" width="100%" value="00000000" constraint="no empty" maxlength="8"/>
+                        </row>
+                        <row>
+                            <label value="MerchantId para Transacciones AMEX:"/>
+                            <textbox id="varMerchantIdTxsAmex" width="100%" value="0000000000" constraint="no empty" maxlength="10"/>
+                        </row>
+                        <row>
+                            <label value="Número de Caja:"/>
+                            <textbox id="varNumCaja" width="100%" value="1" constraint="no empty" maxlength="2"/>
+                        </row>
+                        <row>
+                            <label value="Clave de Moneda:"/>
+                            <textbox id="varClvMoneda" width="100%" value="484" constraint="no empty" maxlength="3"/>
+                        </row>
+                        <row><label value="Parámetros Especiales por Comercio" style="font-weight: bold;"/><label/></row>
+                        <row>
+                            <label value="Tipo de Devolución a Permitir"/>
+                            <listbox id="lstTipoDevPermitir" mold="select">
+                                <listitem value="1" label="Con Restricción" selected="true"/>
+                                <listitem value="2" label="Sin Restricción"/>
+                                <listitem value="3" label="Pregunte al Usuario"/>
+                            </listbox>
+                        </row>
+                        <row>
+                            <label value="Permitir Venta Forzada:"/>
+                            <checkbox id="chckPermVtaForzada" label=""/>
+                        </row>
+                        <row>
+                            <label value="Forma Autorizar Números Tarjeta"/>
+                            <listbox id="lstFrmAutorizarNumTarjeta" mold="select">
+                                <listitem value="1" label="Acceso Manual" selected="true"/>
+                                <listitem value="2" label="Por Banda"/>
+                                <listitem value="3" label="Acceso Manual y Banda"/>
+                            </listbox>
+                        </row>
+                        <row>
+                            <label value="Mostrar Monto Preautorización CheckIn:"/>
+                            <checkbox id="chckMostrarMontoPreAuthCheckIn" checked="false"/>
+                        </row>
+                        <row>
+                            <label value="Número Máximo de Turnos a Manejar:"/>
+                                <textbox id="varNumMaxTurnos" width="100%" value="1" constraint="no empty" maxlength="3"/>
+                        </row>
+                        <row><label value="Pagos Diferidos (Q6)" style="font-weight: bold;"/><label/></row>
+                        <row>
+                            <label value="Permitir o No Pagos Diferidos:"/>
+                            <checkbox id="chckPagosDiferidos" checked="false"/>
+                        </row>
+                        <row>
+                            <label value="Plan Mixto:"/>
+                            <checkbox id="chckPlanMixto" checked="false"/>
+                        </row>
+                    </rows>
+                </grid>
+                <space/>
+                <space/>
+                <hbox width="100%">
+                    <button id="bttnSaveVarsPopUp" label="${c:l('BttnSalvar')}"
+                    image="http://${pageContext.request.serverName}:${pageContext.request.localPort}${pageContext.request.contextPath}/images/save.png"/>
+                    <button id="bttnCerrarPopUp" label="${c:l('BttnCerrar')}"
+                    image="http://${pageContext.request.serverName}:${pageContext.request.localPort}${pageContext.request.contextPath}/images/cross-circle.png"
+                    onClick="winPopUp55.detach();"/>
+                </hbox>
+            </groupbox>
+        </hbox>
+    </window>
+</zk>

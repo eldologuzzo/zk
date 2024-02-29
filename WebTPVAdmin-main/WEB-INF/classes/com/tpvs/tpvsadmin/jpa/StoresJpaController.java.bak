@@ -1,0 +1,437 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.tpvs.tpvsadmin.jpa;
+
+import com.tpvs.tpvsadmin.db.Stores;
+import com.tpvs.tpvsadmin.jpa.exceptions.IllegalOrphanException;
+import com.tpvs.tpvsadmin.jpa.exceptions.NonexistentEntityException;
+import java.io.Serializable;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Query;
+import javax.persistence.EntityNotFoundException;
+import com.tpvs.tpvsadmin.db.Chains;
+import com.tpvs.tpvsadmin.db.Departments;
+import com.tpvs.tpvsadmin.db.Groups;
+import java.util.ArrayList;
+import java.util.List;
+import com.tpvs.tpvsadmin.db.Storesvariables;
+
+/**
+ *
+ * @author jstevetz
+ */
+public class StoresJpaController implements Serializable {
+    public StoresJpaController() {
+//        emf = Persistence.createEntityManagerFactory("tpvsadminPU");
+        emf = jpaUtil.getEntityManagerFactory();
+    }
+    
+    private EntityManagerFactory emf = null;
+
+    public EntityManager getEntityManager() {
+        return emf.createEntityManager();
+    }
+
+    public void create(Stores stores) {
+        if (stores.getDepartmentsList() == null) {
+            stores.setDepartmentsList(new ArrayList<Departments>());
+        }
+        if (stores.getStoresvariablesList() == null) {
+            stores.setStoresvariablesList(new ArrayList<Storesvariables>());
+        }
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            em.getTransaction().begin();
+            Chains idChain = stores.getIdChain();
+            if (idChain != null) {
+                idChain = em.getReference(idChain.getClass(), idChain.getIdChain());
+                stores.setIdChain(idChain);
+            }
+            List<Departments> attachedDepartmentsList = new ArrayList<Departments>();
+            for (Departments departmentsListDepartmentsToAttach : stores.getDepartmentsList()) {
+                departmentsListDepartmentsToAttach = em.getReference(departmentsListDepartmentsToAttach.getClass(), departmentsListDepartmentsToAttach.getIdDepartment());
+                attachedDepartmentsList.add(departmentsListDepartmentsToAttach);
+            }
+            stores.setDepartmentsList(attachedDepartmentsList);
+            List<Storesvariables> attachedStoresvariablesList = new ArrayList<Storesvariables>();
+            for (Storesvariables storesvariablesListStoresvariablesToAttach : stores.getStoresvariablesList()) {
+                storesvariablesListStoresvariablesToAttach = em.getReference(storesvariablesListStoresvariablesToAttach.getClass(), storesvariablesListStoresvariablesToAttach.getStoresvariablesPK());
+                attachedStoresvariablesList.add(storesvariablesListStoresvariablesToAttach);
+            }
+            stores.setStoresvariablesList(attachedStoresvariablesList);
+            em.persist(stores);
+            if (idChain != null) {
+                idChain.getStoresList().add(stores);
+                idChain = em.merge(idChain);
+            }
+            for (Departments departmentsListDepartments : stores.getDepartmentsList()) {
+                Stores oldIdStoreOfDepartmentsListDepartments = departmentsListDepartments.getIdStore();
+                departmentsListDepartments.setIdStore(stores);
+                departmentsListDepartments = em.merge(departmentsListDepartments);
+                if (oldIdStoreOfDepartmentsListDepartments != null) {
+                    oldIdStoreOfDepartmentsListDepartments.getDepartmentsList().remove(departmentsListDepartments);
+                    oldIdStoreOfDepartmentsListDepartments = em.merge(oldIdStoreOfDepartmentsListDepartments);
+                }
+            }
+            for (Storesvariables storesvariablesListStoresvariables : stores.getStoresvariablesList()) {
+                Stores oldStoresOfStoresvariablesListStoresvariables = storesvariablesListStoresvariables.getStores();
+                storesvariablesListStoresvariables.setStores(stores);
+                storesvariablesListStoresvariables = em.merge(storesvariablesListStoresvariables);
+                if (oldStoresOfStoresvariablesListStoresvariables != null) {
+                    oldStoresOfStoresvariablesListStoresvariables.getStoresvariablesList().remove(storesvariablesListStoresvariables);
+                    oldStoresOfStoresvariablesListStoresvariables = em.merge(oldStoresOfStoresvariablesListStoresvariables);
+                }
+            }
+            em.getTransaction().commit();
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+    }
+
+    public void edit(Stores stores) throws IllegalOrphanException, NonexistentEntityException, Exception {
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            em.getTransaction().begin();
+            Stores persistentStores = em.find(Stores.class, stores.getIdStore());
+            Chains idChainOld = persistentStores.getIdChain();
+            Chains idChainNew = stores.getIdChain();
+            List<Departments> departmentsListOld = persistentStores.getDepartmentsList();
+            List<Departments> departmentsListNew = stores.getDepartmentsList();
+            List<Storesvariables> storesvariablesListOld = persistentStores.getStoresvariablesList();
+            List<Storesvariables> storesvariablesListNew = stores.getStoresvariablesList();
+            List<String> illegalOrphanMessages = null;
+//            for (Departments departmentsListOldDepartments : departmentsListOld) {
+//                if (!departmentsListNew.contains(departmentsListOldDepartments)) {
+//                    if (illegalOrphanMessages == null) {
+//                        illegalOrphanMessages = new ArrayList<String>();
+//                    }
+//                    illegalOrphanMessages.add("You must retain Departments " + departmentsListOldDepartments + " since its idStore field is not nullable.");
+//                }
+//            }
+//            for (Storesvariables storesvariablesListOldStoresvariables : storesvariablesListOld) {
+//                if (!storesvariablesListNew.contains(storesvariablesListOldStoresvariables)) {
+//                    if (illegalOrphanMessages == null) {
+//                        illegalOrphanMessages = new ArrayList<String>();
+//                    }
+//                    illegalOrphanMessages.add("You must retain Storesvariables " + storesvariablesListOldStoresvariables + " since its stores field is not nullable.");
+//                }
+//            }
+            if (illegalOrphanMessages != null) {
+                throw new IllegalOrphanException(illegalOrphanMessages);
+            }
+            if (idChainNew != null) {
+                idChainNew = em.getReference(idChainNew.getClass(), idChainNew.getIdChain());
+                stores.setIdChain(idChainNew);
+            }
+            List<Departments> attachedDepartmentsListNew = new ArrayList<Departments>();
+//            for (Departments departmentsListNewDepartmentsToAttach : departmentsListNew) {
+//                departmentsListNewDepartmentsToAttach = em.getReference(departmentsListNewDepartmentsToAttach.getClass(), departmentsListNewDepartmentsToAttach.getIdDepartment());
+//                attachedDepartmentsListNew.add(departmentsListNewDepartmentsToAttach);
+//            }
+//            departmentsListNew = attachedDepartmentsListNew;
+//            stores.setDepartmentsList(departmentsListNew);
+            List<Storesvariables> attachedStoresvariablesListNew = new ArrayList<Storesvariables>();
+//            for (Storesvariables storesvariablesListNewStoresvariablesToAttach : storesvariablesListNew) {
+//                storesvariablesListNewStoresvariablesToAttach = em.getReference(storesvariablesListNewStoresvariablesToAttach.getClass(), storesvariablesListNewStoresvariablesToAttach.getStoresvariablesPK());
+//                attachedStoresvariablesListNew.add(storesvariablesListNewStoresvariablesToAttach);
+//            }
+            storesvariablesListNew = attachedStoresvariablesListNew;
+            stores.setStoresvariablesList(storesvariablesListNew);
+            stores = em.merge(stores);
+            if (idChainOld != null && !idChainOld.equals(idChainNew)) {
+                idChainOld.getStoresList().remove(stores);
+                idChainOld = em.merge(idChainOld);
+            }
+            if (idChainNew != null && !idChainNew.equals(idChainOld)) {
+                idChainNew.getStoresList().add(stores);
+                idChainNew = em.merge(idChainNew);
+            }
+//            for (Departments departmentsListNewDepartments : departmentsListNew) {
+//                if (!departmentsListOld.contains(departmentsListNewDepartments)) {
+//                    Stores oldIdStoreOfDepartmentsListNewDepartments = departmentsListNewDepartments.getIdStore();
+//                    departmentsListNewDepartments.setIdStore(stores);
+//                    departmentsListNewDepartments = em.merge(departmentsListNewDepartments);
+//                    if (oldIdStoreOfDepartmentsListNewDepartments != null && !oldIdStoreOfDepartmentsListNewDepartments.equals(stores)) {
+//                        oldIdStoreOfDepartmentsListNewDepartments.getDepartmentsList().remove(departmentsListNewDepartments);
+//                        oldIdStoreOfDepartmentsListNewDepartments = em.merge(oldIdStoreOfDepartmentsListNewDepartments);
+//                    }
+//                }
+//            }
+//            for (Storesvariables storesvariablesListNewStoresvariables : storesvariablesListNew) {
+//                if (!storesvariablesListOld.contains(storesvariablesListNewStoresvariables)) {
+//                    Stores oldStoresOfStoresvariablesListNewStoresvariables = storesvariablesListNewStoresvariables.getStores();
+//                    storesvariablesListNewStoresvariables.setStores(stores);
+//                    storesvariablesListNewStoresvariables = em.merge(storesvariablesListNewStoresvariables);
+//                    if (oldStoresOfStoresvariablesListNewStoresvariables != null && !oldStoresOfStoresvariablesListNewStoresvariables.equals(stores)) {
+//                        oldStoresOfStoresvariablesListNewStoresvariables.getStoresvariablesList().remove(storesvariablesListNewStoresvariables);
+//                        oldStoresOfStoresvariablesListNewStoresvariables = em.merge(oldStoresOfStoresvariablesListNewStoresvariables);
+//                    }
+//                }
+//            }
+            em.getTransaction().commit();
+        } catch (Exception ex) {
+            String msg = ex.getLocalizedMessage();
+            if (msg == null || msg.length() == 0) {
+                Long id = stores.getIdStore();
+                if (findStores(id) == null) {
+                    throw new NonexistentEntityException("The stores with id " + id + " no longer exists.");
+                }
+            }
+            throw ex;
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+    }
+
+    public void destroy(Long id) throws IllegalOrphanException, NonexistentEntityException {
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            em.getTransaction().begin();
+            Stores stores;
+            try {
+                stores = em.getReference(Stores.class, id);
+                stores.getIdStore();
+            } catch (EntityNotFoundException enfe) {
+                throw new NonexistentEntityException("The stores with id " + id + " no longer exists.", enfe);
+            }
+            List<String> illegalOrphanMessages = null;
+            List<Departments> departmentsListOrphanCheck = stores.getDepartmentsList();
+            for (Departments departmentsListOrphanCheckDepartments : departmentsListOrphanCheck) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("This Stores (" + stores + ") cannot be destroyed since the Departments " + departmentsListOrphanCheckDepartments + " in its departmentsList field has a non-nullable idStore field.");
+            }
+            
+            stores.getStoresvariablesList().clear();
+            
+            List<Storesvariables> storesvariablesListOrphanCheck = stores.getStoresvariablesList();
+            for (Storesvariables storesvariablesListOrphanCheckStoresvariables : storesvariablesListOrphanCheck) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("This Stores (" + stores + ") cannot be destroyed since the Storesvariables " + storesvariablesListOrphanCheckStoresvariables + " in its storesvariablesList field has a non-nullable stores field.");
+            }
+            if (illegalOrphanMessages != null) {
+                throw new IllegalOrphanException(illegalOrphanMessages);
+            }
+            Chains idChain = stores.getIdChain();
+            if (idChain != null) {
+                idChain.getStoresList().remove(stores);
+                idChain = em.merge(idChain);
+            }
+            em.remove(stores);
+            em.getTransaction().commit();
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+    }
+
+    public List<Stores> findStoresEntities() {
+        return findStoresEntities(true, -1, -1);
+    }
+
+    public List<Stores> findStoresEntities(int maxResults, int firstResult) {
+        return findStoresEntities(false, maxResults, firstResult);
+    }
+
+    private List<Stores> findStoresEntities(boolean all, int maxResults, int firstResult) {
+        EntityManager em = getEntityManager();
+        try {
+            Query q = em.createQuery("select object(o) from Stores as o");
+            if (!all) {
+                q.setMaxResults(maxResults);
+                q.setFirstResult(firstResult);
+            }
+            return q.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<Stores> findOnlyStoresForGroups(boolean all, int maxResults, int firstResult, long idGroup) {
+        EntityManager em = getEntityManager();
+        try {
+            Query q = em.createQuery("select object(o) from Stores as o where idGroup = " + idGroup);
+            if (!all) {
+                q.setMaxResults(maxResults);
+                q.setFirstResult(firstResult);
+            }
+            return q.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<Stores> findOnlyStoresForGroupsChains(boolean all, int maxResults, int firstResult, long idGroup, long idChain) {
+        EntityManager em = getEntityManager();
+        try {
+            Query q = em.createQuery("select object(o) from Stores as o where idGroup = " + idGroup + " and idChain = " + idChain);
+            if (!all) {
+                q.setMaxResults(maxResults);
+                q.setFirstResult(firstResult);
+            }
+            return q.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    public Stores findStores(Long id) {
+        EntityManager em = getEntityManager();
+        try {
+            return em.find(Stores.class, id);
+        } finally {
+            em.close();
+        }
+    }
+
+    public int getStoresCount() {
+        EntityManager em = getEntityManager();
+        try {
+            Query q = em.createQuery("select count(o) from Stores as o");
+            return ((Long) q.getSingleResult()).intValue();
+        } finally {
+            em.close();
+        }
+    }
+    
+    public int getCountByIds(List lstGroups, long idChain, long idStore, String stStore, String stRegFedCon) {
+        EntityManager em = getEntityManager();
+        try {
+            String stQuery = "select count(o) from Stores as o";
+            if(lstGroups.size()>0 || idChain>0 || idStore>0 || stStore.length()>0 || stRegFedCon.length()>0) {
+                stQuery += " where ";
+                boolean boAnd = false;
+                if (lstGroups.size() > 0) {
+                    stQuery += " o.idGroup in (";
+                    for (int i = 0; i < lstGroups.size(); i++) {
+                        if (((Groups) lstGroups.get(i)).getIdGroup() == null) {
+                            continue;
+                        }
+                        stQuery += ((Groups) lstGroups.get(i)).getIdGroup() + ((i + 1) < lstGroups.size() ? "," : "");
+                    }
+                    stQuery += ")";
+                    boAnd = true;
+                }
+                if(idChain>0) {
+                    stQuery += (boAnd?" and ":"") + "idChain=" + idChain;
+                    boAnd = true;
+                }
+                if(idStore>0) {
+                    stQuery += (boAnd?" and ":"") + "idStore=" + idStore;
+                    boAnd = true;
+                }
+                if(stStore.length()>0 || stRegFedCon.length()>0) {
+                    boolean boOr = false;
+                    stQuery += (boAnd?" and ":"") + "(";
+                    boAnd = true;
+                    
+                    if(stStore.length()>0) {
+                        stQuery += " Store like '%" + stStore.replaceAll("_", "\\\\_") + "%'";
+                        boOr = true;
+                    }
+                    if(stRegFedCon.length()>0) {
+                        stQuery += (boOr?" or ":"") +  "regFedCon like '%" + stRegFedCon.replaceAll("_", "\\\\_") + "%'";
+                    }
+                    
+                    stQuery += ")";
+                }
+            }
+            Query q = em.createQuery(stQuery);
+            return ((Long) q.getSingleResult()).intValue();
+        } finally {
+            em.close();
+        }
+    }
+    
+    public List<Stores> findByIds(boolean all, int maxResults, int firstResult,
+            List lstGroups, long idChain, long idStore, String stStore, String stRegFedCon) {
+        EntityManager em = getEntityManager();
+        try {
+            String stquery = "select object(v) from Stores as v ";
+            boolean boAnd = false;
+            if(lstGroups.size()>0 || idChain>0 || idStore>0 || stStore.length()>0 || stRegFedCon.length()>0) {
+                stquery += "where ";
+                if (lstGroups.size() > 0) {
+                    stquery += "idGroup in (:idGroup) ";
+                    boAnd = true;
+                }
+                if(idChain>0) {
+                    stquery += (boAnd?" and ":"") + "idChain=:idChain ";
+                    boAnd = true;
+                }
+                if(idStore>0) {
+                    stquery += (boAnd?" and ":"") + "idStore=:idStore ";
+                    boAnd = true;
+                }
+                if(stStore.length()>0 || stRegFedCon.length()>0) {
+                    boolean boOr = false;
+                    stquery += (boAnd?" and ":"") + "(";
+                    boAnd = true;
+                    
+                    if(stStore.length()>0) {
+                        stquery += (boOr?" and ":"") + "Store like :stStore ";
+                        boOr = true;
+                    }
+                    if(stRegFedCon.length()>0) {
+                        stquery += (boOr?" or ":"") +  "regFedCon like :stRegFedCon";
+                    }
+                    
+                    stquery += ")";
+                }
+                if(stStore.length()>0) {
+                    stquery += (boAnd?" and ":"") + "Store like :stStore ";
+                }
+            }
+            stquery += " order by Store";
+            Query q = em.createQuery(stquery);
+            if (lstGroups.size() > 0) {
+                List<Long> lstGroupsToQuery = new ArrayList<Long>();
+                for (int i = 0; i < lstGroups.size(); i++) {
+                    if (((Groups) lstGroups.get(i)).getIdGroup() == null) {
+                        continue;
+                    }
+                    lstGroupsToQuery.add(((Groups) lstGroups.get(i)).getIdGroup());
+                }
+                q.setParameter("idGroup", lstGroupsToQuery);
+            }
+            if (idChain > 0) {
+                q.setParameter("idChain", new ChainsJpaController().findChains(idChain));
+            }
+            if(idStore>0) {
+                q.setParameter("idStore", idStore);
+            }
+            if(stStore.length()>0) {
+                q.setParameter("stStore", "%" + stStore.replaceAll("_", "\\\\_") + "%");
+            }
+            if(stRegFedCon.length()>0) {
+                q.setParameter("stRegFedCon", "%" + stRegFedCon.replaceAll("_", "\\\\_") + "%");
+            }
+            
+            if (!all) {
+                q.setMaxResults(maxResults);
+                q.setFirstResult(firstResult);
+            }       
+            List<Stores> lstTerminals = q.getResultList();
+            return lstTerminals;
+        } catch (Exception ex) {
+//            System.out.println(this.getClass().getName() + ".findByIds() ex: "+ ex.getLocalizedMessage());
+            return null;
+        } finally {
+            em.close();
+        }
+    }
+}

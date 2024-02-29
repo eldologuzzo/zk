@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?page title="Aurora" ?>
+<?init class="org.zkoss.zkplus.databind.AnnotateDataBinderInit"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <html><![CDATA[ <link rel="shortcut icon" href="images/logos/favicon_evo.ico"/> ]]></html>
+    <html><![CDATA[ <link rel="stylesheet" href="othercss/tpvsadmin.css" type="text/css" /> ]]></html>
+    <window id="myWindow1" mode="highlighted" width="1400px" height="710px" contentStyle="" apply="">
+        <style src="/othercss/tpvsadmin.css"/>
+        <borderlayout>
+            <north size="100px">
+                <borderlayout>
+                    <west size="15%" border="none" collapsible="false">
+                        <div style="background:#FFFFFF" vflex="1">
+                            <image src="images/logos/evo.jpg"/>
+                        </div>
+                    </west>
+                    <center border="none">
+                        <div style="background:#045FB4" vflex="1">
+                            <zscript>
+                                String stImgHeader = (String)Sessions.getCurrent().getAttribute("imgHeader");
+                                String stFrmImgHeader = (String)Sessions.getCurrent().getAttribute("imgFrmHeader");
+                            </zscript>
+                            <image src="images/imgheaders/${stImgHeader}-imgheader-applications.${stFrmImgHeader}"/>
+                        </div>
+                    </center>
+                </borderlayout>
+            </north>
+            <west id="menuOpciones" title=" " size="11%" flex="true" maxsize="140" splittable="false" collapsible="true" open="false">
+                <include src="/menugral.zul" progressing="true"/>
+            </west>
+            <center>
+                <window id="win" style="overflow:auto" border="normal" apply="com.tpvs.tpvsadmin.zkutils.CatalogoTairsControllerPag" height="100%">
+                    <!-- multiple="true" mold="paging" pageSize="5" rows="7" -->
+                    <label value="${c:l('Grupo')}:" style="font-size:100%;"/>
+                    <space/>
+                    <combobox id="comboboxGroups" cols="22" readonly="true" selectedItem="@{win$composer.currentGroup}"
+                              model="@{win$composer.allGroups}">
+                       <comboitem self="@{each=GroupsChains}" label="@{GroupsChains.groupName}" 
+                                  value="@{GroupsChains.idGroup}" description="@{GroupsChains.contact}"/>
+                    </combobox>
+                    <space/>
+                    <button id="bttnBuscar" label="${c:l('BttnBuscar')}" image="images/imgicons/icons/application-search-result.png"/>
+                    <grid style="border:0" height="100%">
+                        <columns>
+                            <column width="75%" valign="top"/>
+                            <column width="25%" valign="top"/>
+                        </columns>
+                        <rows>
+                            <row>
+                                <groupbox contentStyle="border:0">
+                                    <listbox id="box" style="overflow:auto" rows="14" selectedItem="@{win$composer.currentTair}" height="100%">
+                                        <listhead sizable="true">
+                                            <listheader label="Display Position:" width="50%"/>
+                                            <listheader label="Provider Name:" width="50%"/>
+                                        </listhead>
+                                    </listbox>
+                                    <paging id="pagBoxData" pageSize="14"/>
+                                </groupbox>
+                                <groupbox id="gb1" mold="3d" contentStyle="overflow:auto;">
+                                    <caption label="${c:l('IngreseDatos')}:"/>
+                                    <grid style="border:0" height="100%">
+                                        <columns>
+                                            <column width="25%"/>
+                                            <column width="75%"/>
+                                        </columns>
+                                        <rows>
+                                            <row>
+                                                <label value="Display Position:" style="font-size:100%"/>
+                                                <intbox id="displayPosition" width="100%" value="@{win$composer.currentTair.displayPosition}" maxlength="2" style="font-size:100%" constraint="/[0-9]+/ : Debe ser numerico"/>
+                                            </row>
+                                            <row>
+                                                <label value="Provider Name:" style="font-size:100%"/>
+                                                <textbox id="providerName" width="100%" value="@{win$composer.currentTair.providerName}" maxlength="10" style="font-size:100%"/>
+                                            </row>
+                                        </rows>
+                                    </grid>
+                                    <grid style="border:0">
+                                        <columns>
+                                            <column width="40%" align="center"/>
+                                            <column width="60%"/>
+                                            <column width="40%" align="center"/>
+                                            <column width="60%"/>
+                                        </columns>
+                                        <rows>
+                                            <row>
+                                                <label value="Value 1:" style="font-size:100%"/>
+                                                <textbox id="value1" width="100%" value="@{win$composer.currentTair.value1}" maxlength="4" style="font-size:100%"/>
+                                                <label value="Code 1:" style="font-size:100%"/>
+                                                <textbox id="code1" width="100%" value="@{win$composer.currentTair.code1}" maxlength="13" style="font-size:100%"/>
+                                            </row>
+                                            <row>
+                                                <label value="Value 2:" style="font-size:100%"/>
+                                                <textbox id="value2" width="100%" value="@{win$composer.currentTair.value2}" maxlength="4" style="font-size:100%"/>
+                                                <label value="Code 2:" style="font-size:100%"/>
+                                                <textbox id="code2" width="100%" value="@{win$composer.currentTair.code2}" maxlength="13" style="font-size:100%"/>
+                                            </row>
+                                            <row>
+                                                <label value="Value 3:" style="font-size:100%"/>
+                                                <textbox id="value3" width="100%" value="@{win$composer.currentTair.value3}" maxlength="4" style="font-size:100%"/>
+                                                <label value="Code 3:" style="font-size:100%"/>
+                                                <textbox id="code3" width="100%" value="@{win$composer.currentTair.code3}" maxlength="13" style="font-size:100%"/>
+                                            </row>
+                                            <row>
+                                                <label value="Value 4:" style="font-size:100%"/>
+                                                <textbox id="value4" width="100%" value="@{win$composer.currentTair.value4}" maxlength="4" style="font-size:100%"/>
+                                                <label value="Code 4:" style="font-size:100%"/>
+                                                <textbox id="code4" width="100%" value="@{win$composer.currentTair.code4}" maxlength="13" style="font-size:100%"/>
+                                            </row>
+                                            <row>
+                                                <label value="Value 5:" style="font-size:100%"/>
+                                                <textbox id="value5" width="100%" value="@{win$composer.currentTair.value5}" maxlength="4" style="font-size:100%"/>
+                                                <label value="Code 5:" style="font-size:100%"/>
+                                                <textbox id="code5" width="100%" value="@{win$composer.currentTair.code5}" maxlength="13" style="font-size:100%"/>
+                                            </row>
+                                            <row>
+                                                <label value="Value 6:" style="font-size:100%"/>
+                                                <textbox id="value6" width="100%" value="@{win$composer.currentTair.value6}" maxlength="4" style="font-size:100%"/>
+                                                <label value="Code 6:" style="font-size:100%"/>
+                                                <textbox id="code6" width="100%" value="@{win$composer.currentTair.code6}" maxlength="13" style="font-size:100%"/>
+                                            </row>
+                                            <row>
+                                                <label value="Value 7:" style="font-size:100%"/>
+                                                <textbox id="value7" width="100%" value="@{win$composer.currentTair.value7}" maxlength="4" style="font-size:100%"/>
+                                                <label value="Code 7:" style="font-size:100%"/>
+                                                <textbox id="code7" width="100%" value="@{win$composer.currentTair.code7}" maxlength="13" style="font-size:100%"/>
+                                            </row>
+                                            <row>
+                                                <label value="Value 8:" style="font-size:100%"/>
+                                                <textbox id="value8" width="100%" value="@{win$composer.currentTair.value8}" maxlength="4" style="font-size:100%"/>
+                                                <label value="Code 8:" style="font-size:100%"/>
+                                                <textbox id="code8" width="100%" value="@{win$composer.currentTair.code8}" maxlength="13" style="font-size:100%"/>
+                                            </row>
+                                            <row>
+                                                <label value="Value 9:" style="font-size:100%"/>
+                                                <textbox id="value9" width="100%" value="@{win$composer.currentTair.value9}" maxlength="4" style="font-size:100%"/>
+                                                <label value="Code 9:" style="font-size:100%"/>
+                                                <textbox id="code9" width="100%" value="@{win$composer.currentTair.code9}" maxlength="13" style="font-size:100%"/>
+                                            </row>
+                                            <row>
+                                                <label value="Value 10:" style="font-size:100%"/>
+                                                <textbox id="value10" width="100%" value="@{win$composer.currentTair.value10}" maxlength="4" style="font-size:100%"/>
+                                                <label value="Code 10:" style="font-size:100%"/>
+                                                <textbox id="code10" width="100%" value="@{win$composer.currentTair.code10}" maxlength="13" style="font-size:100%"/>
+                                            </row>
+                                        </rows>
+                                    </grid>
+                                    <hbox>
+                                        <space/>
+                                    </hbox>
+                                    <button id="bttnAdd" label="${c:l('BttnAgregar')}" image="images/imgicons/icons/plus-circle.png"/>
+                                    <space/>
+                                    <button id="bttnUpdate" label="${c:l('BttnModificar')}" image="images/imgicons/icons/pencil.png"/>
+                                    <space/>
+                                    <button id="bttnDelete" label="${c:l('BttnEliminar')}" image="images/imgicons/icons/minus-circle.png"/>
+                                    <hbox>
+                                        <space/>
+                                    </hbox>
+                                    <button id="bttnLimpiarCampos" label="LimpiarCampos" image="images/imgicons/icons/application-detail.png"/>
+                                    <!-- html><![CDATA[ <p></p> ]]></html -->
+                                    <div id="midiv">
+                                        <label id="milabel" value="" style="font-size:65%;color:navy; font-style:normal;"/>
+                                    </div>
+                                </groupbox>
+                            </row>
+                        </rows>
+                    </grid>
+                </window>
+            </center>
+            <south size="30px">
+                <window id="windowWorkArea" onCreate="setLblVApp()">
+                    <hlayout valign="middle">
+                        <div hflex="1">
+                            <label id="appverlbl" style="font-size:65%; color:#888; font-style:normal;background-color:#efefef;"/>
+                        </div>
+                        <label id="lblLeyenda" value=" " style="font-size:65%; color:#888; font-style:normal;background-color:#efefef;"/>
+                    </hlayout>
+                    <zscript>
+                        public setLblVApp() {
+                            appverlbl.setValue(com.tpvs.util.MyProperties.getPropiedad("vapp"));
+                        }
+                    </zscript>
+                </window>
+            </south>
+        </borderlayout>
+    </window>
+</zk>

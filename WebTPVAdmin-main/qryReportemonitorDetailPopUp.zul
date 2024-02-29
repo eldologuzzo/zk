@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?page title="Aurora" ?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <window id="windowpopup1" title="${c:l('lblReportemonitor')}" style="overflow:auto" border="normal" width="80%" height="85%" closable="true"
+            contentStyle="overflow:auto" apply="com.tpvs.tpvsadmin.zkutils.qryReportemonitorDetailPopUpController">
+        <groupbox id="gb10" mold="3d" width="100%" height="90%" style="border:0">
+            <tabbox id="tabsPrincipal" width="100%" height="100%" style="border:0">
+                <tabs>
+                    <tab id="tabPrincipal" label="Monitoreo" closable="false"/>
+                    <tab id="tabSF" label="Store And Forward" visible="false" closable="false"/>
+                    <tab id="tabOptBlue" label="OptBlue" visible="false" closable="false"/>
+                    <tab id="tabContIntComm" label="Cont Intentos Comm" visible="false" closable="false"/>
+                </tabs>
+                <tabpanels>
+                    <tabpanel>
+                        <grid>
+                            <columns style="border:0">
+                                <column width="14%" label="${c:l('lblParametro')}" />
+                                <column width="20%" label="${c:l('lblValor')}" />
+                                <column width="14%" label="${c:l('lblParametro')}" />
+                                <column width="20%" label="${c:l('lblValor')}" />
+                                <column width="15%" label="${c:l('lblParametro')}" />
+                                <column width="20%" label="${c:l('lblValor')}" />
+                            </columns>
+                            <rows id="rowsReporte">
+                                <row>
+                                    <label value="${c:l('LastReport')}:" style="font-size:10px;"/>
+                                    <label id="txtBoxLastReport" style="font-size:10px;font-weight:bold;" />
+                                    <label value="${c:l('PastReport')}:" style="font-size:10px;"/>
+                                    <label id="txtBoxPastReport" style="font-size:10px;font-weight:bold;" />
+                                    <label value="${c:l('Modelo')}:" style="font-size:10px;"/>
+                                    <label id="txtBoxModelTerminal" style="font-size:10px;font-weight:bold;" />
+                                </row>
+                                <row>
+                                    <label value="${c:l('TecnologiaTerminal')}:" style="font-size:10px;"/>
+                                    <label id="txtBoxTecnologia" style="font-size:10px;font-weight:bold;" />
+                                    <label value="${c:l('VersionActual')}:" style="font-size:10px;"/>
+                                    <label id="txtBoxAppVersion" style="font-size:10px;font-weight:bold;" />
+                                    <label value="${c:l('VersionMicroBrowser')}:" style="font-size:10px;"/>
+                                    <label id="txtBoxVerMicroBrowser" style="font-size:10px;font-weight:bold;" />
+                                </row>
+                                <row>
+                                    <label value="${c:l('MerchantName')}:" style="font-size:10px;"/>
+                                    <label id="txtBoxMerchantName" style="font-size:10px;font-weight:bold;" />
+                                    <label value="${c:l('MerchantAddress')}:" style="font-size:10px;"/>
+                                    <label id="txtBoxMerchantAddress" style="font-size:10px;font-weight:bold;" />
+                                    <label value="${c:l('MerchantCity')}:" style="font-size:10px;"/>
+                                    <label id="txtBoxMerchantCity" style="font-size:10px;font-weight:bold;" />
+                                </row>
+                                <row>
+                                    <label value="${c:l('MerchantZipCode')}:" style="font-size:10px;"/>
+                                    <label id="txtBoxMerchantZipCode" style="font-size:10px;font-weight:bold;" />
+                                    <label value="${c:l('MerchantId')}:" style="font-size:10px;"/>
+                                    <label id="txtBoxMerchantId" style="font-size:10px;font-weight:bold;" />
+                                    <label value="${c:l('TerminalId')}:" style="font-size:10px;"/>
+                                    <label id="txtBoxTerminalId" style="font-size:10px;font-weight:bold;" />
+                                </row>
+                                <row>
+                                    <label value="Industria:" style="font-size:10px;"/>
+                                    <label id="txtBoxIndustria" style="font-size:10px;font-weight:bold;" />
+                                    <label value="fechaUltimaTx:" style="font-size:10px;"/>
+                                    <label id="txtBoxFechaUltimaTx" style="font-size:10px;font-weight:bold;" />
+                                    <label value="fechaUltimoCierre:" style="font-size:10px;"/>
+                                    <label id="txtBoxFechaUltimoCierre" style="font-size:10px;font-weight:bold;" />
+                                </row>
+                                <row>
+                                    <label value="lotesAbiertos:" style="font-size:10px;"/>
+                                    <label id="txtBoxLotesAbiertos" style="font-size:10px;font-weight:bold;" />
+                                    <label value="ultimasTxs:" style="font-size:10px;"/>
+                                    <label id="txtBoxUltimasTxs" style="font-size:10px;font-weight:bold;" />
+                                    <label value="porcentajeBateria:" style="font-size:10px;"/>
+                                    <label id="txtBoxPorcentajeBateria" style="font-size:10px;font-weight:bold;" />
+                                </row>
+                                <row>
+                                    <label value="itensidadCelular:" style="font-size:10px;"/>
+                                    <label id="txtBoxIntensidadCelular" style="font-size:10px;font-weight:bold;" />
+                                    <label value="impresoraSinPapel:" style="font-size:10px;"/>
+                                    <label id="txtBoxImpresoraSinPapel" style="font-size:10px;font-weight:bold;" />
+                                    <label value="falloLectorBanda:" style="font-size:10px;"/>
+                                    <label id="txtBoxFalloLectorBanda" style="font-size:10px;font-weight:bold;" />
+                                </row>
+                                <row>
+                                    <label value="${c:l('nCaja')}:" style="font-size:10px;"/>
+                                    <label id="txtBoxnCaja" style="font-size:10px;font-weight:bold;" />
+                                    <label value="Número SIM:" style="font-size:10px;"/>
+                                    <label id="txtBoxnumeroSim" style="font-size:10px;font-weight:bold;" />
+                                    <label value="Nombre Carrier:" style="font-size:10px;"/>
+                                    <label id="txtBoxnombreCarrier" style="font-size:10px;font-weight:bold;" />
+                                </row>
+                                <row>
+                                    <label value="Entre calle:" style="font-size:10px;"/>
+                                    <label id="txtBoxcalle1Comercio" style="font-size:10px;font-weight:bold;" />
+                                    <label value="Y calle:" style="font-size:10px;"/>
+                                    <label id="txtBoxcalle2Comercio" style="font-size:10px;font-weight:bold;" />
+                                    <label value="Referencia cercana:" style="font-size:10px;"/>
+                                    <label id="txtBoxrefCercana" style="font-size:10px;font-weight:bold;" />
+                                </row>
+                                <row>
+                                    <label value="Transporte:" style="font-size:10px;"/>
+                                    <label id="txtBoxtransporte" style="font-size:10px;font-weight:bold;" />
+                                    <label value="Teléfono:" style="font-size:10px;"/>
+                                    <label id="txtBoxphoneComercio" style="font-size:10px;font-weight:bold;" />
+                                    <label value="verySubVerFirmware:" style="font-size:10px;"/>
+                                    <label id="txtBoxemailComercio" style="font-size:10px;font-weight:bold;" />
+                                </row>
+                                <row>
+                                    <label value="Terminales Amex:" style="font-size:10px;"/>
+                                    <label id="txtBoxamexpos" style="font-size:10px;font-weight:bold;" />
+                                    <label value="Terminales Otros Bancos:" style="font-size:10px;"/>
+                                    <label id="txtBoxotherpos" style="font-size:10px;font-weight:bold;" />
+                                    <label value="Terminales i7910:" style="font-size:10px;"/>
+                                    <label id="txtBoxi7910" style="font-size:10px;font-weight:bold;" />
+                                </row>
+                                <row>
+                                    <label value="usaTLSoSSL:" style="font-size:10px;"/>
+                                    <label id="txtBoxi7780" style="font-size:10px;font-weight:bold;" />
+                                    <label value="soporteCtless:" style="font-size:10px;"/>
+                                    <label id="txtBoxi5100" style="font-size:10px;font-weight:bold;" />
+                                    <label value="Terminales vx610:" style="font-size:10px;"/>
+                                    <label id="txtBoxvx610" style="font-size:10px;font-weight:bold;" />
+                                </row>
+                                <row>
+                                    <label value="Terminales vx670:" style="font-size:10px;"/>
+                                    <label id="txtBoxvx670" style="font-size:10px;font-weight:bold;" />
+                                    <label value="Terminales vx510:" style="font-size:10px;"/>
+                                    <label id="txtBoxvx510" style="font-size:10px;font-weight:bold;" />
+                                    <label value="Terminales vx520:" style="font-size:10px;"/>
+                                    <label id="txtBoxvx520" style="font-size:10px;font-weight:bold;" />
+                                </row>
+                                <row>
+                                    <label value="EOSCTLSVER:" style="font-size:10px;"/>
+                                    <label id="txtBoxclerk" style="font-size:10px;font-weight:bold;" />
+                                    <label value="H.Inicio LuVi:" style="font-size:10px;"/>
+                                    <label id="txtBoxmffrom" style="font-size:10px;font-weight:bold;" />
+                                    <label value="H.Fin LuVi:" style="font-size:10px;"/>
+                                    <label id="txtBoxmfto" style="font-size:10px;font-weight:bold;" />
+                                </row>
+                                <row>
+                                    <label value="H.Inicio Sábado:" style="font-size:10px;"/>
+                                    <label id="txtBoxsatfrom" style="font-size:10px;font-weight:bold;" />
+                                    <label value="H.Fin Sábado:" style="font-size:10px;"/>
+                                    <label id="txtBoxsatto" style="font-size:10px;font-weight:bold;" />
+                                    <label value="H.Inicio Domingo:" style="font-size:10px;"/>
+                                    <label id="txtBoxsunfrom" style="font-size:10px;font-weight:bold;" />
+                                </row>
+                                <row>
+                                    <label value="H.Fin Domingo:" style="font-size:10px;"/>
+                                    <label id="txtBoxsunto" style="font-size:10px;font-weight:bold;" />
+                                    <label value="Actualización Vars:" style="font-size:10px;"/>
+                                    <label id="txtBoxActualizacionVars" style="font-size:10px;font-weight:bold;" />
+                                    <label value="Actualización Apps:" style="font-size:10px;"/>
+                                    <label id="txtBoxActualizacionApps" style="font-size:10px;font-weight:bold;" />
+                                </row>
+                            </rows>
+                        </grid>
+                    </tabpanel>
+                    <tabpanel>
+                        <!--
+                <tabbox id="tabsSF" width="100%" style="border:0">
+                    <tabs>
+                        <tab label="Store And Forward" closable="false"/>
+                    </tabs>
+                    <tabpanels>
+                        <tabpanel>
+                        -->
+                        <grid>
+                            <columns style="border:0">
+                                <column width="12%" label="Info Lote" align="center" />
+                                <column width="22%" label="Sin Notificar" align="center" />
+                                <column width="22%" label="Rechazadas" align="center" />
+                                <column width="22%" label="Eliminadas" align="center" />
+                                <column width="22%" label="Cierres Automáticos" align="center" />
+                            </columns>
+                            <rows id="rowsSF"/>
+                        </grid>
+                        <!--
+                                </tabpanel>
+                            </tabpanels>
+                        </tabbox>
+                        -->
+                    </tabpanel>
+                    <tabpanel>
+                        <!--<groupbox width="98%" height="70%" style="border:0" contentStyle="border:0">-->
+                            <listbox id="boxHisEven" style="overflow:auto" fixedLayout="true" mold="paging" pageSize="20" rows="21">
+                                <listhead sizable="false">
+                                    <listheader label="Grupo Evento" width="20px" />
+                                    <listheader label="Evento" width="50%" />
+                                    <listheader label="Estatus" width="10%" />
+                                    <listheader label="Fecha/Hora" width="20%" />
+                                </listhead>
+<!--                                <listitem self="@{each='HisEven'}" value="@{HisEven}">
+                                    <listcell label="@{HisEven.Grupoeventos}"/>
+                                    <listcell label="@{HisEven.Evento}"/>
+                                    <listcell label="@{HisEven.Estatus}"/>
+                                    <listcell label="@{HisEven.Fechahora}"/>
+                                </listitem>-->
+                            </listbox>
+                        <!--</groupbox>-->
+                    </tabpanel>
+                    <tabpanel>
+                        <grid>
+                            <columns style="border:0">
+                                <column width="25%" label="Sin Comunciación" align="center" />
+                                <column width="25%" label="Sin Respuesta" align="center" />
+                                <column width="25%" label="No OK Fin OK" align="center" />
+                                <column width="25%" label="OK Fin No OK" align="center" />
+                            </columns>
+                            <rows id="rowsIntComm"/>
+                        </grid>
+                    </tabpanel>
+                </tabpanels>
+            </tabbox>
+        </groupbox>
+        <space/>
+        <space/>
+        <grid style="border:0">
+            <columns>
+                <column width="50%" align="left"/>
+                <column width="50%" align="right"/>
+            </columns>
+            <rows>
+                <row style="border:0">
+                    <button id="CancelTermPopUp" label="${c:l('BttnCerrar')}" image="/images/cross-circle.png" onClick="windowpopup1.detach();"/>
+                    <button id="bttnBorrarRegistroPopUp" label="${c:l('BttnEliminar')}" image="/images/minus-circle.png"/>
+                </row>
+            </rows>
+        </grid>
+        
+        <!--                    <groupbox style="border:0">
+            <button id="bttnCancelUltTxTermPopUp" label="CancelacionUltimaVenta" visible="false" image="/images/imgicons/exclamation-red-frame.png"/>
+            <space/><space/>
+            <button id="bttnCierreLotePopUp" label="CierreLote" visible="false" image="/images/imgicons/exclamation-red-frame.png"/>
+        </groupbox>-->
+    </window>
+</zk>

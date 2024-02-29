@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?page title="Aurora" ?>
+<?init class="org.zkoss.zkplus.databind.AnnotateDataBinderInit"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <html><![CDATA[ <link rel="shortcut icon" href="images/logos/favicon_evo.ico"/> ]]></html>
+    <html><![CDATA[ <link rel="stylesheet" href="othercss/tpvsadmin.css" type="text/css" /> ]]></html>
+    <window id="myWindow1" mode="highlighted" width="1400px" height="710px" contentStyle="" apply="">
+        <style src="/othercss/tpvsadmin.css"/>
+        <borderlayout>
+            <north size="100px">
+                <borderlayout>
+                    <west size="15%" border="none" collapsible="false">
+                        <div style="background:#FFFFFF" vflex="1">
+                            <image src="images/logos/evo.jpg"/>
+                        </div>
+                    </west>
+                    <center border="none">
+                        <div style="background:#045FB4" vflex="1">
+                            <zscript>
+                                String stImgHeader = (String)Sessions.getCurrent().getAttribute("imgHeader");
+                                String stFrmImgHeader = (String)Sessions.getCurrent().getAttribute("imgFrmHeader");
+                            </zscript>
+                            <image src="images/imgheaders/${stImgHeader}-imgheader-applications.${stFrmImgHeader}"/>
+                        </div>
+                    </center>
+                </borderlayout>
+            </north>
+            <west id="menuOpciones" title=" " size="11%" flex="true" maxsize="140" splittable="false" collapsible="true" open="false">
+                <include src="/menugral.zul" progressing="true"/>
+            </west>
+            <center>
+                <window id="win" style="overflow:auto" border="normal" apply="com.tpvs.tpvsadmin.zkutils.CatalogoXissuersControllerPag" height="100%">
+                    <!-- multiple="true" mold="paging" pageSize="5" rows="7" -->
+                    <label value="${c:l('Grupo')}:" style="font-size:100%;"/>
+                    <space/>
+                    <combobox id="comboboxGroups" cols="22" readonly="true" selectedItem="@{win$composer.currentGroup}"
+                    model="@{win$composer.allGroups}">
+                       <comboitem self="@{each=GroupsChains}" label="@{GroupsChains.groupName}"
+                       value="@{GroupsChains.idGroup}" description="@{GroupsChains.contact}"/>
+                    </combobox>
+                    <space/>
+                    <button id="bttnBuscar" label="${c:l('BttnBuscar')}" image="/images/imgicons/icons/application-search-result.png"/>
+                    <vbox width="100%">
+                        <groupbox style="border:0">
+                            <listbox id="box" style="overflow:auto" fixedLayout="true" rows="6" 
+                                     selectedItem="@{win$composer.currentXissuer}" height="100%">
+                                <listhead sizable="true">
+                                    <listheader label="issuerNumber:" width="10%"/>
+                                    <listheader label="issuerTableId:" width="10%"/>
+                                    <listheader label="cardName:" width="25%"/>
+                                    <listheader label="referralTelephoneNumber:" width="15%"/>
+                                    <listheader label="plan1Name:" width="20%"/>
+                                    <listheader label="plan2Name:" width="20%"/>
+                                </listhead>
+                            </listbox>
+                            <paging id="pagBoxData" pageSize="6"/>
+                        </groupbox>
+                        <groupbox id="gb1" mold="3d" contentStyle="overflow:auto;" style="border:0" closable="false">
+                            <caption label="${c:l('IngreseDatos')}:"/>
+                            <grid id="form">
+                                <columns>
+                                    <column width="12%"/>
+                                    <column width="13%"/>
+                                    <column width="12%"/>
+                                    <column width="13%"/>
+                                    <column width="12%"/>
+                                    <column width="13%"/>
+                                    <column width="12%"/>
+                                    <column width="13%"/>
+                                </columns>
+                                <rows>
+                                    <row>
+                                        <label value="issuerNumber:" style="font-size:100%"/>
+                                        <textbox id="issuerNumber" value="@{win$composer.currentXissuer.issuerNumber}" maxlength="2" width="98%" constraint="/^[0-9]+$/: Please enter a number"/>
+                                        <label value="issuerTableId:" style="font-size:100%"/>
+                                        <textbox id="issuerTableId" value="@{win$composer.currentXissuer.issuerTableId}" maxlength="2" width="98%" constraint="/^[0-9]+$/: Please enter a number"/>
+                                        <label value="cardName:" style="font-size:100%"/>
+                                        <textbox id="cardName" value="@{win$composer.currentXissuer.cardName}" maxlength="10" width="98%"/>
+                                        <label value="referralTelephoneNumber:" style="font-size:100%"/>
+                                        <textbox id="referralTelephoneNumber" value="@{win$composer.currentXissuer.referralTelephoneNumber}" maxlength="24" width="98%" constraint="/^[0-9]+$/: Please enter a number"/>
+                                    </row>
+                                    <row>
+                                        <label value="defaultAccount:" style="font-size:100%"/>
+                                        <textbox id="defaultAccount" value="@{win$composer.currentXissuer.defaultAccount}" maxlength="4" width="98%" constraint="/^[0-9]+$/: Please enter a number"/>
+                                        <label value="plan1Name:" style="font-size:100%"/>
+                                        <textbox id="plan1Name" value="@{win$composer.currentXissuer.plan1Name}" maxlength="8" width="98%"/>
+                                        <label value="plan1MinimumPayments:" style="font-size:100%"/>
+                                        <textbox id="plan1MinimumPayments" value="@{win$composer.currentXissuer.plan1MinimumPayments}" maxlength="2" width="98%" constraint="/^[0-9]+$/: Please enter a number"/>
+                                        <label value="plan1MaximumPayment:" style="font-size:100%"/>
+                                        <textbox id="plan1MaximumPayment" value="@{win$composer.currentXissuer.plan1MaximumPayment}" maxlength="2" width="98%" constraint="/^[0-9]+$/: Please enter a number"/>
+                                    </row>
+                                    <row>
+                                        <label value="plan2Name:" style="font-size:100%"/>
+                                        <textbox id="plan2Name" value="@{win$composer.currentXissuer.plan2Name}" maxlength="8" width="98%"/>
+                                        <label value="plan2MimimumPayment:" style="font-size:100%"/>
+                                        <textbox id="plan2MimimumPayment" value="@{win$composer.currentXissuer.plan2MimimumPayment}" maxlength="2" width="98%" constraint="/^[0-9]+$/: Please enter a number"/>
+                                        <label value="plan2MaximumPayment:" style="font-size:100%"/>
+                                        <textbox id="plan2MaximumPayment" value="@{win$composer.currentXissuer.plan2MaximumPayment}" maxlength="2" width="98%" constraint="/^[0-9]+$/: Please enter a number"/>
+                                        <label value="floorLim:" style="font-size:100%"/>
+                                        <textbox id="floorLim" value="@{win$composer.currentXissuer.floorLim}" maxlength="4" width="98%" constraint="/^[0-9]+$/: Please enter a number"/>
+                                    </row>
+                                    <row>
+                                        <label value="RID:" style="font-size:100%"/>
+                                        <textbox id="rid" value="@{win$composer.currentXissuer.rid}" maxlength="10" width="98%"/>
+                                        <label value="CRFLim:" style="font-size:100%"/>
+                                        <textbox id="CRFLim" value="@{win$composer.currentXissuer.CRFLim}" maxlength="4" width="98%" constraint="/^[0-9]+$/: Please enter a number"/>
+                                        <checkbox id="msbAdjustAllowed" label="msbAdjustAllowed" style="font-size:100%;" checked="@{win$composer.currentXissuer.msbAdjustAllowed}"/>
+                                        <checkbox id="descriptorsRequired" label="descriptorsRequired" style="font-size:100%;" checked="@{win$composer.currentXissuer.descriptorsRequired}"/>
+                                        <checkbox id="voiceReferralAllowed" label="voiceReferralAllowed" style="font-size:100%;" checked="@{win$composer.currentXissuer.voiceReferralAllowed}"/>
+                                        <checkbox id="offlineEntryAllowed" label="offlineEntryAllowed" style="font-size:100%;" checked="@{win$composer.currentXissuer.offlineEntryAllowed}"/>
+                                    </row>
+                                    <row>
+                                        <checkbox id="manualPanAllowed" label="manualPanAllowed" style="font-size:100%;" checked="@{win$composer.currentXissuer.manualPanAllowed}"/>
+                                        <checkbox id="msbBlockPreAuth" label="msbBlockPre-auth" style="font-size:100%;" checked="@{win$composer.currentXissuer.msbBlockPreAuth}"/>
+                                        <checkbox id="blockRefunds" label="blockRefunds" style="font-size:100%;" checked="@{win$composer.currentXissuer.blockRefunds}"/>
+                                        <checkbox id="plan6" label="plan Amex" style="font-size:100%;" checked="@{win$composer.currentXissuer.plan6}"/>
+                                        <checkbox id="plan5" label="plan" style="font-size:100%;" checked="@{win$composer.currentXissuer.plan5}"/>
+                                        <checkbox id="extendedPaymentPlanAllowed" label="extendedPaymentPlanAllowed" style="font-size:90%;" checked="@{win$composer.currentXissuer.extendedPaymentPlanAllowed}"/>
+                                        <checkbox id="blockVoids" label="blockVoids" style="font-size:100%;" checked="@{win$composer.currentXissuer.blockVoids}"/>
+                                        <checkbox id="printCuitN" label="printCuitN" style="font-size:100%;" checked="@{win$composer.currentXissuer.printCuitN}"/>
+                                    </row>
+                                    <row>
+                                        <checkbox id="input4dbcCardSwiped" label="input4dbcCardSwiped" style="font-size:100%;" checked="@{win$composer.currentXissuer.input4dbcCardSwiped}"/>
+                                        <checkbox id="input4dbcManualPan" label="input4dbcManualPan" style="font-size:100%;" checked="@{win$composer.currentXissuer.input4dbcManualPan}"/>
+                                        <checkbox id="enter4lastDigits" label="enter4lastDigits" style="font-size:100%;" checked="@{win$composer.currentXissuer.enter4lastDigits}"/>
+                                        <checkbox id="gasolineCard" label="gasolineCard" style="font-size:100%;" checked="@{win$composer.currentXissuer.gasolineCard}"/>
+                                        <checkbox id="promptFactura" label="promptFactura" style="font-size:100%;" checked="@{win$composer.currentXissuer.promptFactura}"/>
+                                        <checkbox id="checkEMV" label="checkEMV" style="font-size:100%;" checked="@{win$composer.currentXissuer.checkEMV}"/>
+                                        <label value=""/>
+                                        <label value=""/>
+                                    </row>
+                                </rows>
+                            </grid>
+                            <hbox>
+                                <space/>
+                            </hbox>
+                            <button id="bttnAdd" label="${c:l('BttnAgregar')}" image="images/imgicons/icons/plus-circle.png"/>
+                            <space/>
+                            <button id="bttnUpdate" label="${c:l('BttnModificar')}" image="images/imgicons/icons/pencil.png"/>
+                            <space/>
+                            <button id="bttnDelete" label="${c:l('BttnEliminar')}" image="images/imgicons/icons/minus-circle.png"/>
+                            <space/>
+                            <button id="bttnLimpiarCampos" label="LimpiarCampos" image="images/imgicons/icons/application-detail.png"/>
+                            <!-- html><![CDATA[ <p></p> ]]></html -->
+                            <div id="midiv">
+                                <label id="milabel" value="" style="font-size:65%;color:navy; font-style:normal;"/>
+                            </div>
+                        </groupbox>
+                    </vbox>
+                </window>
+            </center>
+            <south size="30px">
+                <window id="windowWorkArea" onCreate="setLblVApp()">
+                    <hlayout valign="middle">
+                        <div hflex="1">
+                            <label id="appverlbl" style="font-size:65%; color:#888; font-style:normal;background-color:#efefef;"/>
+                        </div>
+                        <label id="lblLeyenda" value=" " style="font-size:65%; color:#888; font-style:normal;background-color:#efefef;"/>
+                    </hlayout>
+                    <zscript>
+                        public setLblVApp() {
+                            appverlbl.setValue(com.tpvs.util.MyProperties.getPropiedad("vapp"));
+                        }
+                    </zscript>
+                </window>
+            </south>
+        </borderlayout>
+    </window>
+</zk>

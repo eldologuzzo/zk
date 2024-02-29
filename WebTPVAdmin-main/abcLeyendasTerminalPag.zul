@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?page title="Aurora" ?>
+<?init class="org.zkoss.zkplus.databind.AnnotateDataBinderInit"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <html><![CDATA[ <link rel="shortcut icon" href="images/logos/favicon_evo.ico"/> ]]></html>
+    <html><![CDATA[ <link rel="stylesheet" href="othercss/tpvsadmin.css" type="text/css" /> ]]></html>
+    <window id="myWindow1" mode="highlighted" width="1400px" height="710px" contentStyle="" apply="">
+        <style src="/othercss/tpvsadmin.css"/>
+        <borderlayout>
+            <north size="100px">
+                <borderlayout>
+                    <west size="15%" border="none" collapsible="false">
+                        <div style="background:#FFFFFF" vflex="1">
+                            <image src="images/logos/evo.jpg"/>
+                        </div>
+                    </west>
+                    <center border="none">
+                        <div style="background:#045FB4" vflex="1">
+                            <zscript>
+                                String stImgHeader = (String)Sessions.getCurrent().getAttribute("imgHeader");
+                                String stFrmImgHeader = (String)Sessions.getCurrent().getAttribute("imgFrmHeader");
+                            </zscript>
+                            <image src="images/imgheaders/${stImgHeader}-imgheader-applications.${stFrmImgHeader}"/>
+                        </div>
+                    </center>
+                </borderlayout>
+            </north>
+            <west id="menuOpciones" title=" " size="11%" flex="true" maxsize="140" splittable="false" collapsible="true" open="false">
+                <include src="/menugral.zul" progressing="true"/>
+            </west>
+            <center>
+                <window id="win" style="overflow:auto" border="normal" apply="com.tpvs.tpvsadmin.zkutils.LeyendasTerminalControllerPag" height="100%">
+                    <label value="${c:l('Grupo')}:" style="font-size:100%;"/>
+                    <space/>
+                    <combobox id="comboboxGroups" cols="22" readonly="true"
+                              model="@{win$composer.allGroups}" selectedItem="@{win$composer.currentGroup}" style="font-size:10px">
+                        <comboitem self="@{each=Groups}"
+                                   label="@{Groups.groupName}"
+                                   value="@{Groups.idGroup}"
+                                   description="@{Groups.contact}"/>
+                    </combobox>
+                    <space/>
+                    <button id="bttnBuscar" label="${c:l('BttnBuscar')}" image="/images/imgicons/icons/application-search-result.png"/>
+                    <groupbox contentStyle="border:0">
+                        <listbox id="box" style="overflow:auto;" fixedLayout="true" rows="9" 
+                                 selectedItem="@{win$composer.current}" height="100%">
+                            <listhead sizable="true">
+                                <listheader label="linea1" width="20%" />
+                                <listheader label="linea2" width="20%" />
+                                <listheader label="linea3" width="20%" />
+                                <listheader label="linea4" width="20%" />
+                                <listheader label="linea5" width="20%" />
+                            </listhead>
+                            <!--                                <listitem self="@{each='Groups'}" value="@{Groups}">
+                                <listcell label="@{Groups.idGroup}"/>
+                            </listitem>-->
+                        </listbox>
+                        <paging id="pagBoxData" pageSize="9"/>
+                    </groupbox>
+                    <hbox width="100%" style="border:0">
+                        <groupbox id="gb1" mold="3d" contentStyle="border:0" closable="false">
+                            <caption label="${c:l('IngreseDatos')}:"/>
+                            <hbox>
+                                <label value="División:" style="font-size:10px;" visible="false"/>
+                                <combobox id="comboboxChains" cols="30" readonly="true" style="font-size:100%" visible="false"
+                                          model="@{win$composer.allChains, load-after='comboboxGroups.onSelect'}" selectedItem="@{win$composer.currentChain}">
+                                    <comboitem self="@{each=GroupsChains}"
+                                               label="@{GroupsChains.chain}"
+                                               value="@{GroupsChains.idChain}"
+                                               description="@{GroupsChains.contact}"/>
+                                </combobox>
+                                <label value="País:" style="font-size:10px;"/>
+                                <combobox id="comboboxPaises" cols="30" autocomplete="true" model="@{win$composer.allPaises}"
+                                          selectedItem="@{win$composer.currentPais}" style="font-size:10px" readonly="true" disabled="true">
+                                    <comboitem self="@{each=Paises}"
+                                               label="@{Paises.nombrePais}"
+                                               value="@{Paises.clavePais}"
+                                               description="@{Paises.nombrePais}"/>
+                                </combobox>
+                                <label value="Estado:" style="font-size:100%"/>
+                                <combobox id="comboboxEstados" cols="30" readonly="true" 
+                                          model="@{win$composer.allEstados, load-after='comboboxPaises.onSelect'}" selectedItem="@{win$composer.currentEstado}" style="font-size:10px">
+                                    <comboitem self="@{each=Estados}"
+                                               label="@{Estados.entidadFederativa}"
+                                               value="@{Estados.claveEstado}"
+                                               description="@{Estados.capital}"/>
+                                </combobox>
+                                <label value="Municipio:" style="font-size:100%"/>
+                                <combobox id="comboboxMunicipios" cols="30" readonly="true" 
+                                          model="@{win$composer.allMunicipios, load-after='comboboxPaises.onSelect, comboboxEstados.onSelect'}" 
+                                          selectedItem="@{win$composer.currentMunicipio}" style="font-size:10px">
+                                    <comboitem self="@{each=Municipios}"
+                                               label="@{Municipios.nombreMunicipio}"
+                                               value="@{Municipios.cpmunicipiosPK.claveMunicipio}"
+                                               description="@{Municipios.cpestados.entidadFederativa}"/>
+                                </combobox>
+                            </hbox>
+                            <hbox>
+                                <space/>
+                            </hbox>
+                            <grid style="border:0">
+                                <columns style="border:0">
+                                    <column width="20%" align="center"/>
+                                    <column width="20%" align="center"/>
+                                    <column width="20%" align="center"/>
+                                    <column width="20%" align="center"/>
+                                    <column width="20%" align="center"/>
+                                </columns>
+                                <rows>
+                                    <row>
+                                        <textbox id="txtbxLinea1" width="100%" value="@{win$composer.current.linea1}" maxlength="20"/>
+                                        <textbox id="txtbxLinea2" width="100%" value="@{win$composer.current.linea2}" maxlength="20"/>
+                                        <textbox id="txtbxLinea3" width="100%" value="@{win$composer.current.linea3}" maxlength="20"/>
+                                        <textbox id="txtbxLinea4" width="100%" value="@{win$composer.current.linea4}" maxlength="20"/>
+                                        <textbox id="txtbxLinea5" width="100%" value="@{win$composer.current.linea5}" maxlength="20"/>
+                                    </row>
+                                </rows>
+                            </grid>
+                            <hbox>
+                                <space/>
+                            </hbox>
+                            <hbox style="border:0">
+                                <groupbox style="border:0" visible="false">
+                                    <checkbox id="chckbxLinea1DAlto" label="DAlto" style="font-size:100%;" checked="@{win$composer.current.linea1DAlto}"/>
+                                    <checkbox id="chckbxLinea1DAncho" label="DAncho" style="font-size:100%;" checked="@{win$composer.current.linea1DAncho}"/>
+                                    <checkbox id="chckbxLinea1Inverso" label="Inverso" style="font-size:100%;" checked="@{win$composer.current.linea1Inverso}"/>
+                                </groupbox>
+                                <groupbox style="border:0" visible="false">
+                                    <checkbox id="chckbxLinea2DAlto" label="DAlto" style="font-size:100%;" checked="@{win$composer.current.linea2DAlto}"/>
+                                    <checkbox id="chckbxLinea2DAncho" label="DAncho" style="font-size:100%;" checked="@{win$composer.current.linea2DAncho}"/>
+                                    <checkbox id="chckbxLinea2Inverso" label="Inverso" style="font-size:100%;" checked="@{win$composer.current.linea2Inverso}"/>
+                                </groupbox>
+                                <groupbox style="border:0" visible="false">
+                                    <checkbox id="chckbxLinea3DAlto" label="DAlto" style="font-size:100%;" checked="@{win$composer.current.linea3DAlto}"/>
+                                    <checkbox id="chckbxLinea3DAncho" label="DAncho" style="font-size:100%;" checked="@{win$composer.current.linea3DAncho}"/>
+                                    <checkbox id="chckbxLinea3Inverso" label="Inverso" style="font-size:100%;" checked="@{win$composer.current.linea3Inverso}"/>
+                                </groupbox>
+                            </hbox>
+                            <groupbox contentStyle="border:0">
+                                <button id="add" label="${c:l('BttnAgregar')}" image="/images/imgicons/icons/plus-circle.png"/>
+                                <space/>
+                                <button id="update" label="${c:l('BttnModificar')}" image="/images/imgicons/icons/pencil.png"/>
+                                <space/>
+                                <button id="delete" label="${c:l('BttnEliminar')}" image="/images/imgicons/icons/minus-circle.png"/>
+                                <space/>
+                                <button id="btnLimpiarCampos" label="LimpiarCampos" image="/images/imgicons/icons/application-detail.png"/>
+                            </groupbox>
+                            <div id="midiv">
+                                <label id="milabel" value="" style="font-size:65%;color:navy; font-style:normal;"/>
+                            </div>
+                        </groupbox>
+                    </hbox>
+                </window>
+            </center>
+            <south size="30px">
+                <window id="windowWorkArea" onCreate="setLblVApp()">
+                    <hlayout valign="middle">
+                        <div hflex="1">
+                            <label id="appverlbl" style="font-size:65%; color:#888; font-style:normal;background-color:#efefef;"/>
+                        </div>
+                        <label id="lblLeyenda" value=" " style="font-size:65%; color:#888; font-style:normal;background-color:#efefef;"/>
+                    </hlayout>
+                    <zscript>
+                        public setLblVApp() {
+                        appverlbl.setValue(com.tpvs.util.MyProperties.getPropiedad("vapp"));
+                        }
+                    </zscript>
+                </window>
+            </south>
+        </borderlayout>
+    </window>
+</zk>
